@@ -1,0 +1,7 @@
+about
+About
+{
+(NOTHING HERE YET):;[TEXT]
+():;[TEXT]
+(Back):openMenu_main;[BUTTON]
+}
