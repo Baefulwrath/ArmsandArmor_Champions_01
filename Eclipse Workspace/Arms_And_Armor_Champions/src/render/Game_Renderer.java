@@ -12,9 +12,9 @@ public class Game_Renderer extends Renderer {
     }
 
     @Override
-    public void render(ShapeRenderer shapeBatch, SpriteBatch batch) {
+    public void render(ShapeRenderer triangleBatch, SpriteBatch batch) {
         drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, -getScreenY() - 16, com16, Color.RED);
-        drawMap(shapeBatch, batch, AAA_C.worldhandler.getMap(), 0, 0, true);
+        drawMap(triangleBatch, batch, AAA_C.worldhandler.getMap(), 0, 0, true);
         if(AAA_C.gamePaused){
 //Rita ut bakgrund till menyn för att släppa fokus på spelet.
 //Se till att musen fungera in-game för menyer också

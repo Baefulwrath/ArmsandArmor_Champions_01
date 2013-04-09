@@ -1,8 +1,5 @@
 package com.rapplebob.ArmsAndArmorChampions;
 
-import java.io.File;
-import java.util.Scanner;
-
 import menus.*;
 import render.*;
 import input.*;
@@ -13,18 +10,14 @@ import com.badlogic.gdx.ApplicationListener;
 import static com.badlogic.gdx.Gdx.*;
 import static com.badlogic.gdx.graphics.GL10.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class AAA_C implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-    public static ShapeRenderer shapeBatch;
+    public static ShapeRenderer triangleBatch;
     public static Renderer[] renderers = new Renderer[3];
     public static int activeRenderer = 0;
     public static int fps = 120;
@@ -32,7 +25,7 @@ public class AAA_C implements ApplicationListener {
     public static boolean allowedToRender = true;
     public static State state = State.DEFAULT;
     public static State newState = State.DEFAULT;
-    public static boolean debug = false;
+    public static boolean debug = true;
     public static boolean gamePaused = false;
     public static int screenWidth = 1280;
     public static int screenHeight = 800;
@@ -51,9 +44,8 @@ public class AAA_C implements ApplicationListener {
 		screenHeight = graphics.getHeight();
 		camera = new OrthographicCamera(1, screenHeight/screenWidth);
 		batch = new SpriteBatch();
-		shapeBatch = new ShapeRenderer();
+		triangleBatch = new ShapeRenderer();
         loadRenderers();
-        //loadShaders();
         setRendererByState(state);
         worldhandler = new Worldhandler();
         worldhandler.load();
@@ -95,18 +87,18 @@ public class AAA_C implements ApplicationListener {
     }
 
     public void doRender() {
-        gl.glClearColor(0, 0, 0.1f, 1);
+        gl.glClearColor(0, 0.05f, 0.05f, 1);
         gl.glClear(GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        shapeBatch.setProjectionMatrix(camera.combined);
+        triangleBatch.setProjectionMatrix(camera.combined);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        shapeBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        triangleBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         batch.begin();
-        shapeBatch.begin(ShapeType.Triangle);
-        renderers[activeRenderer].render(shapeBatch, batch);
-        shapeBatch.end();
+        triangleBatch.begin(ShapeType.Triangle);
+        renderers[activeRenderer].render(triangleBatch, batch);
         batch.end();
+        triangleBatch.end();
     }
 
 	@Override
@@ -174,26 +166,6 @@ public class AAA_C implements ApplicationListener {
     
     public static void setRendererByState(State state){
         setRendererByIndex(getRendererIDByState(state));
-    }
-    
-    public static String mainVertexShader = "";
-    public static String mainFragmentShader = "";
-    
-    public static void loadShaders(){
-        try{
-            File file = new File("data/bin/main_vertex_shader.txt");
-            Scanner reader = new Scanner(file);
-            while(reader.hasNextLine()){
-                mainVertexShader += reader.nextLine();
-            }
-            file = new File("data/bin/main_fragment_shader.txt");
-            reader = new Scanner(file);
-            while(reader.hasNextLine()){
-                mainFragmentShader += reader.nextLine();
-            }
-        }catch(Exception ex){
-            ex.printStackTrace(System.out);
-        }
     }
     
     public static Menuhandler getActiveMenuhandler(){

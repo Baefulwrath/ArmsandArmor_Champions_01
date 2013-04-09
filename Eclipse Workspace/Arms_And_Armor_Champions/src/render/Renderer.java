@@ -29,7 +29,12 @@ public abstract class Renderer {
     public abstract void specificUpdate();
 
     public void generalUpdate() {
-        specificUpdate();
+    	
+    	
+    	
+    	if(active){
+    		specificUpdate();
+    	}
     }
     public boolean active = false;
 
@@ -125,7 +130,7 @@ public abstract class Renderer {
     }
     
     
-    public void drawMap(ShapeRenderer shapeBatch, SpriteBatch batch, Map map, int x, int y, boolean central){
+    public void drawMap(ShapeRenderer triangleBatch, SpriteBatch batch, Map map, int x, int y, boolean central){
         x += getCentralMapX(map);
         y += getCentralMapY(map);
         if(map.loaded && map.cells.size() > 0){
@@ -134,28 +139,34 @@ public abstract class Renderer {
             for(int i = 0; i < map.cells.size(); i++){
 //DRAW IMAGE OF CELL
 //IF DEBUG: DRAW CELLSHAPE
-                if(map.cells.get(i).ACTIVE){
-                    drawPolygon(shapeBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.YELLOW);
-                }else{
-                    drawPolygon(shapeBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.WHITE);
-                }
-                drawString(batch, "" + i, (int) map.getCellX(i) + x - 12, (int) map.getCellY(i) + y + 12, com10, Color.RED);
+            	if(AAA_C.debug){
+	                if(map.cells.get(i).ACTIVE){
+	                    drawPolygon(triangleBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.YELLOW);
+	                }else{
+	                    drawPolygon(triangleBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.WHITE);
+	                }
+	                drawString(batch, "" + i, (int) map.getCellX(i) + x - 12, (int) map.getCellY(i) + y + 12, com10, Color.RED);
+            	}else{
+	                if(map.cells.get(i).ACTIVE){
+	                }else{
+	                }
+            	}
             }
         }else{
             drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED);
         }
     }
     
-    public void drawPolygon(ShapeRenderer shapeBatch, Polygon pol[], int x, int y, Color col){
-        shapeBatch.setColor(col);
+    public void drawPolygon(ShapeRenderer triangleBatch, Polygon pol[], int x, int y, Color col){
+        triangleBatch.setColor(col);
         for(int i = 0; i < pol.length; i++){
-            shapeBatch.triangle(pol[i].getVertices()[0] + x, pol[i].getVertices()[1] + y, pol[i].getVertices()[2] + x, pol[i].getVertices()[3] + y, pol[i].getVertices()[4] + x, pol[i].getVertices()[5] + y);
+            triangleBatch.triangle(pol[i].getVertices()[0] + x, pol[i].getVertices()[1] + y, pol[i].getVertices()[2] + x, pol[i].getVertices()[3] + y, pol[i].getVertices()[4] + x, pol[i].getVertices()[5] + y);
         }
     }
     
-    public void drawPolygon(ShapeRenderer shapeBatch, float[] verts, int x, int y, Color col){
-        shapeBatch.setColor(col);
-        shapeBatch.triangle(verts[0] + x, verts[1] + y, verts[2] + x, verts[3] + y, verts[4] + x, verts[5] + y);
+    public void drawPolygon(ShapeRenderer triangleBatch, float[] verts, int x, int y, Color col){
+        triangleBatch.setColor(col);
+        triangleBatch.triangle(verts[0] + x, verts[1] + y, verts[2] + x, verts[3] + y, verts[4] + x, verts[5] + y);
     }
     
     public int getCentralMapX(Map map){
@@ -163,6 +174,7 @@ public abstract class Renderer {
         x += map.cells.get(0).RADIUS;
         return (int) x;
     }
+    
     public int getCentralMapY(Map map){
         float y = (map.getHeight() / 2) * map.cells.get(0).SIDE;
         return (int) y;

@@ -1,6 +1,5 @@
 package menus;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -54,7 +53,6 @@ public class Menuhandler {
 		                    reader = new Scanner(text);
 		                    ID = reader.nextLine();
 		                    title = reader.nextLine();
-		                    String actList = "";
 		                    reader.nextLine();
 		                    while(!reader.hasNext("}")){
 		                        String line = reader.nextLine();

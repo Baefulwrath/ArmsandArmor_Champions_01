@@ -12,7 +12,7 @@ public class Menu_Renderer extends Renderer {
 
     
     @Override
-    public void render(ShapeRenderer shapeBatch, SpriteBatch batch) {
+    public void render(ShapeRenderer triangleBatch, SpriteBatch batch) {
         if(AAA_C.MMH.menus.size() > 0){
             drawMenu(batch, AAA_C.MMH.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y);
         }else{
