@@ -1,6 +1,0 @@
-main
-Game Paused
-{
-(Continue):continue_;[BUTTON]
-(Main Menu):endgame_;[BUTTON]
-}

@@ -1,6 +1,0 @@
-exit
-Exit?
-{
-(Yes!):exit_;[BUTTON]
-(No...):openMenu_main;[BUTTON]
-}

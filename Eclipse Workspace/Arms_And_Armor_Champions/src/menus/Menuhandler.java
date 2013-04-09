@@ -33,34 +33,47 @@ public class Menuhandler {
             //Rensa menyer
             menus.clear();
             //Öppna mappen
-            FileHandle handle = Gdx.files.external(path);
-            //Loopa igenom filer
-            Scanner reader;
-            for(int i = 0; i < folder.list().length; i++){
-                File file = new File(folder.file().getAbsolutePath() + "/" + folder.list()[i]);
-                if(file.getName().substring(file.getName().length() - 4).equals(".txt")){
-                    Menu m = new Menu();
-                    String ID = "";
-                    String title = "";
-                    ArrayList<Activator> acts = new ArrayList<Activator>();
-                    reader = new Scanner(file);
-                    ID = reader.nextLine();
-                    title = reader.nextLine();
-                    String actList = "";
-                    reader.nextLine();
-                    while(!reader.hasNext("}")){
-                        String line = reader.nextLine();
-                        Activator act = new Activator();
-                        String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
-                        String script = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
-                        ActivatorType AT = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
-                        act.set(AT, atitle, script);
-                        acts.add(act);
-                    }
-                    m.set(ID, title, acts);
-                    menus.add(m);
-                }
-            }
+            	String index = Gdx.files.internal(path + "INDEX.txt").readString();
+            	ArrayList<String> files = new ArrayList<String>();
+            	while(index.contains(":")){
+            		files.add(index.substring(1, index.indexOf(";")));
+            		index = index.substring(index.indexOf(";") + 1);
+            	}
+	            //Loopa igenom filer
+	            Scanner reader;
+	            if(files.size() > 0){
+		            for(int i = 0; i < files.size(); i++){
+		                FileHandle file = Gdx.files.internal(path + files.get(i));
+		                if(file.extension().equals(".txt")){
+		                    Menu m = new Menu();
+		                    String ID = "";
+		                    String title = "";
+		                    ArrayList<Activator> acts = new ArrayList<Activator>();
+		                    String text = file.readString();
+		                    System.out.println(text);
+		                    
+		                    /*
+		                    ID = reader.nextLine();
+		                    title = reader.nextLine();
+		                    String actList = "";
+		                    reader.nextLine();
+		                    while(!reader.hasNext("}")){
+		                        String line = reader.nextLine();
+		                        Activator act = new Activator();
+		                        String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+		                        String script = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
+		                        ActivatorType AT = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
+		                        act.set(AT, atitle, script);
+		                        acts.add(act);
+		                    }
+		                    m.set(ID, title, acts);
+		                    menus.add(m);
+		                    */
+		                }
+		            }
+	            }else{
+	            	System.out.println("NO MENUS TO LOAD");
+	            }
         }catch(Exception ex){
             ex.printStackTrace();
         }

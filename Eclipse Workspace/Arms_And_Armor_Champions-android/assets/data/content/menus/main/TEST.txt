@@ -1,7 +1,0 @@
-TEST
-TEST
-{
-(Text to get):id_test;[INPUT]
-(Get Text):print_GET_loc_activatorTitle_test_TEG#;[BUTTON]
-(Back):openMenu_main;[BUTTON]
-}

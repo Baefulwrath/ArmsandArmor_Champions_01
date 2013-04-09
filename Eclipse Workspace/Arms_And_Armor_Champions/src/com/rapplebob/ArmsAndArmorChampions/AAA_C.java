@@ -37,14 +37,16 @@ public class AAA_C implements ApplicationListener {
     public static int screenWidth = 1280;
     public static int screenHeight = 800;
 
-    public static Main_Menuhandler MMH = new Main_Menuhandler();
-    public static Game_Menuhandler GMH = new Game_Menuhandler();
+    public static Main_Menuhandler MMH;
+    public static Game_Menuhandler GMH;
     
     public static Inputhandler inputhandler;
     public static Worldhandler worldhandler;
     
 	@Override
-	public void create() {		
+	public void create() {
+        MMH = new Main_Menuhandler();
+        GMH = new Game_Menuhandler();
 		screenWidth = graphics.getWidth();
 		screenHeight = graphics.getHeight();
 		camera = new OrthographicCamera(1, screenHeight/screenWidth);

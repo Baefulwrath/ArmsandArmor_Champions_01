@@ -1,8 +1,0 @@
-newgame
-New Game
-{
-(TO BE IMPLEMENTED):;[TEXT]
-(Temp Start Game):startgame_;[BUTTON]
-():;[TEXT]
-(Back):openMenu_main;[BUTTON]
-}
