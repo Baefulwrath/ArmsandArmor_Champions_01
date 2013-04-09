@@ -44,15 +44,14 @@ public class Menuhandler {
 	            if(files.size() > 0){
 		            for(int i = 0; i < files.size(); i++){
 		                FileHandle file = Gdx.files.internal(path + files.get(i));
-		                if(file.extension().equals(".txt")){
+		                if(file.extension().equals("txt")){
 		                    Menu m = new Menu();
 		                    String ID = "";
 		                    String title = "";
 		                    ArrayList<Activator> acts = new ArrayList<Activator>();
 		                    String text = file.readString();
-		                    System.out.println(text);
 		                    
-		                    /*
+		                    reader = new Scanner(text);
 		                    ID = reader.nextLine();
 		                    title = reader.nextLine();
 		                    String actList = "";
@@ -68,7 +67,8 @@ public class Menuhandler {
 		                    }
 		                    m.set(ID, title, acts);
 		                    menus.add(m);
-		                    */
+		                }else{
+		                	System.out.println("Non-txt in index of menus");
 		                }
 		            }
 	            }else{

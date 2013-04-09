@@ -1,0 +1,9 @@
+main
+Main Menu
+{
+(New Game):openMenu_newgame;[BUTTON]
+(TEST):openMenu_TEST;[BUTTON]
+(Options):openMenu_options;[BUTTON]
+(About):openMenu_about;[BUTTON]
+(Exit):openMenu_exit;[BUTTON]
+}

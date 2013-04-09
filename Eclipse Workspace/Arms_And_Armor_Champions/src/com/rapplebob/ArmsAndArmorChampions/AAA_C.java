@@ -51,6 +51,7 @@ public class AAA_C implements ApplicationListener {
 		screenHeight = graphics.getHeight();
 		camera = new OrthographicCamera(1, screenHeight/screenWidth);
 		batch = new SpriteBatch();
+		shapeBatch = new ShapeRenderer();
         loadRenderers();
         //loadShaders();
         setRendererByState(state);

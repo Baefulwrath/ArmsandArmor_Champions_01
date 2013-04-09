@@ -58,6 +58,6 @@ public class Default_Renderer extends Renderer {
 
     @Override
     public void loadResources() throws Exception {
-        testImg = new Texture(Gdx.files.internal("testImg.png"));
+        testImg = new Texture(Gdx.files.internal("data/testImg.png"));
     }
 }
