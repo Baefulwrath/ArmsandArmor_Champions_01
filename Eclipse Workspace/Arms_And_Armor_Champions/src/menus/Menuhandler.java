@@ -36,6 +36,7 @@ public class Menuhandler {
             FileHandle handle = Gdx.files.external(path);
             //Loopa igenom filer
             Scanner reader;
+            //Test Bajs
             for(int i = 0; i < folder.list().length; i++){
                 File file = new File(folder.file().getAbsolutePath() + "/" + folder.list()[i]);
                 if(file.getName().substring(file.getName().length() - 4).equals(".txt")){
