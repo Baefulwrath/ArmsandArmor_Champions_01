@@ -24,7 +24,7 @@ public class Menu_Renderer extends Renderer {
     }
 
     @Override
-    public void loadResources() throws Exception {
+    public void loadSpecificResources() throws Exception {
     }
     
 }

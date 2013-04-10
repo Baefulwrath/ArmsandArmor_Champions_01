@@ -24,6 +24,7 @@ public abstract class Renderer {
     public String ID = "DEFAULT";
     public State state = null;
     public Sprite sprite = new Sprite();
+    public Texture idleCell;
 
     public abstract void render(SpriteBatch batch);
 
@@ -39,10 +40,14 @@ public abstract class Renderer {
     }
     public boolean active = false;
 
-    public abstract void loadResources() throws Exception;
+    public abstract void loadSpecificResources() throws Exception;
+    
+    public void loadResources(){
+    	idleCell = new Texture(Gdx.files.internal("data/images/idleCell.png"));
+    }
 
     public void drawImage(SpriteBatch batch, Texture img, int x, int y, float scale, int rotation) {
-    	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(sprite.getWidth(), sprite.getHeight());
     	sprite.setScale(scale);
@@ -53,7 +58,7 @@ public abstract class Renderer {
     }
 
     public void drawImage(SpriteBatch batch, Texture img, int x, int y, int width, int height, int rotation) {
-    	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
     	sprite.setScale(width, height);
@@ -150,17 +155,17 @@ public abstract class Renderer {
         y += getCentralMapY(map);
         if(map.loaded && map.cells.size() > 0){
             int width = map.width;
-            //draw backdrop
             for(int i = 0; i < map.cells.size(); i++){
-//DRAW IMAGE OF CELL
-//IF DEBUG: DRAW CELLSHAPE
             	if(AAA_C.debug){
-	                drawString(batch, "" + i, (int) map.getCellX(i) + x - 12, (int) map.getCellY(i) + y + 12, com10, Color.RED);
-            	}else{
-	                if(map.cells.get(i).ACTIVE){
-	                }else{
-	                }
+	                drawString(batch, "" + i, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, com10, Color.RED);
             	}
+	            if(map.cells.get(i).ACTIVE){
+	            }else{
+	            	drawImage(batch, idleCell, (int) map.getCellX(i) + x + (int) map.cells.get(i).imgPos[0], (int) map.getCellY(i) + y + (int) map.cells.get(i).imgPos[1], 1.0f, 0);
+	            }
+            }
+            if(AAA_C.debug){
+            	drawString(batch, "Height: " + map.getHeight(), -500, 380, com10, Color.RED);
             }
         }else{
             drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED);
@@ -186,7 +191,7 @@ public abstract class Renderer {
     }
     
     public int getCentralMapY(Map map){
-        float y = (map.getHeight() / 2) * map.cells.get(0).SIDE;
+        float y = (map.getHeight() / 2) * map.cells.get(0).DIAMETER;
         return (int) y;
     }
 }

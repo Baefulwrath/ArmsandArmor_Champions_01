@@ -29,7 +29,7 @@ public class AAA_C implements ApplicationListener {
     public static boolean allowedToRender = true;
     public static State state = State.DEFAULT;
     public static State newState = State.DEFAULT;
-    public static boolean debug = false;
+    public static boolean debug = true;
     public static boolean gamePaused = false;
     public static float w = 1280;
     public static float h = 800;
@@ -117,7 +117,7 @@ public class AAA_C implements ApplicationListener {
 //Begin work
         batch.begin();
 //Get rendering orders
-        sprite.draw(batch);
+        //sprite.draw(batch);
         renderers[activeRenderer].render(batch);
 //End cycle
         batch.end();
@@ -164,6 +164,7 @@ public class AAA_C implements ApplicationListener {
             renderers[2] = new Game_Renderer();
             for(int i = 0; i < renderers.length; i++){
                 renderers[i].loadResources();
+                renderers[i].loadSpecificResources();
             }
         }catch(Exception ex){
             ex.printStackTrace(System.out);

@@ -1,6 +1,8 @@
 package render;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
@@ -19,15 +21,16 @@ public class Game_Renderer extends Renderer {
 //Se till att musen fungera in-game för menyer också
             drawMenu(batch, AAA_C.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y);
         }
-        drawString(batch, "size: " + AAA_C.worldhandler.getMap().cells.size(), -200, -200, com64, Color.RED);
+        drawString(batch, "size: " + AAA_C.worldhandler.getMap().cells.size(), -200, -350, com32, Color.RED);
     }
 
     @Override
     public void specificUpdate() {
     }
 
+    
     @Override
-    public void loadResources() throws Exception {
+    public void loadSpecificResources() throws Exception {
     }
     
 }
