@@ -5,5 +5,6 @@ Main Menu
 (TEST):openMenu_TEST;[BUTTON]
 (Options):openMenu_options;[BUTTON]
 (About):openMenu_about;[BUTTON]
+(DEFAULT STATE):setState_DEFAULT;[BUTTON]
 (Exit):openMenu_exit;[BUTTON]
 }

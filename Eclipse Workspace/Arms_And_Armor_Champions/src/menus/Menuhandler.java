@@ -19,6 +19,17 @@ public class Menuhandler {
                 break;
             }
         }
+        //soutMenu(getActiveMenu());
+    }
+    
+    public void soutMenu(Menu m){
+    	//In case of desaster: sout the menu to console.
+    	System.out.println("_______________");
+    	System.out.println(m.title + " - " + getActiveMenu().activeAct);
+        for(int i = 0; i < m.acts.size(); i++){
+        	System.out.println(m.acts.get(i).title);
+        }
+    	System.out.println("_______________");
     }
     
     public void update(){

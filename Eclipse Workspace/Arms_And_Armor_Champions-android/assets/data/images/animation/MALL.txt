@@ -1,0 +1,4 @@
+String : image file
+int : region width
+int : amount
+int : animation interval

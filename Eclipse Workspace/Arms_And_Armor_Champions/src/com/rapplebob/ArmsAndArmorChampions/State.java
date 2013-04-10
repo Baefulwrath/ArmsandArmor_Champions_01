@@ -6,8 +6,16 @@ public enum State {
     
     @Override
     public String toString() {
-        //only capitalize the first letter
-        String s = super.toString();
-        return s.substring(0, 1) + s.substring(1).toLowerCase();
+        return super.toString();
+    }
+    
+    public static State getStateByString(String state){
+    	State temp = DEFAULT;
+    	for(int i = 0; i < values().length; i++){
+    		if(state.equals(values()[i].toString())){
+    			temp = values()[i];
+    		}
+    	}
+    	return temp;
     }
 }

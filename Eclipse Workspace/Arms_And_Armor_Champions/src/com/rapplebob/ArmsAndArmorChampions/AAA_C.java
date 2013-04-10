@@ -7,17 +7,21 @@ import world.*;
 import scripting.*;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+
 import static com.badlogic.gdx.Gdx.*;
-import static com.badlogic.gdx.graphics.GL10.*;
+
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AAA_C implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-    public static ShapeRenderer triangleBatch;
     public static Renderer[] renderers = new Renderer[3];
     public static int activeRenderer = 0;
     public static int fps = 120;
@@ -25,10 +29,10 @@ public class AAA_C implements ApplicationListener {
     public static boolean allowedToRender = true;
     public static State state = State.DEFAULT;
     public static State newState = State.DEFAULT;
-    public static boolean debug = true;
+    public static boolean debug = false;
     public static boolean gamePaused = false;
-    public static int screenWidth = 1280;
-    public static int screenHeight = 800;
+    public static float w = 1280;
+    public static float h = 800;
 
     public static Main_Menuhandler MMH;
     public static Game_Menuhandler GMH;
@@ -36,21 +40,35 @@ public class AAA_C implements ApplicationListener {
     public static Inputhandler inputhandler;
     public static Worldhandler worldhandler;
     
+    private Texture texture;
+	private Sprite sprite;
+    
 	@Override
 	public void create() {
-        MMH = new Main_Menuhandler();
-        GMH = new Game_Menuhandler();
-		screenWidth = graphics.getWidth();
-		screenHeight = graphics.getHeight();
-		camera = new OrthographicCamera(1, screenHeight/screenWidth);
+		w = graphics.getWidth();
+		h = graphics.getHeight();
+		camera = new OrthographicCamera(1, h/w);
+		camera.zoom = w;
 		batch = new SpriteBatch();
-		triangleBatch = new ShapeRenderer();
+		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
+		
+		sprite = new Sprite(region);
+		sprite.setSize(sprite.getWidth(), sprite.getHeight());
+		sprite.setScale(1);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		sprite.setPosition(0, 0);
+		
         loadRenderers();
         setRendererByState(state);
         worldhandler = new Worldhandler();
         worldhandler.load();
         inputhandler = new Inputhandler();
         input.setInputProcessor(inputhandler);
+        MMH = new Main_Menuhandler();
+        GMH = new Game_Menuhandler();
         getActiveMenuhandler().openMenuByID("main");
 	}
 
@@ -75,7 +93,7 @@ public class AAA_C implements ApplicationListener {
     public boolean readyToRender() {
         boolean ready = false;
         if (lastRender + getMilliFromFps(fps) <= System.currentTimeMillis() && allowedToRender) {
-            doRender();
+            ready = true;
             lastRender = System.currentTimeMillis();
         }
         return ready;
@@ -87,20 +105,24 @@ public class AAA_C implements ApplicationListener {
     }
 
     public void doRender() {
-        gl.glClearColor(0, 0.05f, 0.05f, 1);
-        gl.glClear(GL_COLOR_BUFFER_BIT);
+//Prepare screen
+        graphics.getGL10().glClearColor(0, 0.05f, 0.05f, 1.0f);
+        graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_STENCIL_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+        graphics.getGL10().glDisable(GL10.GL_CULL_FACE);
+//Prepare rendering tools
+        camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        triangleBatch.setProjectionMatrix(camera.combined);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        triangleBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+//Begin work
         batch.begin();
-        triangleBatch.begin(ShapeType.Triangle);
-        renderers[activeRenderer].render(triangleBatch, batch);
+//Get rendering orders
+        sprite.draw(batch);
+        renderers[activeRenderer].render(batch);
+//End cycle
         batch.end();
-        triangleBatch.end();
     }
-
+    
 	@Override
 	public void resize(int width, int height) {
 	}

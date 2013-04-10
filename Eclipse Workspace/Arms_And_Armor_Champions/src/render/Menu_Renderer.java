@@ -1,7 +1,6 @@
 package render;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
 public class Menu_Renderer extends Renderer {
@@ -12,7 +11,7 @@ public class Menu_Renderer extends Renderer {
 
     
     @Override
-    public void render(ShapeRenderer triangleBatch, SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         if(AAA_C.MMH.menus.size() > 0){
             drawMenu(batch, AAA_C.MMH.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y);
         }else{

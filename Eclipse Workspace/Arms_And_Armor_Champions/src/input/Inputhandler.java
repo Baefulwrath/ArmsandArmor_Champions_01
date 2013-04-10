@@ -147,7 +147,7 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        mouse = new Rectangle(screenX + AAA_C.getActiveRenderer().getScreenX(), -screenY - AAA_C.getActiveRenderer().getScreenY(), 1, 1);
+        mouse = new Rectangle(screenX + (int) AAA_C.getActiveRenderer().getScreenX(), -screenY - (int) AAA_C.getActiveRenderer().getScreenY(), 1, 1);
         AAA_C.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y, 0, 0), AAA_C.getActiveRenderer().com32);
         return true;
     }

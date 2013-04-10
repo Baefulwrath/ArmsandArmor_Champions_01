@@ -5,9 +5,11 @@ import java.io.InputStreamReader;
 
 import menus.Menu;
 
+import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 import com.rapplebob.ArmsAndArmorChampions.State;
 
 import static com.rapplebob.ArmsAndArmorChampions.AAA_C.*;
+import com.rapplebob.ArmsAndArmorChampions.*;
 
 public class Scripthandler {
 
@@ -138,6 +140,11 @@ public class Scripthandler {
                 gamePaused = false;
             }
         }
+        if (line.length() > 9) {
+            if (cmd.equals("setState_")) {
+                setState(line.substring(9));
+            }
+        }
     }
     
     public static String getActivatorTitleById(String id){
@@ -161,7 +168,11 @@ public class Scripthandler {
         return title;
     }
     
-    
+    public static void setState(String state){
+    	State temp = State.getStateByString(state);
+    	AAA_C.newState = State.getStateByString(state);
+    	System.out.println(state + " - " + temp.toString());
+    }
 
     public static void openMenu(String cmd) {
         String id = cmd.substring(cmd.indexOf("_") + 1);

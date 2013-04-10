@@ -8,10 +8,10 @@ import menus.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.rapplebob.ArmsAndArmorChampions.*;
@@ -23,8 +23,9 @@ public abstract class Renderer {
     }
     public String ID = "DEFAULT";
     public State state = null;
+    public Sprite sprite = new Sprite();
 
-    public abstract void render(ShapeRenderer shapeBatch, SpriteBatch batch);
+    public abstract void render(SpriteBatch batch);
 
     public abstract void specificUpdate();
 
@@ -41,11 +42,25 @@ public abstract class Renderer {
     public abstract void loadResources() throws Exception;
 
     public void drawImage(SpriteBatch batch, Texture img, int x, int y, float scale, int rotation) {
-        batch.draw(img, x, y, img.getWidth() / 2, img.getHeight() / 2, img.getWidth(), img.getHeight(), scale, scale, rotation, 0, 0, img.getWidth(), img.getHeight(), false, false);
+    	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	sprite = new Sprite(img);
+    	sprite.setSize(sprite.getWidth(), sprite.getHeight());
+    	sprite.setScale(scale);
+    	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+    	sprite.setPosition(x, y);
+    	sprite.setRotation(rotation);
+    	sprite.draw(batch);
     }
 
     public void drawImage(SpriteBatch batch, Texture img, int x, int y, int width, int height, int rotation) {
-        batch.draw(img, x, y, img.getWidth() / 2, img.getHeight() / 2, width, height, 1, 1, rotation, 0, 0, img.getWidth(), img.getHeight(), false, false);
+    	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	sprite = new Sprite(img);
+    	sprite.setSize(1, 1);
+    	sprite.setScale(width, height);
+    	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+    	sprite.setPosition(x, y);
+    	sprite.setRotation(rotation);
+    	sprite.draw(batch);
     }
 
     public void loadFonts() {
@@ -65,12 +80,12 @@ public abstract class Renderer {
     public BitmapFont com16_BI;
     public BitmapFont com10_BI;
 
-    public int getScreenX() {
-        return -(AAA_C.screenWidth / 2);
+    public float getScreenX() {
+        return -(AAA_C.w / 2);
     }
 
-    public int getScreenY() {
-        return -(AAA_C.screenHeight / 2);
+    public float getScreenY() {
+        return -(AAA_C.h / 2);
     }
 
     public void drawString(SpriteBatch batch, String string, int x, int y, BitmapFont font, Color col) {
@@ -130,7 +145,7 @@ public abstract class Renderer {
     }
     
     
-    public void drawMap(ShapeRenderer triangleBatch, SpriteBatch batch, Map map, int x, int y, boolean central){
+    public void drawMap(SpriteBatch batch, Map map, int x, int y, boolean central){
         x += getCentralMapX(map);
         y += getCentralMapY(map);
         if(map.loaded && map.cells.size() > 0){
@@ -140,11 +155,6 @@ public abstract class Renderer {
 //DRAW IMAGE OF CELL
 //IF DEBUG: DRAW CELLSHAPE
             	if(AAA_C.debug){
-	                if(map.cells.get(i).ACTIVE){
-	                    drawPolygon(triangleBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.YELLOW);
-	                }else{
-	                    drawPolygon(triangleBatch, map.cells.get(i).getPolygons(), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, Color.WHITE);
-	                }
 	                drawString(batch, "" + i, (int) map.getCellX(i) + x - 12, (int) map.getCellY(i) + y + 12, com10, Color.RED);
             	}else{
 	                if(map.cells.get(i).ACTIVE){
@@ -156,7 +166,7 @@ public abstract class Renderer {
             drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED);
         }
     }
-    
+    /*
     public void drawPolygon(ShapeRenderer triangleBatch, Polygon pol[], int x, int y, Color col){
         triangleBatch.setColor(col);
         for(int i = 0; i < pol.length; i++){
@@ -167,7 +177,7 @@ public abstract class Renderer {
     public void drawPolygon(ShapeRenderer triangleBatch, float[] verts, int x, int y, Color col){
         triangleBatch.setColor(col);
         triangleBatch.triangle(verts[0] + x, verts[1] + y, verts[2] + x, verts[3] + y, verts[4] + x, verts[5] + y);
-    }
+    }*/
     
     public int getCentralMapX(Map map){
         float x = -(map.cells.get(0).SIDE * (map.width / 2));
