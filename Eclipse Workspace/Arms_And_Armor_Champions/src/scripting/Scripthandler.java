@@ -169,8 +169,8 @@ public class Scripthandler {
     }
     
     public static void setState(String state){
-    	State temp = State.getStateByString(state);
-    	AAA_C.newState = State.getStateByString(state);
+    	State temp = State.parseState(state);
+    	AAA_C.newState = State.parseState(state);
     	System.out.println(state + " - " + temp.toString());
     }
 

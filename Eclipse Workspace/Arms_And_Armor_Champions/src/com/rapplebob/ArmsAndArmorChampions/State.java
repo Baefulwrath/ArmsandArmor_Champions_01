@@ -9,7 +9,7 @@ public enum State {
         return super.toString();
     }
     
-    public static State getStateByString(String state){
+    public static State parseState(String state){
     	State temp = DEFAULT;
     	for(int i = 0; i < values().length; i++){
     		if(state.equals(values()[i].toString())){

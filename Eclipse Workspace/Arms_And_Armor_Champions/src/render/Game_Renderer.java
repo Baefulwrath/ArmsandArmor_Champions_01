@@ -14,6 +14,7 @@ public class Game_Renderer extends Renderer {
 
     @Override
     public void render(SpriteBatch batch) {
+    	drawImage(batch, background, 0, 0, (int) AAA_C.w, (int) AAA_C.w, 0, true);
         drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, (int) -getScreenY() - 16, com16, Color.RED);
         drawMap(batch, AAA_C.worldhandler.getMap(), 0, 0, true);
         if(AAA_C.gamePaused){

@@ -1,5 +1,7 @@
 package com.rapplebob.ArmsAndArmorChampions;
 
+import java.util.Scanner;
+
 import menus.*;
 import render.*;
 import input.*;
@@ -33,6 +35,7 @@ public class AAA_C implements ApplicationListener {
     public static boolean gamePaused = false;
     public static float w = 1280;
     public static float h = 800;
+    public static String settings = "";
 
     public static Main_Menuhandler MMH;
     public static Game_Menuhandler GMH;
@@ -70,6 +73,9 @@ public class AAA_C implements ApplicationListener {
         MMH = new Main_Menuhandler();
         GMH = new Game_Menuhandler();
         getActiveMenuhandler().openMenuByID("main");
+        
+        loadSettings();
+        setLoadedSettings();
 	}
 
 	@Override
@@ -231,5 +237,25 @@ public class AAA_C implements ApplicationListener {
     
     public static void save(){
         //Spara data efter ett spel.
+    }
+    
+    public static void loadSettings(){
+    	try{
+    		String temp = Gdx.files.internal("data/SETTINGS.txt").readString();
+    		settings = temp;
+    	}catch(Exception ex){
+            ex.printStackTrace(System.out);
+    	}
+    }
+    
+    public static void setLoadedSettings(){
+		try{
+			Scanner reader = new Scanner(settings);
+			reader.nextLine();
+	    	newState = State.parseState(reader.nextLine());
+	    	debug = Boolean.parseBoolean(reader.nextLine());
+		}catch(Exception ex){
+			ex.printStackTrace(System.out);
+	    }
     }
 }

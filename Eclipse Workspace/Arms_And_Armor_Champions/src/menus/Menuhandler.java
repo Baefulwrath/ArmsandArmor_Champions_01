@@ -23,7 +23,7 @@ public class Menuhandler {
     }
     
     public void soutMenu(Menu m){
-    	//In case of desaster: sout the menu to console.
+    	//In case of disaster: sout the menu to console.
     	System.out.println("_______________");
     	System.out.println(m.title + " - " + getActiveMenu().activeAct);
         for(int i = 0; i < m.acts.size(); i++){

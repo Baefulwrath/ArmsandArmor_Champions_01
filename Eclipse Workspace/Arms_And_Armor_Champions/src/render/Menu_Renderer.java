@@ -12,6 +12,7 @@ public class Menu_Renderer extends Renderer {
     
     @Override
     public void render(SpriteBatch batch) {
+    	drawImage(batch, background, 0, 0, (int) AAA_C.w, (int) AAA_C.w, 0, true);
         if(AAA_C.MMH.menus.size() > 0){
             drawMenu(batch, AAA_C.MMH.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y);
         }else{

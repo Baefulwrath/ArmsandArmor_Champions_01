@@ -18,13 +18,14 @@ public class Default_Renderer extends Renderer {
     private int rot = 0;
     
     public void render(SpriteBatch batch) {
+    	drawImage(batch, background, 0, 0, (int) AAA_C.w, (int) AAA_C.w, 0, true);
         if(rot < 360){
             rot++;
         }else{
             rot = 0;
         }
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        drawImage(batch, testImg, 0, 0, 20, rot);
+        drawImage(batch, testImg, 0, 0, 20, rot, false);
         if(AAA_C.debug){
 	        com10.draw(batch,  AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, (int) -getScreenY() - 10);
 	        com64.draw(batch, "com64", 0, 0);

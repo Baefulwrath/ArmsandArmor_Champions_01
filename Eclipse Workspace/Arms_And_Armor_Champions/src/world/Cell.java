@@ -12,7 +12,7 @@ public class Cell {
     public float RADIUS = 0;
     public float SIDE = 0;
     public float HALFSIDE = 0;
-    public float[] imgPos = new float[2];
+    public float imgWDif = 0;
     
     public Cell(int width){
         set(width);
@@ -26,8 +26,7 @@ public class Cell {
         RADIUS = WIDTH / 2;
         SIDE = DIAMETER / 2;
         HALFSIDE = SIDE / 2;
-        imgPos[0] = -SIDE;
-        imgPos[1] = SIDE;
+        imgWDif = (DIAMETER - WIDTH) / 2;
         float[] verts0 = {0, 0, 0, SIDE, RADIUS, HALFSIDE};
         float[] verts1 = {0, 0, RADIUS, HALFSIDE, RADIUS, -HALFSIDE};
         float[] verts2 = {0, 0, RADIUS, -HALFSIDE, 0, -SIDE};

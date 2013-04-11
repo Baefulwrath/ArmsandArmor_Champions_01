@@ -25,6 +25,8 @@ public abstract class Renderer {
     public State state = null;
     public Sprite sprite = new Sprite();
     public Texture idleCell;
+    public Texture markedCell;
+    public Texture background;
 
     public abstract void render(SpriteBatch batch);
 
@@ -44,26 +46,37 @@ public abstract class Renderer {
     
     public void loadResources(){
     	idleCell = new Texture(Gdx.files.internal("data/images/idleCell.png"));
+    	markedCell = new Texture(Gdx.files.internal("data/images/markedCell.png"));
+    	background = new Texture(Gdx.files.internal("data/images/defaultBackground.png"));
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, int x, int y, float scale, int rotation) {
-    	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    public void drawImage(SpriteBatch batch, Texture img, int x, int y, float scale, int rotation, boolean smooth) {
+    	if(smooth){
+        	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	}else{
+        	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
     	sprite = new Sprite(img);
     	sprite.setSize(sprite.getWidth(), sprite.getHeight());
     	sprite.setScale(scale);
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-    	sprite.setPosition(x, y);
+    	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
     	sprite.draw(batch);
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, int x, int y, int width, int height, int rotation) {
+    public void drawImage(SpriteBatch batch, Texture img, int x, int y, int width, int height, int rotation, boolean smooth) {
+    	if(smooth){
+        	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	}else{
+        	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
     	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
     	sprite.setScale(width, height);
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-    	sprite.setPosition(x, y);
+    	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
     	sprite.draw(batch);
     }
@@ -160,8 +173,9 @@ public abstract class Renderer {
 	                drawString(batch, "" + i, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, com10, Color.RED);
             	}
 	            if(map.cells.get(i).ACTIVE){
+	            	drawImage(batch, markedCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
 	            }else{
-	            	drawImage(batch, idleCell, (int) map.getCellX(i) + x + (int) map.cells.get(i).imgPos[0], (int) map.getCellY(i) + y + (int) map.cells.get(i).imgPos[1], 1.0f, 0);
+	            	drawImage(batch, idleCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
 	            }
             }
             if(AAA_C.debug){
@@ -191,7 +205,7 @@ public abstract class Renderer {
     }
     
     public int getCentralMapY(Map map){
-        float y = (map.getHeight() / 2) * map.cells.get(0).DIAMETER;
+        float y = ((map.getHeight() / 2) + 1) * map.cells.get(0).DIAMETER;
         return (int) y;
     }
 }

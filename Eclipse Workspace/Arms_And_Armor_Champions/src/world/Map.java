@@ -34,9 +34,9 @@ public class Map {
     }
     
     public void test(){
-        width = 10;
-        for(int i = 0; i < 30; i++){
-            cells.add(new Cell(128));
+        width = 30;
+        for(int i = 0; i < 180; i++){
+            cells.add(new Cell(56));
         }
         load(0, 0);
     }
