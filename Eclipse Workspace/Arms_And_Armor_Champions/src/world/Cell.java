@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.math.Polygon;
 
 public class Cell {
+	public Terrain TERRAIN = Terrain.DEFAULT;
     public boolean ACTIVE = false;
     private Polygon[] polygons = new Polygon[6];
     public float WIDTH = 0;
@@ -14,8 +15,9 @@ public class Cell {
     public float HALFSIDE = 0;
     public float imgWDif = 0;
     
-    public Cell(int width){
+    public Cell(int width, Terrain terrain){
         set(width);
+        TERRAIN = terrain;
     }
     public Polygon[] getPolygons(){
         return polygons;

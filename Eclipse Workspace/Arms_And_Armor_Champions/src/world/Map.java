@@ -28,15 +28,13 @@ public class Map {
     }
     
     public void load(int width, int height){
-        //Create tiles
-        //Load images
         loaded = true;
     }
     
     public void test(){
         width = 30;
-        for(int i = 0; i < 180; i++){
-            cells.add(new Cell(56));
+        for(int i = 0; i < 180 ; i++){
+            cells.add(new Cell(56, Terrain.SANDPLAINS));
         }
         load(0, 0);
     }

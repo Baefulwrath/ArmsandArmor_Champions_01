@@ -172,10 +172,13 @@ public abstract class Renderer {
             	if(AAA_C.debug){
 	                drawString(batch, "" + i, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, com10, Color.RED);
             	}
-	            if(map.cells.get(i).ACTIVE){
-	            	drawImage(batch, markedCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
-	            }else{
-	            	drawImage(batch, idleCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
+            	drawImage(batch, AAA_C.worldhandler.getCellImage(map.cells.get(i).TERRAIN), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
+		        if(AAA_C.showGrid){
+	            	if(map.cells.get(i).ACTIVE){
+		            	drawImage(batch, markedCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
+		            }else{
+		            	drawImage(batch, idleCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
+		            }
 	            }
             }
             if(AAA_C.debug){
