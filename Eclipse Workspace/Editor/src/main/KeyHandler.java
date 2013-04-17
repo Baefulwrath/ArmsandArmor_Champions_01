@@ -10,7 +10,7 @@ public class KeyHandler implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int KC = e.getKeyCode();
 		switch(KC){
-			case VK_ESCAPE:System.exit(0);
+			case VK_ESCAPE:Main.exit();
 				break;
 			case VK_UP:if(Main.map.y < 100000){Main.map.y += Main.scrollingSpeed;};
 				break;
@@ -33,6 +33,13 @@ public class KeyHandler implements KeyListener{
 					Main.showGrid = false;
 				}else{
 					Main.showGrid = true;
+				};
+				break;
+			case VK_D:
+				if(Main.debug){
+					Main.debug = false;
+				}else{
+					Main.debug = true;
 				};
 				break;
 		}

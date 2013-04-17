@@ -1,6 +1,6 @@
 package main;
 
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Main{
 
@@ -19,7 +20,9 @@ public class Main{
 	public static JFrame frame = new JFrame();
 	public static Screen scr = new Screen();
 	public static boolean running = true;
-	public static boolean showGrid = true;
+	public static boolean showGrid = false;
+	public static boolean debug = false;
+	public static boolean painting = false;
 	public static int scrollingSpeed = 8;
 	public static KeyHandler KH = new KeyHandler();
 	public static MouseHandler MH = new MouseHandler();
@@ -27,6 +30,13 @@ public class Main{
 	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>(); 
 	public static int mousex = 0;
 	public static int mousey = 0;
+	public static ArrayList<Button> buttons = new ArrayList<Button>();
+	public static ArrayList<ImageButton> imgButtons = new ArrayList<ImageButton>();
+	public static Cell editorTile = new Cell(56, Climate.DEFAULT, Terrain.DEFAULT);
+	public static int brushSize = 1;
+	public static Rectangle brush = new Rectangle (0, 0, brushSize, brushSize);
+	public static double zoom = 1.5;
+	
 	
 	public static void main(String[] args) {
 		init();
@@ -35,7 +45,6 @@ public class Main{
 	
 	public static void init(){
 		//init code
-		map.createEmptyMap();
 		loadCellImages();
 		frame.setResizable(true);
 		frame.setVisible(true);
@@ -46,6 +55,9 @@ public class Main{
 		frame.addKeyListener(KH);
 		frame.addMouseListener(MH);
 		frame.addMouseMotionListener(MMH);
+		frame.setTitle("Editor v0.1");
+		updateButtons();
+		createNewMap();
 	}
 	
 	public static void run(){
@@ -53,14 +65,22 @@ public class Main{
 		while(running){
 			try{
 				mousex = frame.getMousePosition().x;
-				mousey = frame.getMousePosition().y;
+				mousey = frame.getMousePosition().y - 25;
 			}catch(Exception ex){
 				mousex = 0;
 				mousey = 0;
 			}
 			try{
+				Thread.sleep(5);
 				map.update();
 				scr.repaint();
+				if(readyToUpdateButtons()){
+					updateButtons();
+				}
+				if(painting){
+					paint();
+				}
+				brush = new Rectangle (mousex - (brushSize / 2), mousey - (brushSize / 2), brushSize, brushSize);
 			}catch(Exception ex){
 				ex.printStackTrace(System.out);
 			}
@@ -82,7 +102,7 @@ public class Main{
     public static void loadCellImages(){
     	try{
     		cellImages.clear();
-    		Scanner reader = new Scanner(new File("data/images/tiles/INDEX.txt"));
+    		Scanner reader = new Scanner(new File("data/images/terrain/INDEX.txt"));
     		String index = reader.nextLine();
         	ArrayList<String> files = new ArrayList<String>();
         	while(index.contains(":")){
@@ -95,7 +115,7 @@ public class Main{
 	                if(file.substring(file.length() - 3).equals("png")){
 	                	CellImage CI = new CellImage();
 	                	Terrain terrain = Terrain.parseTerrain(files.get(i).substring(files.get(i).indexOf('#') + 1));
-	                	BufferedImage img = ImageIO.read(new File("data/images/tiles/" + file));
+	                	BufferedImage img = ImageIO.read(new File("data/images/terrain/" + file));
 	                	CI.set(img, terrain);
 	                	cellImages.add(CI);
 	                }else{
@@ -104,6 +124,67 @@ public class Main{
 	            }
             }
     	}catch(Exception ex){}
+    }
+    
+    public static long lastButtonUpdate = 0;
+    
+    public static boolean readyToUpdateButtons(){
+    	if(lastButtonUpdate + 50 <= System.currentTimeMillis()){
+    		lastButtonUpdate = System.currentTimeMillis();
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public static void updateButtons(){
+    	buttons.clear();
+    	buttons.add(new Button("scroll speed (+/-): " + scrollingSpeed, "", 10, 0));
+    	buttons.add(new Button("Show grid: " + showGrid, "switchshowgrid", 10, 16));
+    	buttons.add(new Button("Mouse: " + mousex + ", " + mousey, "", 10, 32));
+    	buttons.add(new Button("Debug: " + debug, "switchdebug", 10, 48));
+    	
+    	buttons.add(new Button("Brush size: " + brushSize, "", 150, 0));
+    	buttons.add(new Button("++++++", "+brushsize", 150, 16));
+    	buttons.add(new Button("------", "-brushsize", 150, 32));
+    	buttons.add(new Button("New Map", "clearMap", 150, 48));
+    	
+    	buttons.add(new Button("Title: " + map.title, "changeTitle", 300, 0));
+    	buttons.add(new Button("ID: " + map.id, "changeId", 300, 16));
+    	buttons.add(new Button("Save Map", "saveMap", 300, 32));
+    	buttons.add(new Button("Load Map", "loadMap", 300, 48));
+
+    	buttons.add(new Button(editorTile.CLIMATE.toString(), "changeBrushClimate", 450, 0));
+    	
+    	imgButtons.clear();
+    	imgButtons.add(new ImageButton(getCellImage(editorTile.TERRAIN), editorTile.TERRAIN.toString(), "changeBrushTerrain", 450, 16));
+    }
+    
+    public static void createNewMap(){
+    	int responce = JOptionPane.showConfirmDialog(frame, "Create(y) or Load(n)?", "create or load", JOptionPane.YES_NO_CANCEL_OPTION);
+		if(responce == JOptionPane.YES_OPTION){
+			map.width = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Width", "30"));
+			map.height = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Height", "6"));
+			CmdHandler.changeBrushClimate();
+			CmdHandler.changeBrushTerrain();
+			map.createEmptyMap();
+		}else if(responce == JOptionPane.NO_OPTION){
+			CmdHandler.loadMap();
+		}
+    }
+    
+    public static void paint(){
+		for(int i = 0; i < map.cells.size(); i++){
+			if(map.cells.get(i).intersects(brush)){
+				map.cells.get(i).mirror(editorTile);
+			}
+		}
+    }
+    
+    public static void exit(){
+    	if(JOptionPane.showConfirmDialog(frame, "Do you want to exit?", "Exit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+    		System.exit(0);
+    	}
     }
 
 }

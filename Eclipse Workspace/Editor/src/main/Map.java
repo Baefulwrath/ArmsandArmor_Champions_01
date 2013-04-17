@@ -3,11 +3,13 @@ package main;
 import java.util.ArrayList;
 
 public class Map {
+    public String title = "";
+    public String id = "";
     public ArrayList<Cell> cells = new ArrayList<Cell>();
     public int width = 30;
     public int height = 6;
-    public int x = 50;
-    public int y = 600;
+    public int x = 100;
+    public int y = 150;
     public boolean loaded = false;
     
     public void update(){
@@ -19,7 +21,7 @@ public class Map {
     public void createEmptyMap(){
     	cells.clear();
         for(int i = 0; i < (width * height) ; i++){
-            cells.add(new Cell(56, Terrain.DEFAULT));
+            cells.add(new Cell(56, Main.editorTile.CLIMATE, Main.editorTile.TERRAIN));
         }
         load(0, 0);
     }
@@ -48,9 +50,9 @@ public class Map {
             x -= width;
             row++;
         }
-        temp -= (cells.get(0).SIDE * 3) * row;
+        temp += (cells.get(0).SIDE * 3) * row;
         if(x % 2 == 0){
-            temp -= cells.get(0).HALFSIDE * 3;
+            temp += cells.get(0).HALFSIDE * 3;
         }
         return temp;
     }
