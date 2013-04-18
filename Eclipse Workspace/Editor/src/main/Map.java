@@ -14,9 +14,9 @@ public class Map {
     
     public void update(){
     	if(loaded){
-	    	for(int x = 0; x < cells.length; x++){
-	        	for(int y = 0; y < cells[x].length; y++){
-	        		cells[x][y].update(x + getCellX(x, y), y + getCellY(x, y));
+	    	for(int cx = 0; cx < cells.length; cx++){
+	        	for(int cy = 0; cy < cells[cx].length; cy++){
+	        		cells[cx][cy].update(x + getCellX(cx, cy), y + getCellY(cx, cy));
 	        	}
 	    	}
     	}
@@ -24,15 +24,12 @@ public class Map {
 
     public void createEmptyMap(){
     	Main.map.loaded = false;
+    	cells = new Cell[width][height];
 		for(int y = 0; y < cells.length; y++){
 			for(int x = 0; x < cells[y].length; x++){
 				cells[y][x] = new Cell(56, Main.editorTile.CLIMATE, Main.editorTile.TERRAIN);
 			}
 		}
-        load(0, 0);
-    }
-    
-    public void load(int width, int height){
         loaded = true;
     }
 
@@ -47,7 +44,7 @@ public class Map {
     
     public int getCellY(int cx, int cy){
         int temp = 0;
-        temp = cells[cx][cy].SIDE * cy;
+        temp = (int) (cells[cx][cy].SIDE * 1.5) * cy;
         return temp;
     }
 }

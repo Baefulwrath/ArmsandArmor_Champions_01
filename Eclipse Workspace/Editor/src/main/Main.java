@@ -209,6 +209,7 @@ public class Main{
     	buttons.add(new Button("Load Map", "loadMap", 300, 48));
     	
     	buttons.add(new Button("Pos: " + map.x + ", " + map.y, "", 600, 0));
+    	buttons.add(new Button("Scale: " + map.width + ", " + map.height, "", 600, 16));
 
     	buttons.add(new Button(editorTile.CLIMATE, "changeBrushClimate", 450, 0));
     	
@@ -219,8 +220,8 @@ public class Main{
     public static void createNewMap(){
     	int responce = JOptionPane.showConfirmDialog(frame, "Create(y) or Load(n)?", "create or load", JOptionPane.YES_NO_CANCEL_OPTION);
 		if(responce == JOptionPane.YES_OPTION){
-			map.width = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Width", "30"));
-			map.height = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Height", "6"));
+			map.width = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Width", "12"));
+			map.height = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Height", "12"));
 			CmdHandler.changeBrushClimate();
 			CmdHandler.changeBrushTerrain();
 			map.createEmptyMap();

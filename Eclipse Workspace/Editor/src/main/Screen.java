@@ -40,12 +40,14 @@ public class Screen extends JPanel{
 		if(Main.map.loaded){
 			for(int x = 0; x < Main.map.cells.length; x++){
 				for(int y = 0; y < Main.map.cells[x].length; y++){
-					g2d.drawImage(Main.getCellImage(Main.map.cells[x][y].TERRAIN), Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y, null);
+					g2d.drawImage(Main.getCellImage(Main.map.cells[x][y].TERRAIN), Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE, Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE, null);
 					if(Main.showGrid){
-						g2d.drawImage(grid, Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y, null);
+						g2d.drawImage(grid, Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE, Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE, null);
 					}
 					if(Main.debug){
+						g2d.setPaint(Color.RED);
 						g2d.drawString(x + ", " + y, Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y);
+						g2d.drawPolygon(Main.map.cells[x][y].actualPolygon);
 					}
 				}
 			}

@@ -3,7 +3,6 @@ package main;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -176,7 +175,8 @@ public class CmdHandler {
 			while(reader.hasNextLine()){
 				Main.map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), reader.nextLine(), reader.nextLine());
 			}
-			Main.map.load(0, 0);
+			reader.close();
+			Main.map.loaded = true;
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(Main.frame, "Error loading file");
 		}
