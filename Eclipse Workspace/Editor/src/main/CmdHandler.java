@@ -3,6 +3,7 @@ package main;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -75,21 +76,18 @@ public class CmdHandler {
 	}
 	
 	public static void changeBrushClimate(){
-		String choices[] = new String[Climate.values().length];
-		for(int i = 0; i < choices.length; i++){
-			choices[i] = Climate.values()[i].toString();
-		}
+		String choices[] = Main.getClimates();
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Climate choice", "Climate Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
-			Main.editorTile.CLIMATE = Climate.parseClimate(input);
+			Main.editorTile.CLIMATE = input;
 		}
 	}
 	
 	public static void changeBrushTerrain(){
-		String choices[] = Main.editorTile.CLIMATE.getTerrainsString();
+		String choices[] = Main.getTerrainsByClimate(Main.editorTile.CLIMATE);
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Terrain choice", "Terrain Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
-			Main.editorTile.TERRAIN = Terrain.parseTerrain(input);
+			Main.editorTile.TERRAIN = input;
 		}
 	}
 	
@@ -137,10 +135,15 @@ public class CmdHandler {
 			pen.write(Main.map.title + System.getProperty("line.separator"));
 			pen.write(Main.map.id + System.getProperty("line.separator"));
 			pen.write(Main.map.width + System.getProperty("line.separator"));
-			for(int i = 0; i < Main.map.cells.size(); i++){
-				pen.write(Main.map.cells.get(i).WIDTH + System.getProperty("line.separator"));
-				pen.write(Main.map.cells.get(i).CLIMATE.toString() + System.getProperty("line.separator"));
-				pen.write(Main.map.cells.get(i).TERRAIN.toString() + System.getProperty("line.separator"));
+			pen.write(Main.map.height + System.getProperty("line.separator"));
+			for(int x = 0; x < Main.map.cells.length; x++){
+				for(int y = 0; y < Main.map.cells[x].length; y++){
+					pen.write(x + System.getProperty("line.separator"));
+					pen.write(y + System.getProperty("line.separator"));
+					pen.write(Main.map.cells[x][y].WIDTH + System.getProperty("line.separator"));
+					pen.write(Main.map.cells[x][y].CLIMATE.toString() + System.getProperty("line.separator"));
+					pen.write(Main.map.cells[x][y].TERRAIN.toString() + System.getProperty("line.separator"));
+				}
 			}
 			pen.close();
 		}catch(Exception ex){
@@ -164,14 +167,16 @@ public class CmdHandler {
 	
 	public static void load(File file){
 		try{
+			Main.map.loaded = false;
 			Scanner reader = new Scanner(file);
 			Main.map.title = reader.nextLine();
 			Main.map.id = reader.nextLine();
 			Main.map.width = Integer.parseInt(reader.nextLine());
-			Main.map.cells.clear();
+			Main.map.height = Integer.parseInt(reader.nextLine());
 			while(reader.hasNextLine()){
-				Main.map.cells.add(new Cell(Integer.parseInt(reader.nextLine()), Climate.parseClimate(reader.nextLine()), Terrain.parseTerrain(reader.nextLine())));
+				Main.map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), reader.nextLine(), reader.nextLine());
 			}
+			Main.map.load(0, 0);
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(Main.frame, "Error loading file");
 		}

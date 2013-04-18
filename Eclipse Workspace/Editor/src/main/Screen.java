@@ -36,24 +36,20 @@ public class Screen extends JPanel{
 		g2d.setPaint(Color.RED);
 		g2d.drawString("Show grid: " + Main.showGrid, 10, 24);
 		g2d.drawString("Mouse: " + Main.mousex + ", " + Main.mousey, 10, 36);
+		
 		if(Main.map.loaded){
-			for(int i = 0; i < Main.map.cells.size(); i++){
-				//Draw image
-				g2d.drawImage(Main.getCellImage(Main.map.cells.get(i).TERRAIN), Main.map.getCellX(i) + Main.map.x - Main.map.cells.get(i).SIDE, Main.map.getCellY(i) + Main.map.y - Main.map.cells.get(i).SIDE, null);
-				if(Main.showGrid){
-					g2d.drawImage(grid, Main.map.getCellX(i) + Main.map.x - Main.map.cells.get(i).SIDE, Main.map.getCellY(i) + Main.map.y - Main.map.cells.get(i).SIDE, null);
-					//Draw icons
-				}
-				//Draw marker
-				//g2d.drawPolygon(Main.map.cells.get(i).actualPolygon);
-				if(Main.debug){
-					g2d.drawString("" + i, Main.map.getCellX(i) + Main.map.x, Main.map.getCellY(i) + Main.map.y);
+			for(int x = 0; x < Main.map.cells.length; x++){
+				for(int y = 0; y < Main.map.cells[x].length; y++){
+					g2d.drawImage(Main.getCellImage(Main.map.cells[x][y].TERRAIN), Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y, null);
+					if(Main.showGrid){
+						g2d.drawImage(grid, Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y, null);
+					}
+					if(Main.debug){
+						g2d.drawString(x + ", " + y, Main.map.getCellX(x, y) + Main.map.x, Main.map.getCellY(x, y) + Main.map.y);
+					}
 				}
 			}
-		}else{
-			g2d.drawString("Map not loaded", 200, 200);
 		}
-		
 		
 		g2d.setPaint(Color.BLACK);
 		g2d.fill(new Rectangle2D.Float(0, 0, getWidth(), 100));

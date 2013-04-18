@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Map {
     public String title = "";
     public String id = "";
-    public ArrayList<Cell> cells = new ArrayList<Cell>();
+    public Cell[][] cells = new Cell[30][12];
     public int width = 30;
     public int height = 6;
     public int x = 100;
@@ -13,16 +13,22 @@ public class Map {
     public boolean loaded = false;
     
     public void update(){
-    	for(int i = 0; i < cells.size(); i++){
-    		cells.get(i).update(x + getCellX(i), y + getCellY(i));
+    	if(loaded){
+	    	for(int x = 0; x < cells.length; x++){
+	        	for(int y = 0; y < cells[x].length; y++){
+	        		cells[x][y].update(x + getCellX(x, y), y + getCellY(x, y));
+	        	}
+	    	}
     	}
     }
 
     public void createEmptyMap(){
-    	cells.clear();
-        for(int i = 0; i < (width * height) ; i++){
-            cells.add(new Cell(56, Main.editorTile.CLIMATE, Main.editorTile.TERRAIN));
-        }
+    	Main.map.loaded = false;
+		for(int y = 0; y < cells.length; y++){
+			for(int x = 0; x < cells[y].length; x++){
+				cells[y][x] = new Cell(56, Main.editorTile.CLIMATE, Main.editorTile.TERRAIN);
+			}
+		}
         load(0, 0);
     }
     
@@ -30,40 +36,18 @@ public class Map {
         loaded = true;
     }
 
-    public int getCellX(int index){
+    public int getCellX(int cx, int cy){
         int temp = 0;
-        int row = 0;
-        int x = index;
-        while(x >= width){
-            x -= width;
-            row++;
-        }
-        temp = x * (cells.get(0).RADIUS);
-        return temp;
-    }
-    
-    public int getCellY(int index){
-        int temp = 0;
-        int row = 0;
-        int x = index;
-        while(x >= width){
-            x -= width;
-            row++;
-        }
-        temp += (cells.get(0).SIDE * 3) * row;
-        if(x % 2 == 0){
-            temp += cells.get(0).HALFSIDE * 3;
+        temp = cx * cells[cx][cy].WIDTH;
+        if(cy % 2 == 0){
+        	temp += cells[cx][cy].RADIUS;
         }
         return temp;
     }
     
-    public int getHeight(){
-        int temp = 1;
-        int tempi = cells.size();
-        while(tempi > width){
-            temp++;
-            tempi -= width;
-        }
+    public int getCellY(int cx, int cy){
+        int temp = 0;
+        temp = cells[cx][cy].SIDE * cy;
         return temp;
     }
 }

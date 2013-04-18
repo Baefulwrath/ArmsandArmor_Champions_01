@@ -27,12 +27,13 @@ public class Main{
 	public static KeyHandler KH = new KeyHandler();
 	public static MouseHandler MH = new MouseHandler();
 	public static MouseMotionHandler MMH = new MouseMotionHandler();
-	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>(); 
+	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>();
+	public static ArrayList<Terrain> terrains = new ArrayList<Terrain>();
 	public static int mousex = 0;
 	public static int mousey = 0;
 	public static ArrayList<Button> buttons = new ArrayList<Button>();
 	public static ArrayList<ImageButton> imgButtons = new ArrayList<ImageButton>();
-	public static Cell editorTile = new Cell(56, Climate.DEFAULT, Terrain.DEFAULT);
+	public static Cell editorTile = new Cell(56, "DEFAULT", "DEFAULT");
 	public static int brushSize = 1;
 	public static Rectangle brush = new Rectangle (0, 0, brushSize, brushSize);
 	public static double zoom = 1.5;
@@ -46,6 +47,7 @@ public class Main{
 	public static void init(){
 		//init code
 		loadCellImages();
+		loadTerrains();
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.setSize(1280, 800);
@@ -88,10 +90,10 @@ public class Main{
 	}
 
     
-    public static BufferedImage getCellImage(Terrain terrain){
+    public static BufferedImage getCellImage(String terrain){
     	BufferedImage img = cellImages.get(0).IMG;
     	for(int i = 0; i < cellImages.size(); i++){
-    		if(cellImages.get(i).TERRAIN == terrain){
+    		if(cellImages.get(i).TERRAIN.equals(terrain)){
     			img = cellImages.get(i).IMG;
     			break;
     		}
@@ -99,11 +101,38 @@ public class Main{
     	return img;
     }
     
+    public static String[] getClimates(){
+    	ArrayList<String> strings = new ArrayList<String>();
+    	for(int i = 0; i < terrains.size(); i++){
+    		strings.add(terrains.get(i).CLIMATE);
+    	}
+    	String[] res = new String[strings.size()];
+    	for(int i = 0; i < strings.size(); i++){
+    		res[i] = strings.get(i);
+    	}
+    	return res;
+    }
+    
+    public static String[] getTerrainsByClimate(String climate){
+    	ArrayList<String> strings = new ArrayList<String>();
+    	for(int i = 0; i < terrains.size(); i++){
+    		if(terrains.get(i).CLIMATE.equals(climate)){
+    			strings.add(terrains.get(i).TERRAIN);
+    		}
+    	}
+    	String[] res = new String[strings.size()];
+    	for(int i = 0; i < strings.size(); i++){
+    		res[i] = strings.get(i);
+    	}
+    	return res;
+    }
+    
     public static void loadCellImages(){
     	try{
     		cellImages.clear();
     		Scanner reader = new Scanner(new File("data/images/terrain/INDEX.txt"));
     		String index = reader.nextLine();
+    		reader.close();
         	ArrayList<String> files = new ArrayList<String>();
         	while(index.contains(":")){
         		files.add(index.substring(1, index.indexOf(";")));
@@ -114,16 +143,41 @@ public class Main{
 	            	String file = files.get(i).substring(0, files.get(i).indexOf('#'));
 	                if(file.substring(file.length() - 3).equals("png")){
 	                	CellImage CI = new CellImage();
-	                	Terrain terrain = Terrain.parseTerrain(files.get(i).substring(files.get(i).indexOf('#') + 1));
+	                	String terrain = files.get(i).substring(files.get(i).indexOf('#') + 1);
 	                	BufferedImage img = ImageIO.read(new File("data/images/terrain/" + file));
 	                	CI.set(img, terrain);
 	                	cellImages.add(CI);
 	                }else{
-	                	System.out.println("Non-png in index of tiles");
+	                	System.out.println("Non-png in index of cellimages");
 	                }
 	            }
             }
     	}catch(Exception ex){}
+    }
+    
+    public static void loadTerrains(){
+    	try{
+    		terrains.clear();
+    		Scanner reader = new Scanner(new File("data/terrain/INDEX.txt"));
+    		String index = reader.nextLine();
+    		reader.close();
+        	ArrayList<String> files = new ArrayList<String>();
+        	while(index.contains("#")){
+        		files.add(index.substring(0, index.indexOf('#')));
+        		index = index.substring(index.indexOf('#') + 1);
+        	}
+        	if(files.size() > 0){
+        		for(int i = 0; i < files.size(); i++){
+        			if(files.get(i).substring(files.get(i).length() - 3).equals("txt")){
+        				Scanner file = new Scanner(new File("data/terrain/" + files.get(i)));
+        				String t = file.nextLine();
+        				String c = file.nextLine();
+        				file.close();
+        				terrains.add(new Terrain(c, t));
+        			}
+        		}
+        	}
+    	}catch(Exception ex){ex.printStackTrace();}
     }
     
     public static long lastButtonUpdate = 0;
@@ -153,11 +207,13 @@ public class Main{
     	buttons.add(new Button("ID: " + map.id, "changeId", 300, 16));
     	buttons.add(new Button("Save Map", "saveMap", 300, 32));
     	buttons.add(new Button("Load Map", "loadMap", 300, 48));
+    	
+    	buttons.add(new Button("Pos: " + map.x + ", " + map.y, "", 600, 0));
 
-    	buttons.add(new Button(editorTile.CLIMATE.toString(), "changeBrushClimate", 450, 0));
+    	buttons.add(new Button(editorTile.CLIMATE, "changeBrushClimate", 450, 0));
     	
     	imgButtons.clear();
-    	imgButtons.add(new ImageButton(getCellImage(editorTile.TERRAIN), editorTile.TERRAIN.toString(), "changeBrushTerrain", 450, 16));
+    	imgButtons.add(new ImageButton(getCellImage(editorTile.TERRAIN), editorTile.TERRAIN, "changeBrushTerrain", 450, 16));
     }
     
     public static void createNewMap(){
@@ -174,9 +230,11 @@ public class Main{
     }
     
     public static void paint(){
-		for(int i = 0; i < map.cells.size(); i++){
-			if(map.cells.get(i).intersects(brush)){
-				map.cells.get(i).mirror(editorTile);
+		for(int x = 0; x < map.cells.length; x++){
+			for(int y = 0; y < map.cells[x].length; y++){
+				if(map.cells[x][y].intersects(brush)){
+					map.cells[x][y].mirror(editorTile);
+				}
 			}
 		}
     }

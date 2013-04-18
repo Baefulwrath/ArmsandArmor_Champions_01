@@ -5,8 +5,10 @@ import java.awt.Rectangle;
 
 
 public class Cell {
-	public Terrain TERRAIN = Terrain.DEFAULT;
-	public Climate CLIMATE = Climate.DEFAULT;
+	public String TERRAIN = "DEFAULT";
+	public String CLIMATE = "DEFAULT";
+	
+	
     public boolean ACTIVE = false;
     public int WIDTH = 0;
     public int DIAMETER = 0;
@@ -17,7 +19,7 @@ public class Cell {
     public Polygon localPolygon = new Polygon();
     public Polygon actualPolygon = new Polygon();
     
-    public Cell(int width, Climate climate, Terrain terrain){
+    public Cell(int width, String climate, String terrain){
         set(width);
         TERRAIN = terrain;
         CLIMATE = climate;

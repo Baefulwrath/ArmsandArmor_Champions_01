@@ -1,1 +1,1 @@
-:default.png#DEFAULT;:desert.png#DESERT;:grassland.png#GRASSLAND;:ocean.png#OCEAN;:savanna.png#SAVANNA;:snow.png#SNOW;:steppe.png#STEPPE;:coastalsea.png#COASTALSEA;:temperatehill.png#TEMPERATEHILL;:subarctichill.png#SUBARCTICHILL;
+:default.png#DEFAULT;:desert.png#DESERT;:grassland.png#GRASSLAND;:ocean.png#OCEAN;:savanna.png#SAVANNA;:snow.png#SNOW;:steppe.png#STEPPE;:coastalsea.png#COASTAL SEA;:temperatehill.png#TEMPERATE HILL;:subarctichill.png#SUB ARCTIC HILL;
