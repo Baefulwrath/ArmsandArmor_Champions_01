@@ -23,6 +23,10 @@ public class Map {
     }
 
     public void createEmptyMap(){
+    	if(cells.length > 0){
+    		title = "";
+    		id = "";
+    	}
     	Main.map.loaded = false;
     	cells = new Cell[width][height];
 		for(int y = 0; y < cells.length; y++){

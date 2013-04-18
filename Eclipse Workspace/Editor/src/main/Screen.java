@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 public class Screen extends JPanel{
 	
 	private BufferedImage grid;
+	private BufferedImage back;
 	
 	public Screen(){
 		load();
@@ -23,6 +24,7 @@ public class Screen extends JPanel{
 	public void load(){
 		try{
 			grid = ImageIO.read(new File("data/images/grid.png"));
+			back = ImageIO.read(new File("data/images/background.png"));
 		}catch(Exception ex){
 			ex.printStackTrace(System.out);
 		}
@@ -33,6 +35,7 @@ public class Screen extends JPanel{
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setPaint(Color.BLACK);
 		g2d.fill(new Rectangle2D.Float(0, 0, getWidth(), getHeight()));
+		g2d.drawImage(back, 0, 0, getWidth(), getHeight(), null);
 		g2d.setPaint(Color.RED);
 		g2d.drawString("Show grid: " + Main.showGrid, 10, 24);
 		g2d.drawString("Mouse: " + Main.mousex + ", " + Main.mousey, 10, 36);
@@ -53,23 +56,41 @@ public class Screen extends JPanel{
 			}
 		}
 		
-		g2d.setPaint(Color.BLACK);
+		g2d.setPaint(Color.DARK_GRAY);
 		g2d.fill(new Rectangle2D.Float(0, 0, getWidth(), 100));
+		g2d.setPaint(Color.GRAY);
+		g2d.fill(new Rectangle2D.Float(0, 95, getWidth(), 5));
 		if(Main.buttons.size() > 0){
 			for(int i = 0; i < Main.buttons.size(); i++){
 				try{
-					g2d.setPaint(Color.RED);
+					if(Main.buttons.get(i).hover){
+						g2d.setColor(Color.WHITE);
+					}else{
+						g2d.setPaint(Color.LIGHT_GRAY);
+					}
+					g2d.fill(new Rectangle2D.Float(Main.buttons.get(i).BOX.x, Main.buttons.get(i).BOX.y, Main.buttons.get(i).BOX.width, Main.buttons.get(i).BOX.height));
+					g2d.setColor(Color.BLACK);
 					g2d.drawString(Main.buttons.get(i).TITLE, Main.buttons.get(i).BOX.x + 2, Main.buttons.get(i).BOX.y + 12);
+					g2d.setColor(Color.BLACK);
 					g2d.drawRect(Main.buttons.get(i).BOX.x, Main.buttons.get(i).BOX.y, Main.buttons.get(i).BOX.width, Main.buttons.get(i).BOX.height);
 				}catch(Exception ex){}
 			}
 		}
 		if(Main.imgButtons.size() > 0){
 			for(int i = 0; i < Main.imgButtons.size(); i++){
-				g2d.drawImage(Main.imgButtons.get(i).image, Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, null);
-				g2d.setPaint(Color.RED);
-				g2d.drawString(Main.imgButtons.get(i).TITLE, Main.imgButtons.get(i).BOX.x + 2, Main.imgButtons.get(i).BOX.y + Main.imgButtons.get(i).BOX.height + 12);
-				g2d.drawRect(Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, Main.imgButtons.get(i).BOX.width, Main.imgButtons.get(i).BOX.height);
+				try{
+					if(Main.imgButtons.get(i).hover){
+						g2d.setColor(Color.WHITE);
+					}else{
+						g2d.setPaint(Color.LIGHT_GRAY);
+					}
+					g2d.fill(new Rectangle2D.Float(Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, Main.imgButtons.get(i).BOX.width, Main.imgButtons.get(i).BOX.height));
+					g2d.drawImage(Main.imgButtons.get(i).image, Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, null);
+					g2d.setColor(Color.WHITE);
+					g2d.drawString(Main.imgButtons.get(i).TITLE, Main.imgButtons.get(i).BOX.x + 2, Main.imgButtons.get(i).BOX.y + Main.imgButtons.get(i).BOX.height + 12);
+					g2d.setColor(Color.BLACK);
+					g2d.drawRect(Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, Main.imgButtons.get(i).BOX.width, Main.imgButtons.get(i).BOX.height);
+				}catch(Exception ex){}
 			}
 		}
 		
@@ -88,6 +109,8 @@ public class Screen extends JPanel{
 			g2d.fill(new Rectangle2D.Float((getWidth() - 10), (getHeight() / 4), 10, (getHeight() / 2)));
 		}
 		
+		
+		g2d.drawImage(back, 0, 0, getWidth(), getHeight(), null);
 	}
 	
 	public void drawMap(Graphics2D g2d, Map map, int x, int y){

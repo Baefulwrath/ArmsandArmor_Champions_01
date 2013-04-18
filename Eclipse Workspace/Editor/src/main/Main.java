@@ -26,7 +26,6 @@ public class Main{
 	public static int scrollingSpeed = 8;
 	public static KeyHandler KH = new KeyHandler();
 	public static MouseHandler MH = new MouseHandler();
-	public static MouseMotionHandler MMH = new MouseMotionHandler();
 	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>();
 	public static ArrayList<Terrain> terrains = new ArrayList<Terrain>();
 	public static int mousex = 0;
@@ -56,8 +55,7 @@ public class Main{
 		frame.add(scr);
 		frame.addKeyListener(KH);
 		frame.addMouseListener(MH);
-		frame.addMouseMotionListener(MMH);
-		frame.setTitle("Editor v0.1");
+		frame.setTitle("Editor v0.2");
 		updateButtons();
 		createNewMap();
 	}
@@ -104,13 +102,45 @@ public class Main{
     public static String[] getClimates(){
     	ArrayList<String> strings = new ArrayList<String>();
     	for(int i = 0; i < terrains.size(); i++){
-    		strings.add(terrains.get(i).CLIMATE);
+    		if(!contains(strings, terrains.get(i).CLIMATE)){
+    			strings.add(terrains.get(i).CLIMATE);
+    		}
     	}
     	String[] res = new String[strings.size()];
     	for(int i = 0; i < strings.size(); i++){
     		res[i] = strings.get(i);
     	}
     	return res;
+    }
+    
+    public static boolean contains(ArrayList<String> a, String e){
+    	boolean temp = false;
+	    if(a.size() > 0 && !e.isEmpty()){
+	    	for(int i = 0; i < a.size(); i++){
+	    		if(a.get(i) != null){
+		    		if(a.get(i).equals(e)){
+			   			temp = true;
+			   			break;
+			   		}
+	    		}
+		   	}
+	   	}
+    	return temp;
+    }
+    
+    public static boolean contains(String[] a, String e){
+    	boolean temp = false;
+	    if(a.length > 0 && !e.isEmpty()){
+	    	for(int i = 0; i < a.length; i++){
+	    		if(a[i] != null){
+		    		if(a[i].equals(e)){
+			   			temp = true;
+			   			break;
+			   		}
+	    		}
+		   	}
+	   	}
+    	return temp;
     }
     
     public static String[] getTerrainsByClimate(String climate){
@@ -215,6 +245,21 @@ public class Main{
     	
     	imgButtons.clear();
     	imgButtons.add(new ImageButton(getCellImage(editorTile.TERRAIN), editorTile.TERRAIN, "changeBrushTerrain", 450, 16));
+
+		for(int i = 0; i < buttons.size(); i++){
+			if(buttons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
+				buttons.get(i).hover = true;
+			}else{
+				buttons.get(i).hover = false;
+			}
+		}
+		for(int i = 0; i < imgButtons.size(); i++){
+			if(imgButtons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
+				imgButtons.get(i).hover = true;
+			}else{
+				imgButtons.get(i).hover = false;
+			}
+		}
     }
     
     public static void createNewMap(){
