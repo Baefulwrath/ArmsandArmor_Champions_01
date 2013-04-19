@@ -95,7 +95,7 @@ public class Screen extends JPanel{
 		}
 		
 		g2d.setColor(Color.BLUE);
-		g2d.drawRect(Main.brush.x, Main.brush.y, Main.brush.width, Main.brush.height);
+		g2d.drawRect(Main.brush.BOX.x, Main.brush.BOX.y, Main.brush.BOX.width, Main.brush.BOX.height);
 		
 		g2d.setPaint(Color.RED);
 		if(Main.debug){

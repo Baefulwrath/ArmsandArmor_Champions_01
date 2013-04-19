@@ -34,15 +34,15 @@ public class CmdHandler {
 			break;
 			case "changeBrushTerrain":changeBrushTerrain();
 			break;
-			case "+brushsize":if(Main.brushSize < 500){
-				Main.brushSize += 5;
+			case "+brushsize":if(Main.brush.SIZE < 500){
+				Main.brush.SIZE += 5;
 			};
 			break;
-			case "-brushsize":if(Main.brushSize > 5){
-				Main.brushSize -= 5;
-			}else{
-				Main.brushSize = 1;
-			};
+			case "-brushsize":if(Main.brush.SIZE > 5){
+				Main.brush.SIZE -= 5;
+			}
+			break;
+			case "resetBrushsize":Main.brush.SIZE = 5;
 			break;
 			case "changeTitle":changeTitle();
 			break;
@@ -78,15 +78,15 @@ public class CmdHandler {
 		String choices[] = Main.getClimates();
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Climate choice", "Climate Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
-			Main.editorTile.CLIMATE = input;
+			Main.brush.CLIMATE = input;
 		}
 	}
 	
 	public static void changeBrushTerrain(){
-		String choices[] = Main.getTerrainsByClimate(Main.editorTile.CLIMATE);
+		String choices[] = Main.getTerrainsByClimate(Main.brush.CLIMATE);
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Terrain choice", "Terrain Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
-			Main.editorTile.TERRAIN = input;
+			Main.brush.TERRAIN = Main.getTerrainId(input);
 		}
 	}
 	
@@ -140,8 +140,7 @@ public class CmdHandler {
 					pen.write(x + System.getProperty("line.separator"));
 					pen.write(y + System.getProperty("line.separator"));
 					pen.write(Main.map.cells[x][y].WIDTH + System.getProperty("line.separator"));
-					pen.write(Main.map.cells[x][y].CLIMATE.toString() + System.getProperty("line.separator"));
-					pen.write(Main.map.cells[x][y].TERRAIN.toString() + System.getProperty("line.separator"));
+					pen.write(Main.map.cells[x][y].TERRAIN + System.getProperty("line.separator"));
 				}
 			}
 			pen.close();
@@ -173,7 +172,7 @@ public class CmdHandler {
 			Main.map.width = Integer.parseInt(reader.nextLine());
 			Main.map.height = Integer.parseInt(reader.nextLine());
 			while(reader.hasNextLine()){
-				Main.map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), reader.nextLine(), reader.nextLine());
+				Main.map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
 			}
 			reader.close();
 			Main.map.loaded = true;

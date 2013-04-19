@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -26,17 +29,17 @@ public class Main{
 	public static int scrollingSpeed = 8;
 	public static KeyHandler KH = new KeyHandler();
 	public static MouseHandler MH = new MouseHandler();
+	public static ScrollwheelHandler SWH = new ScrollwheelHandler();
 	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>();
 	public static ArrayList<Terrain> terrains = new ArrayList<Terrain>();
 	public static int mousex = 0;
 	public static int mousey = 0;
 	public static ArrayList<Button> buttons = new ArrayList<Button>();
 	public static ArrayList<ImageButton> imgButtons = new ArrayList<ImageButton>();
-	public static Cell editorTile = new Cell(56, "DEFAULT", "DEFAULT");
-	public static int brushSize = 1;
-	public static Rectangle brush = new Rectangle (0, 0, brushSize, brushSize);
-	public static double zoom = 1.5;
-	
+	public static Brush brush = new Brush(56, 0, "DEFAULT");
+	public static BufferedImage tilemap = null;
+	public static BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+	public static Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 	
 	public static void main(String[] args) {
 		init();
@@ -44,9 +47,8 @@ public class Main{
 	}
 	
 	public static void init(){
-		//init code
-		loadCellImages();
 		loadTerrains();
+		loadCellImages();
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.setSize(1280, 800);
@@ -55,13 +57,14 @@ public class Main{
 		frame.add(scr);
 		frame.addKeyListener(KH);
 		frame.addMouseListener(MH);
+		frame.addMouseWheelListener(SWH);
 		frame.setTitle("Editor v0.2");
 		updateButtons();
 		createNewMap();
+		frame.getContentPane().setCursor(blankCursor);
 	}
 	
 	public static void run(){
-		//program code
 		while(running){
 			try{
 				mousex = frame.getMousePosition().x;
@@ -80,7 +83,7 @@ public class Main{
 				if(painting){
 					paint();
 				}
-				brush = new Rectangle (mousex - (brushSize / 2), mousey - (brushSize / 2), brushSize, brushSize);
+				brush.update(mousex, mousey);
 			}catch(Exception ex){
 				ex.printStackTrace(System.out);
 			}
@@ -88,10 +91,10 @@ public class Main{
 	}
 
     
-    public static BufferedImage getCellImage(String terrain){
+    public static BufferedImage getCellImage(int terrain){
     	BufferedImage img = cellImages.get(0).IMG;
     	for(int i = 0; i < cellImages.size(); i++){
-    		if(cellImages.get(i).TERRAIN.equals(terrain)){
+    		if(cellImages.get(i).TERRAIN == terrain){
     			img = cellImages.get(i).IMG;
     			break;
     		}
@@ -160,53 +163,29 @@ public class Main{
     public static void loadCellImages(){
     	try{
     		cellImages.clear();
-    		Scanner reader = new Scanner(new File("data/images/terrain/INDEX.txt"));
-    		String index = reader.nextLine();
-    		reader.close();
-        	ArrayList<String> files = new ArrayList<String>();
-        	while(index.contains(":")){
-        		files.add(index.substring(1, index.indexOf(";")));
-        		index = index.substring(index.indexOf(";") + 1);
-        	}
-            if(files.size() > 0){
-	            for(int i = 0; i < files.size(); i++){
-	            	String file = files.get(i).substring(0, files.get(i).indexOf('#'));
-	                if(file.substring(file.length() - 3).equals("png")){
-	                	CellImage CI = new CellImage();
-	                	String terrain = files.get(i).substring(files.get(i).indexOf('#') + 1);
-	                	BufferedImage img = ImageIO.read(new File("data/images/terrain/" + file));
-	                	CI.set(img, terrain);
-	                	cellImages.add(CI);
-	                }else{
-	                	System.out.println("Non-png in index of cellimages");
-	                }
-	            }
-            }
+    		tilemap = ImageIO.read(new File("data/images/tilemap.png"));
+    		int length = tilemap.getWidth() / 64;
+    		for(int i = 0; i < length; i++){
+    			CellImage CI = new CellImage();
+    			BufferedImage img = tilemap.getSubimage(64 * i, 0, 64, 64);
+    			CI.set(img, i);
+    			cellImages.add(CI);
+    		}
     	}catch(Exception ex){}
     }
     
     public static void loadTerrains(){
     	try{
     		terrains.clear();
-    		Scanner reader = new Scanner(new File("data/terrain/INDEX.txt"));
-    		String index = reader.nextLine();
+    		Scanner reader = new Scanner(new File("data/terrains.txt"));
+    		while(reader.hasNextLine()){
+    			reader.nextLine();
+    			String terrain = reader.nextLine();
+    			String climate = reader.nextLine();
+    			int id = Integer.parseInt(reader.nextLine());
+    			terrains.add(new Terrain(terrain, climate, id));
+    		}
     		reader.close();
-        	ArrayList<String> files = new ArrayList<String>();
-        	while(index.contains("#")){
-        		files.add(index.substring(0, index.indexOf('#')));
-        		index = index.substring(index.indexOf('#') + 1);
-        	}
-        	if(files.size() > 0){
-        		for(int i = 0; i < files.size(); i++){
-        			if(files.get(i).substring(files.get(i).length() - 3).equals("txt")){
-        				Scanner file = new Scanner(new File("data/terrain/" + files.get(i)));
-        				String t = file.nextLine();
-        				String c = file.nextLine();
-        				file.close();
-        				terrains.add(new Terrain(c, t));
-        			}
-        		}
-        	}
     	}catch(Exception ex){ex.printStackTrace();}
     }
     
@@ -228,7 +207,7 @@ public class Main{
     	buttons.add(new Button("Mouse: " + mousex + ", " + mousey, "", 10, 32));
     	buttons.add(new Button("Debug: " + debug, "switchdebug", 10, 48));
     	
-    	buttons.add(new Button("Brush size: " + brushSize, "", 150, 0));
+    	buttons.add(new Button("Brush size: " + brush.SIZE, "resetBrushsize", 150, 0));
     	buttons.add(new Button("++++++", "+brushsize", 150, 16));
     	buttons.add(new Button("------", "-brushsize", 150, 32));
     	buttons.add(new Button("New Map", "clearMap", 150, 48));
@@ -241,10 +220,10 @@ public class Main{
     	buttons.add(new Button("Pos: " + map.x + ", " + map.y, "", 600, 0));
     	buttons.add(new Button("Scale: " + map.width + ", " + map.height, "", 600, 16));
 
-    	buttons.add(new Button(editorTile.CLIMATE, "changeBrushClimate", 450, 0));
+    	buttons.add(new Button(brush.CLIMATE, "changeBrushClimate", 450, 0));
     	
     	imgButtons.clear();
-    	imgButtons.add(new ImageButton(getCellImage(editorTile.TERRAIN), editorTile.TERRAIN, "changeBrushTerrain", 450, 16));
+    	imgButtons.add(new ImageButton(getCellImage(brush.TERRAIN), getTerrainTitle(brush.TERRAIN), "changeBrushTerrain", 450, 16));
 
 		for(int i = 0; i < buttons.size(); i++){
 			if(buttons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
@@ -276,19 +255,44 @@ public class Main{
     }
     
     public static void paint(){
-		for(int x = 0; x < map.cells.length; x++){
-			for(int y = 0; y < map.cells[x].length; y++){
-				if(map.cells[x][y].intersects(brush)){
-					map.cells[x][y].mirror(editorTile);
+    	if(map.loaded){
+			for(int x = 0; x < map.cells.length; x++){
+				for(int y = 0; y < map.cells[x].length; y++){
+					if(map.cells[x][y].intersects(brush.BOX)){
+						map.cells[x][y].mirror(brush);
+					}
 				}
 			}
-		}
+    	}
     }
     
     public static void exit(){
     	if(JOptionPane.showConfirmDialog(frame, "Do you want to exit?", "Exit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
     		System.exit(0);
     	}
+    }
+
+    
+    public static String getTerrainTitle(int terrain){
+    	String title = "";
+    	for(int i = 0; i < terrains.size(); i++){
+    		if(terrains.get(i).ID == terrain){
+    			title = terrains.get(i).TERRAIN;
+    			break;
+    		}
+    	}
+    	return title;
+    }
+    
+    public static int getTerrainId(String terrain){
+    	int id = 0;
+    	for(int i = 0; i < terrains.size(); i++){
+    		if(terrains.get(i).TERRAIN == terrain){
+    			id = terrains.get(i).ID;
+    			break;
+    		}
+    	}
+    	return id;
     }
 
 }

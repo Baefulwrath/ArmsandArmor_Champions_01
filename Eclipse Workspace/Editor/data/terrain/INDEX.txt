@@ -1,1 +1,0 @@
-default.txt#coastalsea.txt#desert.txt#grassland.txt#ocean.txt#savanna.txt#snow.txt#steppe.txt#subarctichill.txt#temperatehill.txt#
