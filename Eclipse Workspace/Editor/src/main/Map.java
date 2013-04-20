@@ -16,7 +16,7 @@ public class Map {
     	if(loaded){
 	    	for(int cx = 0; cx < cells.length; cx++){
 	        	for(int cy = 0; cy < cells[cx].length; cy++){
-	        		cells[cx][cy].update(x + getCellX(cx, cy), y + getCellY(cx, cy));
+	        		cells[cx][cy].update(x + getCellX(cx, cy), y + getCellY(cx, cy), Main.zoom);
 	        	}
 	    	}
     	}
@@ -50,5 +50,21 @@ public class Map {
         int temp = 0;
         temp = (int) (cells[cx][cy].SIDE * 1.5) * cy;
         return temp;
+    }
+    
+    public int getWidth(){
+    	if(Main.map.cells.length > 1){
+    		return (int) ((getCellX(cells.length - 1, 0) + getCellX(1, 0)) * Main.zoom);
+    	}else{
+    		return 0;
+    	}
+    }
+    
+    public int getHeight(){
+    	if(Main.map.cells[0].length > 1){
+    		return (int) ((getCellY(0, cells[0].length - 1) + getCellY(0, 1)) * Main.zoom);
+    	}else{
+    		return 0;
+    	}
     }
 }

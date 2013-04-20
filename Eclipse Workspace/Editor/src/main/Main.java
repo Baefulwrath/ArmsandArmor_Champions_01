@@ -5,11 +5,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -39,7 +42,8 @@ public class Main{
 	public static Brush brush = new Brush(56, 0, "DEFAULT");
 	public static BufferedImage tilemap = null;
 	public static BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+	public static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+	public static double zoom = 1.0;
 	
 	public static void main(String[] args) {
 		init();
@@ -58,10 +62,10 @@ public class Main{
 		frame.addKeyListener(KH);
 		frame.addMouseListener(MH);
 		frame.addMouseWheelListener(SWH);
-		frame.setTitle("Editor v0.2");
+		frame.setTitle("Editor v0.3");
 		updateButtons();
 		createNewMap();
-		frame.getContentPane().setCursor(blankCursor);
+		frame.getContentPane().setCursor(cursor);
 	}
 	
 	public static void run(){
@@ -182,8 +186,9 @@ public class Main{
     			reader.nextLine();
     			String terrain = reader.nextLine();
     			String climate = reader.nextLine();
+    			String title = reader.nextLine();
     			int id = Integer.parseInt(reader.nextLine());
-    			terrains.add(new Terrain(terrain, climate, id));
+    			terrains.add(new Terrain(terrain, climate, title, id));
     		}
     		reader.close();
     	}catch(Exception ex){ex.printStackTrace();}
@@ -203,13 +208,13 @@ public class Main{
     public static void updateButtons(){
     	buttons.clear();
     	buttons.add(new Button("scroll speed (+/-): " + scrollingSpeed, "", 10, 0));
-    	buttons.add(new Button("Show grid: " + showGrid, "switchshowgrid", 10, 16));
+    	buttons.add(new Button("Show grid (space): " + showGrid, "switchshowgrid", 10, 16));
     	buttons.add(new Button("Mouse: " + mousex + ", " + mousey, "", 10, 32));
-    	buttons.add(new Button("Debug: " + debug, "switchdebug", 10, 48));
+    	buttons.add(new Button("Debug (d): " + debug, "switchdebug", 10, 48));
     	
     	buttons.add(new Button("Brush size: " + brush.SIZE, "resetBrushsize", 150, 0));
-    	buttons.add(new Button("++++++", "+brushsize", 150, 16));
-    	buttons.add(new Button("------", "-brushsize", 150, 32));
+    	buttons.add(new Button("++++++ (scroll up)", "+brushsize", 150, 16));
+    	buttons.add(new Button("------ (scroll down)", "-brushsize", 150, 32));
     	buttons.add(new Button("New Map", "clearMap", 150, 48));
     	
     	buttons.add(new Button("Title: " + map.title, "changeTitle", 300, 0));
@@ -217,13 +222,16 @@ public class Main{
     	buttons.add(new Button("Save Map", "saveMap", 300, 32));
     	buttons.add(new Button("Load Map", "loadMap", 300, 48));
     	
-    	buttons.add(new Button("Pos: " + map.x + ", " + map.y, "", 600, 0));
+    	buttons.add(new Button("Pos: " + map.x + ", " + map.y + " (r)", "resetmappos", 600, 0));
     	buttons.add(new Button("Scale: " + map.width + ", " + map.height, "", 600, 16));
+    	buttons.add(new Button("zoom: " + zoom, "", 600, 32));
+    	buttons.add(new Button("++++++ (page up)", "+zoom", 600, 48));
+    	buttons.add(new Button("------ (page down)", "-zoom", 600, 64));
 
     	buttons.add(new Button(brush.CLIMATE, "changeBrushClimate", 450, 0));
     	
     	imgButtons.clear();
-    	imgButtons.add(new ImageButton(getCellImage(brush.TERRAIN), getTerrainTitle(brush.TERRAIN), "changeBrushTerrain", 450, 16));
+    	imgButtons.add(new ImageButton(getCellImage(brush.TERRAIN), getTerrainName(brush.TERRAIN), "changeBrushTerrain", 450, 16));
 
 		for(int i = 0; i < buttons.size(); i++){
 			if(buttons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
@@ -248,9 +256,12 @@ public class Main{
 			map.height = Integer.parseInt(JOptionPane.showInputDialog(frame, "Map Height", "12"));
 			CmdHandler.changeBrushClimate();
 			CmdHandler.changeBrushTerrain();
+			map.x = 100;
+			map.y = 150;
+			zoom = 1.0;
 			map.createEmptyMap();
 		}else if(responce == JOptionPane.NO_OPTION){
-			CmdHandler.loadMap();
+			Main.loadMap();
 		}
     }
     
@@ -271,17 +282,27 @@ public class Main{
     		System.exit(0);
     	}
     }
-
-    
     public static String getTerrainTitle(int terrain){
     	String title = "";
     	for(int i = 0; i < terrains.size(); i++){
     		if(terrains.get(i).ID == terrain){
-    			title = terrains.get(i).TERRAIN;
+    			title = terrains.get(i).TITLE;
     			break;
     		}
     	}
     	return title;
+    }
+
+    
+    public static String getTerrainName(int terrain){
+    	String name = "";
+    	for(int i = 0; i < terrains.size(); i++){
+    		if(terrains.get(i).ID == terrain){
+    			name = terrains.get(i).TERRAIN;
+    			break;
+    		}
+    	}
+    	return name;
     }
     
     public static int getTerrainId(String terrain){
@@ -294,5 +315,105 @@ public class Main{
     	}
     	return id;
     }
+
+	public static void saveMap(){
+		JFileChooser fc = new JFileChooser(CmdHandler.lastDirectory);
+		int returnVal = fc.showSaveDialog(frame);
+		CmdHandler.lastDirectory = fc.getCurrentDirectory().getPath();
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			if(file.exists()){
+				if(file.isFile() && file.getName().substring(file.getName().length() - 3).equals("txt")){
+					Main.save(file);
+				}else{
+					JOptionPane.showMessageDialog(frame, "Bad file");
+				}
+			}else{
+				if(file.getName().substring(file.getName().length() - 3).equals("txt")){
+					Main.save(file);
+				}else{
+					JOptionPane.showMessageDialog(frame, "Bad file, remember to include .txt");
+				}
+			}
+	    }
+	}
+
+	public static void save(File file){
+		try{
+			BufferedWriter pen = new BufferedWriter(new FileWriter(file));
+			pen.write(map.title + System.getProperty("line.separator"));
+			pen.write(map.id + System.getProperty("line.separator"));
+			pen.write(map.width + System.getProperty("line.separator"));
+			pen.write(map.height + System.getProperty("line.separator"));
+			for(int x = 0; x < map.cells.length; x++){
+				for(int y = 0; y < map.cells[x].length; y++){
+					pen.write(x + System.getProperty("line.separator"));
+					pen.write(y + System.getProperty("line.separator"));
+					pen.write(map.cells[x][y].WIDTH + System.getProperty("line.separator"));
+					pen.write(map.cells[x][y].TERRAIN + System.getProperty("line.separator"));
+				}
+			}
+			pen.close();
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(frame, "Error saving file");
+		}
+	}
+
+	public static void loadMap(){
+		JFileChooser fc = new JFileChooser(CmdHandler.lastDirectory);
+		int returnVal = fc.showOpenDialog(frame);
+		CmdHandler.lastDirectory = fc.getCurrentDirectory().getPath();
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			if(file.isFile() && file.getName().substring(file.getName().length() - 3).equals("txt")){
+				Main.load(file);
+			}else{
+				JOptionPane.showMessageDialog(frame, "Bad file");
+			}
+	    }
+		map.x = 100;
+		map.y = 150;
+	}
+
+	public static void load(File file){
+		try{
+			map.loaded = false;
+			Scanner reader = new Scanner(file);
+			map.title = reader.nextLine();
+			map.id = reader.nextLine();
+			map.width = Integer.parseInt(reader.nextLine());
+			map.height = Integer.parseInt(reader.nextLine());
+			map.cells = new Cell[map.width][map.height];
+			while(reader.hasNextLine()){
+				map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
+			}
+			reader.close();
+			map.loaded = true;
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(frame, "Error loading file");
+		}
+	}
+
+	public static void clearMap(){
+		if(JOptionPane.showConfirmDialog(frame, "Do you really want to clear the map?", "Rasputinbullar?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+			createNewMap();
+		}
+	}
+	
+	public static void zoomOut(){
+		if(zoom > 1.0 && map.loaded){
+			//Main.map.x += (Main.map.getWidth() - (Main.map.getWidth() * 0.9)) / 2;
+			//Main.map.y += (Main.map.getHeight() - (Main.map.getHeight() * 0.9)) / 2;
+			zoom -= 0.1;
+		}
+	}
+	
+	public static void zoomIn(){
+		if(zoom < 5.0 && map.loaded){
+			//Main.map.x += (Main.map.getWidth() - (Main.map.getWidth() * 1.1)) / 2;
+			//Main.map.y += (Main.map.getHeight() - (Main.map.getHeight() * 1.1)) / 2;
+			zoom += 0.1;
+		}
+	}
 
 }

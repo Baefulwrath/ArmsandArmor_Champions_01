@@ -1,40 +1,150 @@
-*
+* Default, default value (important) ---------------------------------------------------
 DEFAULT
 DEFAULT
+VOID
 0
-*
-COASTAL SEA
-OCEAN
-1
-*
-DESERT
-ARID
-2
-*
-GRASSLAND
-TEMPERATE
-3
-*
-OCEAN
-OCEAN
-4
-*
-SAVANNA
-TROPICAL
-5
-*
+* Arctic ---------------------------------------------------
 SNOW
 ARCTIC
-6
+Snowy plains
+1
 *
+ARCTIC HILL
+ARCTIC
+Hill
+2
+*
+GLACIER
+ARCTIC
+Glacier
+3
+*
+FROZEN LAKE
+ARCTIC
+Frozen lake
+4
+* Sub-arctic ---------------------------------------------------
 STEPPE
 SUB ARCTIC
-7
+Steppe
+5
+*
+CONIFER FOREST
+SUB ARCTIC
+Conifer forest
+6
 *
 SUB ARCTIC HILL
 SUB ARCTIC
+Hill
+7
+*
+HILLS WITH CONIFER
+SUB ARCTIC
+Hills and Conifer forest
 8
+*
+SUB ARCTIC MOUNTAIN
+SUB ARCTIC
+Mountain
+9
+*
+SUB ARCTIC LAKE
+SUB ARCTIC
+Lake
+10
+* Temperate ---------------------------------------------------
+GRASSLAND
+TEMPERATE
+Grassland
+11
+*
+DECIDUOUS FOREST
+TEMPERATE
+Deciduous forest
+12
 *
 TEMPERATE HILL
 TEMPERATE
-9
+Hill
+13
+*
+HILLS WITH DECIDUOUS
+TEMPERATE
+Hills and Deciduous forest
+14
+*
+TEMPERATE LAKE
+TEMPERATE
+Lake
+15
+*
+TEMPERATE MOUNTAIN
+TEMPERATE
+Mountain
+16
+* Tropical ---------------------------------------------------
+SAVANNA
+TROPICAL
+Savanna
+17
+*
+JUNGLE
+TROPICAL
+Jungle
+18
+*
+TROPICAL HILL
+TROPICAL
+Hill
+19
+*
+HILLS WITH JUNGLE
+TROPICAL
+Hills and jungle
+20
+*
+TROPICAL MOUNTAIN
+TROPICAL
+Mountain
+21
+*
+TROPICAL LAKE
+TROPICAL
+Lake
+22
+* Arid ---------------------------------------------------
+DESERT
+ARID
+Desert
+23
+*
+ARID HILL
+ARID
+Hill
+24
+*
+ARID MOUNTAIN
+ARID
+Mountain
+25
+*
+OASIS
+ARID
+Oasis
+26
+* Ocean ---------------------------------------------------
+COASTAL SEA
+OCEAN
+Coastal sea
+27
+*
+OCEAN
+OCEAN
+Ocean
+28
+*
+REEF
+OCEAN
+Reef
+29

@@ -22,9 +22,9 @@ public class Cell {
         TERRAIN = terrain;
     }
     
-    public void update(int x, int y){
-        int[] pointsx = {x, x + RADIUS, x + RADIUS, x, x -RADIUS, x -RADIUS};
-        int[] pointsy = {y + SIDE, y + HALFSIDE, y -HALFSIDE, y -RADIUS, y -HALFSIDE, y + HALFSIDE};
+    public void update(int x, int y, double zoom){
+        int[] pointsx = {(int) (x * zoom), (int) ((x + RADIUS)* zoom), (int) ((x + RADIUS) * zoom), (int) (x * zoom), (int) ((x -RADIUS) * zoom), (int) ((x -RADIUS) * zoom)};
+        int[] pointsy = {(int) ((y + SIDE) * zoom), (int) ((y + HALFSIDE) * zoom), (int) ((y -HALFSIDE) * zoom), (int) ((y -RADIUS) * zoom), (int) ((y -HALFSIDE) * zoom), (int) ((y + HALFSIDE) * zoom)};
         
         actualPolygon = new Polygon(pointsx, pointsy, 6);
     }

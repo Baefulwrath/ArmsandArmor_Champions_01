@@ -1,11 +1,6 @@
 package main;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.Scanner;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class CmdHandler {
@@ -48,11 +43,11 @@ public class CmdHandler {
 			break;
 			case "changeId":changeId();
 			break;
-			case "saveMap":saveMap();
+			case "saveMap":Main.saveMap();
 			break;
-			case "loadMap":loadMap();
+			case "loadMap":Main.loadMap();
 			break;
-			case "clearMap":clearMap();
+			case "clearMap":Main.clearMap();
 			break;
 			case "+mapwidth":if(Main.map.width < 500){
 				Main.map.width += 1;
@@ -71,6 +66,12 @@ public class CmdHandler {
 				Main.map.height -= 1;
 				Main.map.height = 1;
 			};
+			case "+zoom":Main.zoomIn();
+			break;
+			case "-zoom":Main.zoomOut();
+			break;
+			case "resetmappos":Main.map.x = 100;Main.map.y = 150;
+			break;
 		}
 	}
 	
@@ -105,86 +106,5 @@ public class CmdHandler {
 	}
 	
 	public static String lastDirectory = "data/maps";
-	
-	public static void saveMap(){
-		JFileChooser fc = new JFileChooser(lastDirectory);
-		int returnVal = fc.showSaveDialog(Main.frame);
-		lastDirectory = fc.getCurrentDirectory().getPath();
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-			if(file.exists()){
-				if(file.isFile() && file.getName().substring(file.getName().length() - 3).equals("txt")){
-					save(file);
-				}else{
-					JOptionPane.showMessageDialog(Main.frame, "Bad file");
-				}
-			}else{
-				if(file.getName().substring(file.getName().length() - 3).equals("txt")){
-					save(file);
-				}else{
-					JOptionPane.showMessageDialog(Main.frame, "Bad file, remember to include .txt");
-				}
-			}
-        }
-	}
-	
-	public static void save(File file){
-		try{
-			BufferedWriter pen = new BufferedWriter(new FileWriter(file));
-			pen.write(Main.map.title + System.getProperty("line.separator"));
-			pen.write(Main.map.id + System.getProperty("line.separator"));
-			pen.write(Main.map.width + System.getProperty("line.separator"));
-			pen.write(Main.map.height + System.getProperty("line.separator"));
-			for(int x = 0; x < Main.map.cells.length; x++){
-				for(int y = 0; y < Main.map.cells[x].length; y++){
-					pen.write(x + System.getProperty("line.separator"));
-					pen.write(y + System.getProperty("line.separator"));
-					pen.write(Main.map.cells[x][y].WIDTH + System.getProperty("line.separator"));
-					pen.write(Main.map.cells[x][y].TERRAIN + System.getProperty("line.separator"));
-				}
-			}
-			pen.close();
-		}catch(Exception ex){
-			JOptionPane.showMessageDialog(Main.frame, "Error saving file");
-		}
-	}
-	
-	public static void loadMap(){
-		JFileChooser fc = new JFileChooser(lastDirectory);
-		int returnVal = fc.showOpenDialog(Main.frame);
-		lastDirectory = fc.getCurrentDirectory().getPath();
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-    		if(file.isFile() && file.getName().substring(file.getName().length() - 3).equals("txt")){
-    			load(file);
-    		}else{
-    			JOptionPane.showMessageDialog(Main.frame, "Bad file");
-    		}
-        }
-	}
-	
-	public static void load(File file){
-		try{
-			Main.map.loaded = false;
-			Scanner reader = new Scanner(file);
-			Main.map.title = reader.nextLine();
-			Main.map.id = reader.nextLine();
-			Main.map.width = Integer.parseInt(reader.nextLine());
-			Main.map.height = Integer.parseInt(reader.nextLine());
-			while(reader.hasNextLine()){
-				Main.map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
-			}
-			reader.close();
-			Main.map.loaded = true;
-		}catch(Exception ex){
-			JOptionPane.showMessageDialog(Main.frame, "Error loading file");
-		}
-	}
-	
-	public static void clearMap(){
-		if(JOptionPane.showConfirmDialog(Main.frame, "Do you really want to clear the map?", "Rasputinbullar?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-			Main.createNewMap();
-		}
-	}
 	
 }

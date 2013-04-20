@@ -42,6 +42,12 @@ public class KeyHandler implements KeyListener{
 					Main.debug = true;
 				};
 				break;
+			case VK_PAGE_UP:Main.zoomIn();
+			break;
+			case VK_PAGE_DOWN:Main.zoomOut();
+			break;
+			case VK_R:CmdHandler.activateCommand("resetmappos");
+			break;
 		}
 	}
 
