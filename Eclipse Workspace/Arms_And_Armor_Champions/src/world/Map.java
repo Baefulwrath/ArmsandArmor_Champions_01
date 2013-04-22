@@ -1,78 +1,46 @@
 package world;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
+
 
 public class Map {
-    public ArrayList<Cell> cells = new ArrayList<Cell>();
+    public Cell[][] cells = new Cell[0][0];
+    public String title = "";
+    public String id = "";
     public int width = 0;
+    public int height = 0;
     public boolean loaded = false;
-    public Texture background;
-    public Texture background2;
-    public Texture foreground;
-    public Texture gridpiece;
     
-    public int[] getActiveCells(){
-        ArrayList<Integer> cellList = new ArrayList<Integer>();
-        for(int i = 0; i < cells.size(); i++){
-            if(cells.get(i).ACTIVE){
-                cellList.add(i);
-            }
-        }
-        int[] cells = new int[cellList.size()];
-        for(int i = 0; i < cellList.size(); i++){
-            cells[i] = cellList.get(i);
-        }
-        return cells;
-    }
-    
-    public void load(int width, int height){
+    public Map(String file){
+    	loaded = false;
+    	//Load from file
+    	Scanner reader = new Scanner(Gdx.files.internal(file).readString());
+    	title = reader.nextLine();
+    	id = reader.nextLine();
+    	width = Integer.parseInt(reader.nextLine());
+    	height = Integer.parseInt(reader.nextLine());
+    	cells = new Cell[width][height];
+    	while(reader.hasNextLine()){
+    		cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
+    	}
         loaded = true;
     }
-    
-    public void test(){
-        width = 30;
-        for(int i = 0; i < 180 ; i++){
-            cells.add(new Cell(56, Terrain.SANDPLAINS));
-        }
-        load(0, 0);
-    }
-    
-    public float getCellX(int index){
-        float temp = 0;
-        int row = 0;
-        int x = index;
-        while(x >= width){
-            x -= width;
-            row++;
-        }
-        temp = x * (cells.get(0).RADIUS);
-        return temp;
-    }
-    
-    public float getCellY(int index){
-        float temp = 0;
-        int row = 0;
-        int x = index;
-        while(x >= width){
-            x -= width;
-            row++;
-        }
-        temp -= (cells.get(0).SIDE * 3) * row;
-        if(x % 2 == 0){
-            temp -= cells.get(0).HALFSIDE * 3;
+
+
+    public float getCellX(int cx, int cy){
+    	float temp = 0;
+        temp = cx * cells[cx][cy].WIDTH;
+        if(cy % 2 == 0){
+        	temp += cells[cx][cy].RADIUS;
         }
         return temp;
     }
     
-    public int getHeight(){
-        int temp = 1;
-        int tempi = cells.size();
-        while(tempi > width){
-            temp++;
-            tempi -= width;
-        }
+    public float getCellY(int cx, int cy){
+    	float temp = 0;
+        temp = (cells[cx][cy].SIDE * 1.5f) * cy;
         return temp;
     }
 

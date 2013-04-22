@@ -42,7 +42,6 @@ public class AAA_C implements ApplicationListener {
     public static Game_Menuhandler GMH;
     
     public static Inputhandler inputhandler;
-    public static Worldhandler worldhandler;
     
     private Texture texture;
 	private Sprite sprite;
@@ -67,8 +66,7 @@ public class AAA_C implements ApplicationListener {
 		
         loadRenderers();
         setRendererByState(state);
-        worldhandler = new Worldhandler();
-        worldhandler.load();
+        Worldhandler.load();
         inputhandler = new Inputhandler();
         input.setInputProcessor(inputhandler);
         MMH = new Main_Menuhandler();

@@ -1,9 +1,12 @@
 package render;
 
+import world.Worldhandler;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.World;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
 public class Game_Renderer extends Renderer {
@@ -16,13 +19,13 @@ public class Game_Renderer extends Renderer {
     public void render(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, (int) AAA_C.w, (int) AAA_C.w, 0, true);
         drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, (int) -getScreenY() - 16, com16, Color.RED);
-        drawMap(batch, AAA_C.worldhandler.getMap(), 0, 0, true);
+        drawMap(batch, Worldhandler.getMap(), 0, 0, true);
         if(AAA_C.gamePaused){
 //Rita ut bakgrund till menyn för att släppa fokus på spelet.
 //Se till att musen fungera in-game för menyer också
             drawMenu(batch, AAA_C.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y);
         }
-        drawString(batch, "size: " + AAA_C.worldhandler.getMap().cells.size(), -200, -350, com32, Color.RED);
+        drawString(batch, "size: " + Worldhandler.getMap().cells.length + ", " + Worldhandler.getMap().cells[0].length, -200, -350, com32, Color.RED);
     }
 
     @Override

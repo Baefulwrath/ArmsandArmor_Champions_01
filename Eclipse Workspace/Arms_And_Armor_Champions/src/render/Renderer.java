@@ -1,6 +1,7 @@
 package render;
 
 import world.Map;
+import world.Worldhandler;
 import menus.Activator;
 import menus.ActivatorType;
 import menus.Menu;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.rapplebob.ArmsAndArmorChampions.*;
@@ -72,6 +74,37 @@ public abstract class Renderer {
         	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	}
     	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	sprite = new Sprite(img);
+    	sprite.setSize(1, 1);
+    	sprite.setScale(width, height);
+    	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+    	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
+    	sprite.setRotation(rotation);
+    	sprite.draw(batch);
+    }
+
+    public void drawImage(SpriteBatch batch, TextureRegion img, int x, int y, float scale, int rotation, boolean smooth) {
+    	if(smooth){
+        	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	}else{
+        	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	sprite = new Sprite(img);
+    	sprite.setSize(sprite.getWidth(), sprite.getHeight());
+    	sprite.setScale(scale);
+    	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+    	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
+    	sprite.setRotation(rotation);
+    	sprite.draw(batch);
+    }
+
+    public void drawImage(SpriteBatch batch, TextureRegion img, int x, int y, int width, int height, int rotation, boolean smooth) {
+    	if(smooth){
+        	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    	}else{
+        	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
     	sprite.setScale(width, height);
@@ -163,27 +196,15 @@ public abstract class Renderer {
     }
     
     
-    public void drawMap(SpriteBatch batch, Map map, int x, int y, boolean central){
-        x += getCentralMapX(map);
-        y += getCentralMapY(map);
-        if(map.loaded && map.cells.size() > 0){
-            int width = map.width;
-            for(int i = 0; i < map.cells.size(); i++){
-            	if(AAA_C.debug){
-	                drawString(batch, "" + i, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, com10, Color.RED);
-            	}
-            	drawImage(batch, AAA_C.worldhandler.getCellImage(map.cells.get(i).TERRAIN), (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
-		        if(AAA_C.showGrid){
-	            	if(map.cells.get(i).ACTIVE){
-		            	drawImage(batch, markedCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
-		            }else{
-		            	drawImage(batch, idleCell, (int) map.getCellX(i) + x, (int) map.getCellY(i) + y, 1, 0, false);
-		            }
-	            }
-            }
-            if(AAA_C.debug){
-            	drawString(batch, "Height: " + map.getHeight(), -500, 380, com10, Color.RED);
-            }
+    public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
+        mx += getCentralMapX(map);
+        my += getCentralMapY(map);
+        if(map.loaded && map.cells.length > 0){
+        	for(int x = 0; x < map.cells.length; x++){
+        		for(int y = 0; y < map.cells[x].length; y++){
+        			drawImage(batch, Worldhandler.getCellImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y), (int) map.getCellY(x, y), 1.0f, 0, false);
+        		}
+        	}
         }else{
             drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED);
         }
@@ -202,13 +223,13 @@ public abstract class Renderer {
     }*/
     
     public int getCentralMapX(Map map){
-        float x = -(map.cells.get(0).SIDE * (map.width / 2));
-        x += map.cells.get(0).RADIUS;
+        float x = -(map.cells[0][0].SIDE * (map.width / 2));
+        x += map.cells[0][0].RADIUS;
         return (int) x;
     }
     
     public int getCentralMapY(Map map){
-        float y = ((map.getHeight() / 2) + 1) * map.cells.get(0).DIAMETER;
+        float y = ((map.height / 2) + 1) * map.cells[0][0].DIAMETER;
         return (int) y;
     }
 }

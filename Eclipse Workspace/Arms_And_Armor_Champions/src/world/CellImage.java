@@ -1,11 +1,11 @@
 package world;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class CellImage {
-	public Texture TEXTURE;
-	public Terrain TERRAIN;
-	public void set(Texture texture, Terrain terrain){
+	public TextureRegion TEXTURE;
+	public int TERRAIN;
+	public void set(TextureRegion texture, int terrain){
 		TEXTURE = texture;
 		TERRAIN = terrain;
 	}
