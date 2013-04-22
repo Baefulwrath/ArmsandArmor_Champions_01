@@ -83,7 +83,7 @@ public class AAA_C implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {	
+	public void render() {
         updateRenderers();
         Scripthandler.update();
         updateMenuhandlers();
@@ -251,9 +251,10 @@ public class AAA_C implements ApplicationListener {
 		try{
 			Scanner reader = new Scanner(settings);
 			reader.nextLine();
-	    	newState = State.parseState(reader.nextLine());
-	    	debug = Boolean.parseBoolean(reader.nextLine());
-	    	showGrid = Boolean.parseBoolean(reader.nextLine());
+	    	newState = State.parseState(reader.nextLine().substring(9));
+	    	debug = Boolean.parseBoolean(reader.nextLine().substring(6));
+	    	showGrid = Boolean.parseBoolean(reader.nextLine().substring(9));
+	    	reader.close();
 		}catch(Exception ex){
 			ex.printStackTrace(System.out);
 	    }

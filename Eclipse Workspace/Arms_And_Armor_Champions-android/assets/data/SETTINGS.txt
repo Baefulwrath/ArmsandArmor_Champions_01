@@ -1,4 +1,4 @@
 true
-MENU
-false
-false
+newState MENU
+debug true
+showGrid true

@@ -40,8 +40,18 @@ public class Map {
     
     public float getCellY(int cx, int cy){
     	float temp = 0;
-        temp = (cells[cx][cy].SIDE * 1.5f) * cy;
+        temp = - (cells[cx][cy].SIDE * 1.5f) * cy;
         return temp;
+    }
+    
+    public int getHeight(){
+    	float h = (cells[0][0].SIDE * 1.5f) * height;
+    	return (int) h;
+    }
+    
+    public int getWidth(){
+    	float w = (cells[0][0].RADIUS) * width * 2;
+    	return (int) w;
     }
 
 }

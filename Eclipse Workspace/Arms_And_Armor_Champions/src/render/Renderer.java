@@ -26,8 +26,7 @@ public abstract class Renderer {
     public String ID = "DEFAULT";
     public State state = null;
     public Sprite sprite = new Sprite();
-    public Texture idleCell;
-    public Texture markedCell;
+    public Texture grid;
     public Texture background;
 
     public abstract void render(SpriteBatch batch);
@@ -47,8 +46,7 @@ public abstract class Renderer {
     public abstract void loadSpecificResources() throws Exception;
     
     public void loadResources(){
-    	idleCell = new Texture(Gdx.files.internal("data/images/idleCell.png"));
-    	markedCell = new Texture(Gdx.files.internal("data/images/markedCell.png"));
+    	grid = new Texture(Gdx.files.internal("data/images/grid.png"));
     	background = new Texture(Gdx.files.internal("data/images/defaultBackground.png"));
     }
 
@@ -199,10 +197,17 @@ public abstract class Renderer {
     public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
         mx += getCentralMapX(map);
         my += getCentralMapY(map);
+        drawString(batch, mx + ", " + my, (int) getScreenX(), (int) getScreenY(), com10, Color.RED);
         if(map.loaded && map.cells.length > 0){
         	for(int x = 0; x < map.cells.length; x++){
         		for(int y = 0; y < map.cells[x].length; y++){
-        			drawImage(batch, Worldhandler.getCellImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y), (int) map.getCellY(x, y), 1.0f, 0, false);
+        			drawImage(batch, Worldhandler.getCellImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        			if(AAA_C.showGrid){
+        				drawImage(batch, grid, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        			}
+        			if(AAA_C.debug){
+        				drawString(batch, x + "," + y, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, com10, Color.RED);
+        			}
         		}
         	}
         }else{
@@ -223,13 +228,12 @@ public abstract class Renderer {
     }*/
     
     public int getCentralMapX(Map map){
-        float x = -(map.cells[0][0].SIDE * (map.width / 2));
-        x += map.cells[0][0].RADIUS;
+        float x = - map.getWidth() / 2;
         return (int) x;
     }
     
     public int getCentralMapY(Map map){
-        float y = ((map.height / 2) + 1) * map.cells[0][0].DIAMETER;
+        float y = map.getHeight() / 2;
         return (int) y;
     }
 }
