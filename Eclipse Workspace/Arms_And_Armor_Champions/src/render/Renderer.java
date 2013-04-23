@@ -137,16 +137,23 @@ public abstract class Renderer {
         return -(AAA_C.h / 2);
     }
 
-    public void drawString(SpriteBatch batch, String string, int x, int y, BitmapFont font, Color col) {
+    public void drawString(SpriteBatch batch, String string, int x, int y, BitmapFont font, Color col, boolean scaled) {
         LabelStyle style = new LabelStyle(font, col);
         Label lab = new Label(string, style);
-        lab.setPosition(x, y);
+        if(scaled){
+        	lab.setPosition(x, y);
+        }else{
+        	lab.setPosition(x * AAA_C.getZoomScale(), y * AAA_C.getZoomScale());
+        }
+        if(!scaled){
+        	lab.scale(AAA_C.getZoomScale());
+        }
         lab.draw(batch, 1);
     }
 
-    public void drawMenu(SpriteBatch batch, Menu m, int x, int y) {
-        drawString(batch, m.title, x - 24, y, com32_BI, Color.WHITE);
-        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE);
+    public void drawMenu(SpriteBatch batch, Menu m, int x, int y, boolean scaled) {
+        drawString(batch, m.title, x - 24, y, com32_BI, Color.WHITE, scaled);
+        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, scaled);
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {
                 Activator a = m.acts.get(i);
@@ -155,7 +162,7 @@ public abstract class Renderer {
                 if(AAA_C.debug){
                     print += " - " + a.script + " - " + a.AT.toString();
                 }
-                drawString(batch, print, x, y - 50 - (i * 40), com32, col);
+                drawString(batch, print, x, y - 50 - (i * 40), com32, col, scaled);
                 if(i == m.activeAct){
                     String marker;
                     switch(a.AT){
@@ -167,11 +174,11 @@ public abstract class Renderer {
                             break;
                         default:marker = "";
                     }
-                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE);
+                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, scaled);
                 }
             }
         } else {
-            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE);
+            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, scaled);
         }
     }
 
@@ -194,24 +201,26 @@ public abstract class Renderer {
     }
     
     
-    public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
+    public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central, boolean scaled){
         mx += getCentralMapX(map);
         my += getCentralMapY(map);
-        drawString(batch, mx + ", " + my, (int) getScreenX(), (int) getScreenY(), com10, Color.RED);
+        drawString(batch, mx + ", " + my, (int) getScreenX(), (int) getScreenY(), com10, Color.RED, scaled);
         if(map.loaded && map.cells.length > 0){
         	for(int x = 0; x < map.cells.length; x++){
         		for(int y = 0; y < map.cells[x].length; y++){
-        			drawImage(batch, Worldhandler.getCellImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
         			if(AAA_C.showGrid){
         				drawImage(batch, grid, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
         			}
         			if(AAA_C.debug){
-        				drawString(batch, x + "," + y, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, com10, Color.RED);
+        				drawString(batch, x + "," + y, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, com10, Color.RED, scaled);
+        				drawString(batch, map.cells[x][y].CLIMATE + "", (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my - 12, com10, Color.RED, scaled);
         			}
         		}
         	}
         }else{
-            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED);
+            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, scaled);
         }
     }
     /*

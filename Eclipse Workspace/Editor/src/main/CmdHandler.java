@@ -80,6 +80,7 @@ public class CmdHandler {
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Climate choice", "Climate Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
 			Main.brush.CLIMATE = Main.getClimateId(input);
+			Main.brush.TERRAIN = Main.getTerrainId(Main.getTerrainsByClimate(input)[0]);
 		}
 	}
 	

@@ -2,11 +2,11 @@ package world;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class CellImage {
+public class ClimateImage {
 	public TextureRegion TEXTURE;
-	public int TERRAIN;
-	public void set(TextureRegion texture, int terrain){
+	public int CLIMATE;
+	public void set(TextureRegion texture, int climate){
 		TEXTURE = texture;
-		TERRAIN = terrain;
+		CLIMATE = climate;
 	}
 }

@@ -22,8 +22,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AAA_C implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
+	private static OrthographicCamera camera;
+	private static SpriteBatch batch;
     public static Renderer[] renderers = new Renderer[3];
     public static int activeRenderer = 0;
     public static int fps = 120;
@@ -224,6 +224,7 @@ public class AAA_C implements ApplicationListener {
     public static void changeState(State s){
         setRendererByState(s);
         state = newState;
+        resetZoom();
     }
     
     public static Renderer getActiveRenderer(){
@@ -258,5 +259,45 @@ public class AAA_C implements ApplicationListener {
 		}catch(Exception ex){
 			ex.printStackTrace(System.out);
 	    }
+    }
+    
+    public static void resetZoom(){
+    	camera.zoom = w;
+    }
+    
+    public static int zoomLimit = 0;
+    public static int zoomSpeed = 50;
+    
+    public static void setZoomLimit(){
+    	if(state == State.DEFAULT){
+    		zoomLimit = (int) (w * 5);
+    	}else if(state == State.MENU){
+    		zoomLimit = (int) (w * 1.1);
+    	}else if(state == State.GAME){
+    		zoomLimit = (int) (w * 2);
+    	}else{
+    		zoomLimit = 0;
+    	}
+    }
+    
+    public static void zoomIn(){
+    	if(camera.zoom - zoomSpeed > 500){
+    		camera.zoom -= zoomSpeed;
+    	}
+    }
+    
+    public static void zoomOut(){
+    	setZoomLimit();
+    	if(camera.zoom + zoomSpeed < zoomLimit){
+    		camera.zoom += zoomSpeed;
+    	}
+    }
+    
+    public static float getZoom(){
+    	return camera.zoom;
+    }
+    
+    public static float getZoomScale(){
+    	return camera.zoom / w;
     }
 }

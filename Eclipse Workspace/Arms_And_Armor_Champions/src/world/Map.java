@@ -1,7 +1,6 @@
 package world;
 
 import java.util.Scanner;
-
 import com.badlogic.gdx.Gdx;
 
 
@@ -11,6 +10,8 @@ public class Map {
     public String id = "";
     public int width = 0;
     public int height = 0;
+    public int x = 0;
+    public int y = 0;
     public boolean loaded = false;
     
     public Map(String file){
@@ -23,7 +24,12 @@ public class Map {
     	height = Integer.parseInt(reader.nextLine());
     	cells = new Cell[width][height];
     	while(reader.hasNextLine()){
-    		cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
+			int cx = Integer.parseInt(reader.nextLine());
+			int cy = Integer.parseInt(reader.nextLine());
+			int width = Integer.parseInt(reader.nextLine());
+			int ter = Integer.parseInt(reader.nextLine());
+			int cli = Worldhandler.getClimateIdByTerrain(ter);
+			cells[cx][cy] = new Cell(width, ter, cli);
     	}
         loaded = true;
     }

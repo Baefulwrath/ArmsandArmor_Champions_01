@@ -12,6 +12,7 @@ public class Main {
 		cfg.height = 800;
 		cfg.resizable = false;
 		cfg.fullscreen = false;
+		cfg.samples = 16;
 		
 		new LwjglApplication(new AAA_C(), cfg);
 	}

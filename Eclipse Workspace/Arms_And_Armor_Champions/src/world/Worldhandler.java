@@ -1,7 +1,10 @@
 package world;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,10 +12,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Worldhandler {
     public static int activeMap = 0;
+    public static int mapSpeed = 64;
     public static ArrayList<Map> maps = new ArrayList<Map>();
-    public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>();
+	public static ArrayList<TerrainImage> terrainImages = new ArrayList<TerrainImage>();
+	public static ArrayList<ClimateImage> climateImages = new ArrayList<ClimateImage>();
     public static ArrayList<Terrain> terrains = new ArrayList<Terrain>();
-    public static Texture tilemap;
+	public static ArrayList<Climate> climates = new ArrayList<Climate>();
+	public static Texture terrainmap;
+	public static Texture climatemap;
     
     public static Map getMap(){
         return maps.get(activeMap);
@@ -24,7 +31,14 @@ public class Worldhandler {
     
     public static void load(){
     	loadTerrains();
-    	loadCellImages();
+    	loadClimates();
+    	loadTerrainImages();
+    	loadClimateImages();
+    	loadMaps();
+    }
+    
+    public static void loadMaps(){
+    	maps.clear();
     	String index = Gdx.files.internal("data/content/maps/INDEX.txt").readString();
     	while(index.contains(":")){
     		String file = "data/content/maps/" + index.substring(1, index.indexOf(';'));
@@ -33,16 +47,30 @@ public class Worldhandler {
     	}
     }
     
-    public static void loadCellImages(){
+    public static void loadTerrainImages(){
     	try{
-    		cellImages.clear();
-    		tilemap = new Texture(Gdx.files.internal("data/images/tilemap.png"));
-    		int length = tilemap.getWidth() / 64;
+    		terrainImages.clear();
+    		terrainmap = new Texture(Gdx.files.internal("data/images/terrainmap.png"));
+    		int length = terrainmap.getWidth() / 64;
     		for(int i = 0; i < length; i++){
-    			CellImage CI = new CellImage();
-    			TextureRegion tex = new TextureRegion(tilemap, i * 64, 0, 64, 64);
-    			CI.set(tex, i);
-    			cellImages.add(CI);
+    			TerrainImage TI = new TerrainImage();
+    			TextureRegion img = new TextureRegion(terrainmap, 64 * i, 0, 64, 64);
+    			TI.set(img, i);
+    			terrainImages.add(TI);
+    		}
+    	}catch(Exception ex){}
+    }
+    
+    public static void loadClimateImages(){
+    	try{
+    		climateImages.clear();
+    		climatemap = new Texture(Gdx.files.internal("data/images/climatemap.png"));
+    		int length = climatemap.getWidth() / 64;
+    		for(int i = 0; i < length; i++){
+    			ClimateImage CI = new ClimateImage();
+    			TextureRegion img = new TextureRegion(climatemap, 64 * i, 0, 64, 64);
+    			CI.set(img, i);
+    			climateImages.add(CI);
     		}
     	}catch(Exception ex){}
     }
@@ -60,7 +88,22 @@ public class Worldhandler {
     			terrains.add(new Terrain(terrain, climate, title, id));
     		}
     		reader.close();
-    	}catch(Exception ex){}
+    	}catch(Exception ex){ex.printStackTrace();}
+    }
+    
+    public static void loadClimates(){
+    	try{
+    		climates.clear();
+    		Scanner reader = new Scanner(Gdx.files.internal("data/content/climates.txt").readString());
+    		while(reader.hasNextLine()){
+    			reader.nextLine();
+    			String climate = reader.nextLine();
+    			String title = reader.nextLine();
+    			int id = Integer.parseInt(reader.nextLine());
+    			climates.add(new Climate(climate, title, id));
+    		}
+    		reader.close();
+    	}catch(Exception ex){ex.printStackTrace();}
     }
     
 //Old method
@@ -92,15 +135,36 @@ public class Worldhandler {
     	}catch(Exception ex){}
     }*/
     
-    public static TextureRegion getCellImage(int terrain){
-    	TextureRegion tex = cellImages.get(0).TEXTURE;
-    	for(int i = 0; i < cellImages.size(); i++){
-    		if(cellImages.get(i).TERRAIN == terrain){
-    			tex = cellImages.get(i).TEXTURE;
+    public static TextureRegion getTerrainImage(int terrain){
+    	TextureRegion tex = terrainImages.get(0).TEXTURE;
+    	for(int i = 0; i < terrainImages.size(); i++){
+    		if(terrainImages.get(i).TERRAIN == terrain){
+    			tex = terrainImages.get(i).TEXTURE;
     			break;
     		}
     	}
     	return tex;
+    }
+    public static TextureRegion getClimateImage(int climate){
+    	TextureRegion tex = climateImages.get(0).TEXTURE;
+    	for(int i = 0; i < climateImages.size(); i++){
+    		if(climateImages.get(i).CLIMATE == climate){
+    			tex = climateImages.get(i).TEXTURE;
+    			break;
+    		}
+    	}
+    	return tex;
+    }
+    
+    public static int getClimateIdByTerrain(int terrain){
+    	int temp = 0;
+    	for(int i = 0; i < climates.size(); i++){
+    		if(terrains.get(terrain).CLIMATE.equals(climates.get(i).CLIMATE)){
+    			temp = i;
+    			break;
+    		}
+    	}
+    	return temp;
     }
     
     public static String[] getClimates(){

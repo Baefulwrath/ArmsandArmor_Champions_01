@@ -3,6 +3,7 @@ package input;
 import java.awt.Rectangle;
 
 import scripting.Scripthandler;
+import world.Worldhandler;
 
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
@@ -100,7 +101,14 @@ public class Inputhandler implements InputProcessor {
                 }
             } else {
                 switch (keycode) {
-
+                	case UP:Worldhandler.getMap().y -= Worldhandler.mapSpeed;
+                	break;
+                	case DOWN:Worldhandler.getMap().y += Worldhandler.mapSpeed;
+                	break;
+                	case LEFT:Worldhandler.getMap().x += Worldhandler.mapSpeed;
+                	break;
+                	case RIGHT:Worldhandler.getMap().x -= Worldhandler.mapSpeed;
+                	break;
                 }
             }
         }
@@ -123,7 +131,11 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    	updateMouse(screenX, screenY);
         if (AAA_C.state == State.DEFAULT) {
+            switch (button) {
+        		case Buttons.MIDDLE:AAA_C.resetZoom();
+            }
         } else if (AAA_C.state == State.MENU) {
             switch (button) {
                 case Buttons.LEFT:
@@ -131,6 +143,11 @@ public class Inputhandler implements InputProcessor {
                     break;
             }
         } else if (AAA_C.state == State.GAME) {
+            
+        }
+        switch(button){
+        	case Buttons.MIDDLE:AAA_C.resetZoom();
+        	break;
         }
         return true;
     }
@@ -147,13 +164,22 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        mouse = new Rectangle(screenX + (int) AAA_C.getActiveRenderer().getScreenX(), -screenY - (int) AAA_C.getActiveRenderer().getScreenY(), 1, 1);
+    	updateMouse(screenX, screenY);
         AAA_C.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y, 0, 0), AAA_C.getActiveRenderer().com32);
         return true;
     }
 
     @Override
     public boolean scrolled(int amount) {
+    	if(amount > 0){
+        	AAA_C.zoomOut();
+        }else{
+        	AAA_C.zoomIn();
+        }
         return true;
+    }
+    
+    public void updateMouse(int screenX, int screenY){
+        mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
     }
 }
