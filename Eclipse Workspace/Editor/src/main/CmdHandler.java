@@ -79,12 +79,12 @@ public class CmdHandler {
 		String choices[] = Main.getClimates();
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Climate choice", "Climate Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
-			Main.brush.CLIMATE = input;
+			Main.brush.CLIMATE = Main.getClimateId(input);
 		}
 	}
 	
 	public static void changeBrushTerrain(){
-		String choices[] = Main.getTerrainsByClimate(Main.brush.CLIMATE);
+		String choices[] = Main.getTerrainsByClimate(Main.getClimateName(Main.brush.CLIMATE));
 		String input = (String) JOptionPane.showInputDialog(Main.frame, "Terrain choice", "Terrain Choice", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 		if(input != null){
 			Main.brush.TERRAIN = Main.getTerrainId(input);

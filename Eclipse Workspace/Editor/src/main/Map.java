@@ -31,7 +31,7 @@ public class Map {
     	cells = new Cell[width][height];
 		for(int y = 0; y < cells.length; y++){
 			for(int x = 0; x < cells[y].length; x++){
-				cells[y][x] = new Cell(56, Main.brush.TERRAIN);
+				cells[y][x] = new Cell(56, Main.brush.TERRAIN, Main.brush.CLIMATE);
 			}
 		}
         loaded = true;

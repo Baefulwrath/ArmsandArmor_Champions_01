@@ -45,14 +45,16 @@ public class Screen extends JPanel{
 			for(int x = 0; x < Main.map.cells.length; x++){
 				for(int y = 0; y < Main.map.cells[x].length; y++){
 					if(visible(new Rectangle( (int) ((Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE) * Main.zoom) + 1, (int) ((Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE) * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom)))){
-						g2d.drawImage(Main.getCellImage(Main.map.cells[x][y].TERRAIN), (int) ((Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE) * Main.zoom) + 1, (int) ((Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE) * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), null);
+						g2d.drawImage(Main.getClimateImageByClimate(Main.map.cells[x][y].CLIMATE), (int) ((Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE) * Main.zoom) + 1, (int) ((Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE) * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), null);
+						g2d.drawImage(Main.getTerrainImage(Main.map.cells[x][y].TERRAIN), (int) ((Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE) * Main.zoom) + 1, (int) ((Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE) * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), null);
 						if(Main.showGrid){
 							g2d.drawImage(grid, (int) ((Main.map.getCellX(x, y) + Main.map.x - Main.map.cells[x][y].SIDE) * Main.zoom) + 1, (int) ((Main.map.getCellY(x, y) + Main.map.y - Main.map.cells[x][y].SIDE) * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), (int) (Main.map.cells[x][y].DIAMETER * Main.zoom), null);
 						}
 						if(Main.debug){
 							g2d.setPaint(Color.RED);
 							g2d.drawString(x + ", " + y,  (int) ((Main.map.getCellX(x, y) + Main.map.x) * Main.zoom), (int) ((Main.map.getCellY(x, y) + Main.map.y) * Main.zoom));
-							g2d.drawString(Main.getTerrainTitle(Main.map.cells[x][y].TERRAIN),  (int) ((Main.map.getCellX(x, y) + Main.map.x) * Main.zoom), (int) ((Main.map.getCellY(x, y) + Main.map.y) * Main.zoom) + 12);
+							g2d.drawString(Main.getTerrainName(Main.map.cells[x][y].TERRAIN),  (int) ((Main.map.getCellX(x, y) + Main.map.x) * Main.zoom), (int) ((Main.map.getCellY(x, y) + Main.map.y) * Main.zoom) + 12);
+							g2d.drawString(Main.getClimateName(Main.map.cells[x][y].CLIMATE),  (int) ((Main.map.getCellX(x, y) + Main.map.x) * Main.zoom), (int) ((Main.map.getCellY(x, y) + Main.map.y) * Main.zoom) + 24);
 							g2d.drawPolygon(Main.map.cells[x][y].actualPolygon);
 						}
 					}

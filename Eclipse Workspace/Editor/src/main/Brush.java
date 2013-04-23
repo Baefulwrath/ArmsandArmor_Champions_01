@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 
 public class Brush extends Cell{
 	
-	public String CLIMATE = "DEFAULT";
 	public int SIZE = 5;
 	public Rectangle BOX = new Rectangle(0, 0, SIZE, SIZE);
 	
@@ -12,9 +11,8 @@ public class Brush extends Cell{
 		BOX = new Rectangle(mousex, mousey, SIZE, SIZE);
 	}
 
-	public Brush(int width, int terrain, String climate) {
-		super(width, terrain);
-		CLIMATE = climate;
+	public Brush(int width, int terrain, int climate) {
+		super(width, terrain, climate);
 	}
 
 }

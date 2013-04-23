@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 public class Cell {
 	public int TERRAIN = 0;
+	public int CLIMATE = 0;
 	
     public boolean ACTIVE = false;
     public int WIDTH = 0;
@@ -17,9 +18,10 @@ public class Cell {
     public Polygon localPolygon = new Polygon();
     public Polygon actualPolygon = new Polygon();
     
-    public Cell(int width, int terrain){
+    public Cell(int width, int terrain, int climate){
         set(width);
         TERRAIN = terrain;
+        CLIMATE = climate;
     }
     
     public void update(int x, int y, double zoom){
@@ -54,5 +56,6 @@ public class Cell {
     public void mirror(Cell cell){
     	set(cell.WIDTH);
     	TERRAIN = cell.TERRAIN;
+    	CLIMATE = cell.CLIMATE;
     }
 }

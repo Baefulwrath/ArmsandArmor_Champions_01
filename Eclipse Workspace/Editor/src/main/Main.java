@@ -33,14 +33,17 @@ public class Main{
 	public static KeyHandler KH = new KeyHandler();
 	public static MouseHandler MH = new MouseHandler();
 	public static ScrollwheelHandler SWH = new ScrollwheelHandler();
-	public static ArrayList<CellImage> cellImages = new ArrayList<CellImage>();
+	public static ArrayList<TerrainImage> terrainImages = new ArrayList<TerrainImage>();
+	public static ArrayList<ClimateImage> climateImages = new ArrayList<ClimateImage>();
 	public static ArrayList<Terrain> terrains = new ArrayList<Terrain>();
+	public static ArrayList<Climate> climates = new ArrayList<Climate>();
+	public static BufferedImage terrainmap = null;
+	public static BufferedImage climatemap = null;
 	public static int mousex = 0;
 	public static int mousey = 0;
 	public static ArrayList<Button> buttons = new ArrayList<Button>();
 	public static ArrayList<ImageButton> imgButtons = new ArrayList<ImageButton>();
-	public static Brush brush = new Brush(56, 0, "DEFAULT");
-	public static BufferedImage tilemap = null;
+	public static Brush brush = new Brush(56, 0, 0);
 	public static BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 	public static double zoom = 1.0;
@@ -51,8 +54,10 @@ public class Main{
 	}
 	
 	public static void init(){
+		loadClimates();
+		loadClimateImages();
 		loadTerrains();
-		loadCellImages();
+		loadTerrainImages();
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.setSize(1280, 800);
@@ -93,25 +98,76 @@ public class Main{
 			}
 		}
 	}
-
     
-    public static BufferedImage getCellImage(int terrain){
-    	BufferedImage img = cellImages.get(0).IMG;
-    	for(int i = 0; i < cellImages.size(); i++){
-    		if(cellImages.get(i).TERRAIN == terrain){
-    			img = cellImages.get(i).IMG;
+    public static BufferedImage getTerrainImage(int terrain){
+    	BufferedImage img = terrainImages.get(0).IMG;
+    	for(int i = 0; i < terrainImages.size(); i++){
+    		if(terrainImages.get(i).TERRAIN == terrain){
+    			img = terrainImages.get(i).IMG;
     			break;
     		}
     	}
     	return img;
     }
     
+    public static BufferedImage getClimateImageByTerrain(int terrain){
+    	int climate = getClimateId(terrain);
+    	BufferedImage img = climateImages.get(0).IMG;
+    	for(int i = 0; i < climateImages.size(); i++){
+    		if(climateImages.get(i).CLIMATE == climate){
+    			img = climateImages.get(i).IMG;
+    			break;
+    		}
+    	}
+    	return img;
+    }
+    
+    public static BufferedImage getClimateImageByClimate(int climate){
+    	BufferedImage img = climateImages.get(0).IMG;
+    	for(int i = 0; i < climateImages.size(); i++){
+    		if(climateImages.get(i).CLIMATE == climate){
+    			img = climateImages.get(i).IMG;
+    			break;
+    		}
+    	}
+    	return img;
+    }
+    
+    public static BufferedImage getClimateImageByClimate(String climate){
+    	BufferedImage img = climateImages.get(0).IMG;
+    	for(int i = 0; i < climateImages.size(); i++){
+    		if(getClimateName(climateImages.get(i).CLIMATE).equals(climate)){
+    			img = climateImages.get(i).IMG;
+    			break;
+    		}
+    	}
+    	return img;
+    }
+    
+    public static int getClimateId(int terrain){
+    	int climate = getClimateId(terrains.get(terrain).CLIMATE);
+    	return climate;
+    }
+    
+    public static int getClimateId(String climate){
+    	int id = 0;
+    	for(int i = 0; i < climates.size(); i++){
+    		if(climates.get(i).CLIMATE.equals(climate)){
+    			id = i;
+    			break;
+    		}
+    	}
+    	return id;
+    }
+    
+    public static String getClimateName(int climate){
+    	return climates.get(climate).CLIMATE;
+    }
+    
     public static String[] getClimates(){
     	ArrayList<String> strings = new ArrayList<String>();
-    	for(int i = 0; i < terrains.size(); i++){
-    		if(!contains(strings, terrains.get(i).CLIMATE)){
-    			strings.add(terrains.get(i).CLIMATE);
-    		}
+    	for(int i = 0; i < climates.size(); i++){
+    		strings.add(climates.get(i).CLIMATE);
     	}
     	String[] res = new String[strings.size()];
     	for(int i = 0; i < strings.size(); i++){
@@ -164,16 +220,30 @@ public class Main{
     	return res;
     }
     
-    public static void loadCellImages(){
+    public static void loadTerrainImages(){
     	try{
-    		cellImages.clear();
-    		tilemap = ImageIO.read(new File("data/images/tilemap.png"));
-    		int length = tilemap.getWidth() / 64;
+    		terrainImages.clear();
+    		terrainmap = ImageIO.read(new File("data/images/terrainmap.png"));
+    		int length = terrainmap.getWidth() / 64;
     		for(int i = 0; i < length; i++){
-    			CellImage CI = new CellImage();
-    			BufferedImage img = tilemap.getSubimage(64 * i, 0, 64, 64);
+    			TerrainImage TI = new TerrainImage();
+    			BufferedImage img = terrainmap.getSubimage(64 * i, 0, 64, 64);
+    			TI.set(img, i);
+    			terrainImages.add(TI);
+    		}
+    	}catch(Exception ex){}
+    }
+    
+    public static void loadClimateImages(){
+    	try{
+    		climateImages.clear();
+    		climatemap = ImageIO.read(new File("data/images/climatemap.png"));
+    		int length = climatemap.getWidth() / 64;
+    		for(int i = 0; i < length; i++){
+    			ClimateImage CI = new ClimateImage();
+    			BufferedImage img = climatemap.getSubimage(64 * i, 0, 64, 64);
     			CI.set(img, i);
-    			cellImages.add(CI);
+    			climateImages.add(CI);
     		}
     	}catch(Exception ex){}
     }
@@ -189,6 +259,21 @@ public class Main{
     			String title = reader.nextLine();
     			int id = Integer.parseInt(reader.nextLine());
     			terrains.add(new Terrain(terrain, climate, title, id));
+    		}
+    		reader.close();
+    	}catch(Exception ex){ex.printStackTrace();}
+    }
+    
+    public static void loadClimates(){
+    	try{
+    		climates.clear();
+    		Scanner reader = new Scanner(new File("data/climates.txt"));
+    		while(reader.hasNextLine()){
+    			reader.nextLine();
+    			String climate = reader.nextLine();
+    			String title = reader.nextLine();
+    			int id = Integer.parseInt(reader.nextLine());
+    			climates.add(new Climate(climate, title, id));
     		}
     		reader.close();
     	}catch(Exception ex){ex.printStackTrace();}
@@ -222,16 +307,16 @@ public class Main{
     	buttons.add(new Button("Save Map", "saveMap", 300, 32));
     	buttons.add(new Button("Load Map", "loadMap", 300, 48));
     	
-    	buttons.add(new Button("Pos: " + map.x + ", " + map.y + " (r)", "resetmappos", 600, 0));
-    	buttons.add(new Button("Scale: " + map.width + ", " + map.height, "", 600, 16));
-    	buttons.add(new Button("zoom: " + zoom, "", 600, 32));
-    	buttons.add(new Button("++++++ (page up)", "+zoom", 600, 48));
-    	buttons.add(new Button("------ (page down)", "-zoom", 600, 64));
+    	buttons.add(new Button("Pos: " + map.x + ", " + map.y + " (r)", "resetmappos", 750, 0));
+    	buttons.add(new Button("Scale: " + map.width + ", " + map.height, "", 750, 16));
+    	buttons.add(new Button("zoom: " + zoom, "", 750, 32));
+    	buttons.add(new Button("++++++ (page up)", "+zoom", 750, 48));
+    	buttons.add(new Button("------ (page down)", "-zoom", 750, 64));
 
-    	buttons.add(new Button(brush.CLIMATE, "changeBrushClimate", 450, 0));
     	
     	imgButtons.clear();
-    	imgButtons.add(new ImageButton(getCellImage(brush.TERRAIN), getTerrainName(brush.TERRAIN), "changeBrushTerrain", 450, 16));
+    	imgButtons.add(new ImageButton(getClimateImageByClimate(brush.CLIMATE), getClimateName(brush.CLIMATE), "changeBrushClimate", 450, 0));
+    	imgButtons.add(new ImageButton(getTerrainImage(brush.TERRAIN), getTerrainName(brush.TERRAIN), "changeBrushTerrain", 600, 0));
 
 		for(int i = 0; i < buttons.size(); i++){
 			if(buttons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
@@ -385,7 +470,12 @@ public class Main{
 			map.height = Integer.parseInt(reader.nextLine());
 			map.cells = new Cell[map.width][map.height];
 			while(reader.hasNextLine()){
-				map.cells[Integer.parseInt(reader.nextLine())][Integer.parseInt(reader.nextLine())] = new Cell(Integer.parseInt(reader.nextLine()), Integer.parseInt(reader.nextLine()));
+				int cx = Integer.parseInt(reader.nextLine());
+				int cy = Integer.parseInt(reader.nextLine());
+				int width = Integer.parseInt(reader.nextLine());
+				int ter = Integer.parseInt(reader.nextLine());
+				int cli = getClimateId(ter);
+				map.cells[cx][cy] = new Cell(width, ter, cli);
 			}
 			reader.close();
 			map.loaded = true;
