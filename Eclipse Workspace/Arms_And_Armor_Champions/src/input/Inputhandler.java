@@ -109,6 +109,10 @@ public class Inputhandler implements InputProcessor {
                 	break;
                 	case RIGHT:Worldhandler.getMap().x -= Worldhandler.mapSpeed;
                 	break;
+                	case SPACE:if(AAA_C.showGrid){AAA_C.showGrid = false;}else{AAA_C.showGrid = true;};
+                	break;
+                	case TAB:if(AAA_C.debug){AAA_C.debug = false;}else{AAA_C.debug = true;};
+                	break;
                 }
             }
         }

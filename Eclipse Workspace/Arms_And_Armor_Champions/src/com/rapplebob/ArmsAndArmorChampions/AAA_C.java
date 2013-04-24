@@ -1,5 +1,6 @@
 package com.rapplebob.ArmsAndArmorChampions;
 
+import java.awt.Rectangle;
 import java.util.Scanner;
 
 import menus.*;
@@ -37,6 +38,7 @@ public class AAA_C implements ApplicationListener {
     public static float h = 800;
     public static boolean showGrid = true;
     public static String settings = "";
+    public static Rectangle screenRect = new Rectangle(0, 0, (int) w, (int) h);
 
     public static Main_Menuhandler MMH;
     public static Game_Menuhandler GMH;
@@ -87,6 +89,7 @@ public class AAA_C implements ApplicationListener {
         updateRenderers();
         Scripthandler.update();
         updateMenuhandlers();
+        screenRect = new Rectangle((int) (getActiveRenderer().getScreenX() * getZoomScale()), (int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (w * getZoom()), (int) (h * getZoom()));
         if(newState != state){
             changeState(newState);
         }

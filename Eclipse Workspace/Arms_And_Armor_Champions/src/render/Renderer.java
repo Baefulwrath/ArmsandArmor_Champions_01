@@ -1,5 +1,7 @@
 package render;
 
+import java.awt.Rectangle;
+
 import world.Map;
 import world.Worldhandler;
 import menus.Activator;
@@ -50,7 +52,7 @@ public abstract class Renderer {
     	background = new Texture(Gdx.files.internal("data/images/defaultBackground.png"));
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, int x, int y, float scale, int rotation, boolean smooth) {
+    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float scale, int rotation, boolean smooth) {
     	if(smooth){
         	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
@@ -62,10 +64,10 @@ public abstract class Renderer {
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
     	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
-    	sprite.draw(batch);
+    	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, int x, int y, int width, int height, int rotation, boolean smooth) {
+    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float width, float height, int rotation, boolean smooth) {
     	if(smooth){
         	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
@@ -78,10 +80,10 @@ public abstract class Renderer {
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
     	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
-    	sprite.draw(batch);
+    	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, TextureRegion img, int x, int y, float scale, int rotation, boolean smooth) {
+    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float scale, int rotation, boolean smooth) {
     	if(smooth){
         	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
@@ -93,10 +95,10 @@ public abstract class Renderer {
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
     	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
-    	sprite.draw(batch);
+    	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, TextureRegion img, int x, int y, int width, int height, int rotation, boolean smooth) {
+    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float width, float height, int rotation, boolean smooth) {
     	if(smooth){
         	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
@@ -109,7 +111,21 @@ public abstract class Renderer {
     	sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
     	sprite.setPosition(x - (sprite.getWidth() / 2), y - (sprite.getHeight() / 2));
     	sprite.setRotation(rotation);
-    	sprite.draw(batch);
+    	actualDrawImage(batch);
+    }
+    
+    private void actualDrawImage(SpriteBatch batch){
+    	if(onScreen(sprite)){
+    		sprite.draw(batch);
+    	}
+    }
+    
+    public boolean onScreen(Sprite spr){
+    	boolean temp = false;
+    	if(AAA_C.screenRect.intersects(new Rectangle((int) spr.getX(), (int) spr.getY(), (int) spr.getWidth(), (int) spr.getHeight()))){
+    		temp = true;
+    	}
+    	return temp;
     }
 
     public void loadFonts() {
@@ -137,7 +153,7 @@ public abstract class Renderer {
         return -(AAA_C.h / 2);
     }
 
-    public void drawString(SpriteBatch batch, String string, int x, int y, BitmapFont font, Color col, boolean scaled) {
+    public void drawString(SpriteBatch batch, String string, float x, float y, BitmapFont font, Color col, float opacity,  boolean scaled) {
         LabelStyle style = new LabelStyle(font, col);
         Label lab = new Label(string, style);
         if(scaled){
@@ -146,14 +162,14 @@ public abstract class Renderer {
         	lab.setPosition(x * AAA_C.getZoomScale(), y * AAA_C.getZoomScale());
         }
         if(!scaled){
-        	lab.scale(AAA_C.getZoomScale());
+        	lab.setFontScale(AAA_C.getZoomScale());
         }
-        lab.draw(batch, 1);
+        lab.draw(batch, opacity);
     }
 
     public void drawMenu(SpriteBatch batch, Menu m, int x, int y, boolean scaled) {
-        drawString(batch, m.title, x - 24, y, com32_BI, Color.WHITE, scaled);
-        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, scaled);
+        drawString(batch, m.title, x - 24, y, com32_BI, Color.WHITE, 1.0f, scaled);
+        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f, scaled);
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {
                 Activator a = m.acts.get(i);
@@ -162,7 +178,7 @@ public abstract class Renderer {
                 if(AAA_C.debug){
                     print += " - " + a.script + " - " + a.AT.toString();
                 }
-                drawString(batch, print, x, y - 50 - (i * 40), com32, col, scaled);
+                drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f, scaled);
                 if(i == m.activeAct){
                     String marker;
                     switch(a.AT){
@@ -174,11 +190,11 @@ public abstract class Renderer {
                             break;
                         default:marker = "";
                     }
-                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, scaled);
+                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, 1.0f, scaled);
                 }
             }
         } else {
-            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, scaled);
+            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, 1.0f, scaled);
         }
     }
 
@@ -204,24 +220,24 @@ public abstract class Renderer {
     public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central, boolean scaled){
         mx += getCentralMapX(map);
         my += getCentralMapY(map);
-        drawString(batch, mx + ", " + my, (int) getScreenX(), (int) getScreenY(), com10, Color.RED, scaled);
         if(map.loaded && map.cells.length > 0){
         	for(int x = 0; x < map.cells.length; x++){
         		for(int y = 0; y < map.cells[x].length; y++){
-        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
-        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false);
+        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false);
         			if(AAA_C.showGrid){
-        				drawImage(batch, grid, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, 1.0f, 0, false);
+        				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false);
         			}
         			if(AAA_C.debug){
-        				drawString(batch, x + "," + y, (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my, com10, Color.RED, scaled);
-        				drawString(batch, map.cells[x][y].CLIMATE + "", (int) map.getCellX(x, y) + mx, (int) map.getCellY(x, y) + my - 12, com10, Color.RED, scaled);
+        				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f, scaled);
+        				drawString(batch, map.cells[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f, scaled);
         			}
         		}
         	}
         }else{
-            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, scaled);
+            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, 1.0f, scaled);
         }
+        drawString(batch, mx + ", " + my, getScreenX(), getScreenY(), com10, Color.RED, 1.0f, scaled);
     }
     /*
     public void drawPolygon(ShapeRenderer triangleBatch, Polygon pol[], int x, int y, Color col){

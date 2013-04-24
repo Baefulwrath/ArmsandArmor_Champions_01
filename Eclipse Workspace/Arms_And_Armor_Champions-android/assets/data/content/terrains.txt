@@ -134,14 +134,14 @@ ARID
 Oasis
 26
 * Ocean ---------------------------------------------------
-COASTAL SEA
-OCEAN
-Coastal sea
-27
-*
 OCEAN
 OCEAN
 Ocean
+27
+*
+COASTAL SEA
+OCEAN
+Coastal sea
 28
 *
 REEF
