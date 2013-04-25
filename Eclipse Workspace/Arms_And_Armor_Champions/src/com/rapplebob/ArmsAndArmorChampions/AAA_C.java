@@ -254,7 +254,6 @@ public class AAA_C implements ApplicationListener {
     public static void setLoadedSettings(){
 		try{
 			Scanner reader = new Scanner(settings);
-			reader.nextLine();
 	    	newState = State.parseState(reader.nextLine().substring(9));
 	    	debug = Boolean.parseBoolean(reader.nextLine().substring(6));
 	    	showGrid = Boolean.parseBoolean(reader.nextLine().substring(9));

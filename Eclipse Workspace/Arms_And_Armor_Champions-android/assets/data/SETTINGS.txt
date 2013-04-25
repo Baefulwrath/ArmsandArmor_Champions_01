@@ -1,4 +1,3 @@
-true
 newState MENU
 debug false
 showGrid true
