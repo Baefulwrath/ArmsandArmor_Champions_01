@@ -76,8 +76,8 @@ public class Main{
 	public static void run(){
 		while(running){
 			try{
-				mousex = frame.getMousePosition().x;
-				mousey = frame.getMousePosition().y - 25;
+				mousex = scr.getMousePosition().x;
+				mousey = scr.getMousePosition().y;
 			}catch(Exception ex){
 				mousex = 0;
 				mousey = 0;
