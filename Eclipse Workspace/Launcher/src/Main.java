@@ -1,5 +1,7 @@
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +18,11 @@ public class Main {
 	public static Screen scr = new Screen();
 	
 	public static Rectangle mouse = new Rectangle(0, 0, 0, 0);
-	public static MouseHandler MH = new MouseHandler();
+    public static int mouseRelativeX = 0;
+    public static int mouseRelativeY = 0;
+    public static int mouseX = 0;
+    public static int mouseY = 0;
+	public static InputHandler MH = new InputHandler();
 	
 	public static ArrayList<Button> buttons = new ArrayList<Button>();
 	
@@ -28,38 +34,52 @@ public class Main {
 	}
 	
 	public static void init(){
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setUndecorated(true);
 		frame.setSize(640, 480);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
+		frame.setName("Arms and Armor Launcher");
 		frame.setTitle("Arms and Armor Launcher");
 		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.add(scr);
+		frame.setContentPane(scr);
 		frame.addMouseListener(MH);
+		frame.addKeyListener(MH);
+		frame.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+		scr.setVisible(true);
+		scr.setBounds(frame.getBounds());
+		scr.setLocation(0, 0);
 		loadStartupFile();
 	}
 	
+	public static int BWid = 150;
+	
 	public static void updateButtons(){
+		buttonsReady = false;
 		buttons.clear();
-		buttons.add(new Button("Title: " + title, "title", 150, 20, 30));
-		buttons.add(new Button("Use GL20: " + useGL20, "useGL20", 150, 20, 50));
-		buttons.add(new Button("Screen Width: " + width, "width", 150, 20, 70));
+		buttons.add(new Button("Title: " + title, "title", BWid, 20, 30));
+		buttons.add(new Button("Use GL20: " + useGL20, "useGL20", BWid, 20, 50));
+		buttons.add(new Button("Screen Width: " + width, "width", BWid, 20, 70));
 		
-		buttons.add(new Button("Screen Height: " + height, "height", 150, scr.getWidth() - 170, 30));
-		buttons.add(new Button("Screen Resizable: " + resizable, "resizable", 150, scr.getWidth() - 170, 50));
-		buttons.add(new Button("Screen Fullscreen: " + fullscreen, "fullscreen", 150, scr.getWidth() - 170, 70));
+		buttons.add(new Button("Screen Height: " + height, "height", BWid, scr.getWidth() - 170, 30));
+		buttons.add(new Button("Screen Resizable: " + resizable, "resizable", BWid, scr.getWidth() - 170, 50));
+		buttons.add(new Button("Fullscreen: " + fullscreen, "fullscreen", BWid, scr.getWidth() - 170, 70));
 		
-		buttons.add(new Button("Save", "save", 150, (scr.getWidth() / 2) - (150 / 2), 250));
-		buttons.add(new Button("Load", "load", 150, (scr.getWidth() / 2) - (150 / 2), 270));
+		buttons.add(new Button("Apply Settings", "save", BWid, (scr.getWidth() / 2) - (BWid / 2), 250));
+		buttons.add(new Button("Load Settings", "load", BWid, (scr.getWidth() / 2) - (BWid / 2), 270));
 		
-		buttons.add(new Button("Launch Game!", "launch", 150, (scr.getWidth() / 2) - (150 / 2), scr.getHeight() - 90));
-		buttons.add(new Button("Admin: " + admin, "testAdmin", 150, (scr.getWidth() / 2) - (150 / 2), scr.getHeight() - 50));
+		buttons.add(new Button("Launch Game!", "launch", BWid, (scr.getWidth() / 2) - (BWid / 2), scr.getHeight() - 90));
+		buttons.add(new Button("Admin: " + admin, "testAdmin", BWid, (scr.getWidth() / 2) - (BWid / 2), scr.getHeight() - 70));
+		buttons.add(new Button("Exit", "exit", BWid, (scr.getWidth() / 2) - (BWid / 2), scr.getHeight() - 50));
+		buttonsReady = true;
 	}
+	
+	public static boolean buttonsReady = false;
 	
 	public static void run(){
 		while(true){
 			try{
-				Thread.sleep(5);
+				Thread.sleep(3);
 				update();
 			}catch(Exception ex){
 				ex.printStackTrace(System.out);
@@ -70,9 +90,19 @@ public class Main {
 	public static void update() throws Exception{
 		try{
 			updateButtons();
+			mouseRelativeX = mouseX - mouse.x;
+			mouseRelativeY = mouseY - mouse.y;
+			if(move){
+				//frame.setLocation((int) (mouseRelativeX + frame.getLocation().x), (int) (mouseRelativeY + frame.getLocation().y));
+			}
 			mouse = new Rectangle(scr.getMousePosition().x, scr.getMousePosition().y, 1, 1);
+			mouseX = frame.getMousePosition().x;
+			mouseY = frame.getMousePosition().y;
+			
 		}catch(Exception ex){
-			Rectangle mouse = new Rectangle(0, 0, 0, 0);
+			mouse = new Rectangle(0, 0, 0, 0);
+			mouseRelativeX = 0;
+			mouseRelativeY = 0;
 		}
 		for(int i = 0; i < buttons.size(); i++){
 			if(mouse.intersects(buttons.get(i).BOX)){
@@ -138,9 +168,29 @@ public class Main {
     	return B;
     }
     
+    public static boolean isActiveButton(){
+    	boolean temp = false;
+    	for(int i = 0; i < buttons.size(); i++){
+    		if(buttons.get(i).hover){
+    			temp = true;
+    			break;
+    		}
+    	}
+    	return temp;
+    }
+    
+    public static boolean move = false;
+    
     public static void click(){
-    	if(!MH.justClicked){
-    		CmdHandler.activate(getActiveButton().CMD);
+    	if(MH.justClicked){
+    		if(isActiveButton()){}else{
+    		}
+    	}else{
+    		if(isActiveButton()){
+    			CmdHandler.activate(getActiveButton().CMD);
+    		}else{
+    			move = true;
+    		}
     	}
     }
 
