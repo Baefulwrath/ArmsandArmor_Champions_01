@@ -5,14 +5,18 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-public class Menu {
+public class Menu extends Content{
     public String ID = "";
-    public String title = "";
+    public String menuTitle = "";
     public ArrayList<Activator> acts = new ArrayList<Activator>();
     public int activeAct = 0;
+    public Menu(int x, int y){
+    	super(x, y, ContentType.MENU);
+    }
+    
     public void set(String id, String t, ArrayList<Activator> a){
         ID = id;
-        title = t;
+        menuTitle = t;
         acts = a;
     }
     public void up(){

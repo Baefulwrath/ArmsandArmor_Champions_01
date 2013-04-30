@@ -73,7 +73,6 @@ public abstract class Renderer {
     	}else{
         	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	}
-    	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
     	sprite.setScale(width, height);
@@ -104,7 +103,6 @@ public abstract class Renderer {
     	}else{
         	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	}
-    	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
     	sprite.setScale(width, height);
@@ -168,7 +166,7 @@ public abstract class Renderer {
     }
 
     public void drawMenu(SpriteBatch batch, Menu m, int x, int y, boolean scaled) {
-        drawString(batch, m.title, x - 24, y, com32_BI, Color.WHITE, 1.0f, scaled);
+        drawString(batch, m.menuTitle, x - 24, y, com32_BI, Color.WHITE, 1.0f, scaled);
         drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f, scaled);
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {

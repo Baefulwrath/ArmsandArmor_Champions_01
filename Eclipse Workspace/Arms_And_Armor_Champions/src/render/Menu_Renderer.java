@@ -14,7 +14,7 @@ public class Menu_Renderer extends Renderer {
     public void render(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true);
         if(AAA_C.MMH.menus.size() > 0){
-            drawMenu(batch, AAA_C.MMH.getActiveMenu(), AAA_C.getActiveMenuhandler().x, AAA_C.getActiveMenuhandler().y, true);
+            drawMenu(batch, AAA_C.MMH.getActiveMenu(), AAA_C.getActiveMenuhandler().X, AAA_C.getActiveMenuhandler().Y, true);
         }else{
             com64.draw(batch, "NO MENUS TO DRAW", getScreenX(), 0);
         }

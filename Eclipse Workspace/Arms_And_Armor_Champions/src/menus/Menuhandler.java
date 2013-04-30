@@ -6,11 +6,13 @@ import java.util.Scanner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-public class Menuhandler {
-    public ArrayList<Menu> menus = new ArrayList<Menu>();
+public class Menuhandler extends Content{
+    public Menuhandler(int x, int y) {
+		super(x, y, ContentType.MENUHANDLER);
+	}
+
+	public ArrayList<Menu> menus = new ArrayList<Menu>();
     public int activeMenu = 0;
-    public int x = -300;
-    public int y = 250;
     
     public void openMenuByID(String ID){
         for(int i = 0; i < menus.size(); i++){
@@ -25,7 +27,7 @@ public class Menuhandler {
     public void soutMenu(Menu m){
     	//In case of disaster: sout the menu to console.
     	System.out.println("_______________");
-    	System.out.println(m.title + " - " + getActiveMenu().activeAct);
+    	System.out.println(m.menuTitle + " - " + getActiveMenu().activeAct);
         for(int i = 0; i < m.acts.size(); i++){
         	System.out.println(m.acts.get(i).title);
         }
@@ -55,7 +57,7 @@ public class Menuhandler {
 		            for(int i = 0; i < files.size(); i++){
 		                FileHandle file = Gdx.files.internal(path + files.get(i));
 		                if(file.extension().equals("txt")){
-		                    Menu m = new Menu();
+		                    Menu m = new Menu(0, 0);
 		                    String ID = "";
 		                    String title = "";
 		                    ArrayList<Activator> acts = new ArrayList<Activator>();
