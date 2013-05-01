@@ -17,7 +17,7 @@ public class Default_Renderer extends Renderer {
     
     private int rot = 0;
     
-    public void render(SpriteBatch batch) {
+    public void mobileRender(SpriteBatch batch) {
     	drawImage(batch, background, 0.0f, 0.0f, AAA_C.getZoom(), AAA_C.getZoom(), 0, true);
         if(rot < 360){
             rot++;
@@ -36,10 +36,14 @@ public class Default_Renderer extends Renderer {
 	        com16_BI.draw(batch, "com16_BI", -256, 64);
 	        com10_BI.draw(batch, "com10_BI", -256, 86);
         }
-        drawString(batch, "ESC to quit, F1 to return to menus.", getScreenX(), -getScreenY() - 10, com10, Color.RED, 1.0f, false);
-        drawString(batch, "DEFAULT RENDERER", getScreenX(), getScreenY(), com16, Color.RED, 1.0f, false);
-        drawString(batch, "+", AAA_C.inputhandler.mouse.x, AAA_C.inputhandler.mouse.y, com16, Color.CYAN, 1.0f, true);
+        drawString(batch, "+", AAA_C.inputhandler.mouse.x, AAA_C.inputhandler.mouse.y, com16, Color.CYAN, 1.0f);
     }
+
+	@Override
+	public void staticRender(SpriteBatch batch) {
+        drawString(batch, "ESC to quit, F1 to return to menus.", getScreenX(), -getScreenY() - 10, com10, Color.RED, 1.0f);
+        drawString(batch, "DEFAULT RENDERER", getScreenX(), getScreenY(), com16, Color.RED, 1.0f);
+	}
 
     @Override
     public void specificUpdate() {

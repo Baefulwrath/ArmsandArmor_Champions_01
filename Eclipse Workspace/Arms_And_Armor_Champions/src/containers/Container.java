@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -15,13 +15,15 @@ public class Container {
 	public ContainerState STATE = ContainerState.STATIC;
 	public ArrayList<Content> CONTENT = new ArrayList<Content>();
 	
-	public Container(int x, int y, int width, int height, String title){
+	public Container(int x, int y, int width, int height, String title, ContainerState state, int controllerSize){
 		X = x;
 		Y = y;
 		WIDTH = width;
 		HEIGHT = height;
 		TITLE = title;
 		controlsurface = new Rectangle(X, Y - conSize, WIDTH, conSize);
+		STATE = state;
+		conSize = controllerSize;
 	}
 	
 	public void add(Content C){

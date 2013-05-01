@@ -4,9 +4,6 @@ import java.awt.Rectangle;
 
 import world.Map;
 import world.Worldhandler;
-import menus.Activator;
-import menus.ActivatorType;
-import menus.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
+import containers.Activator;
+import containers.ActivatorType;
+import containers.Menu;
+
 public abstract class Renderer {
 
     public Renderer() {
@@ -30,14 +31,22 @@ public abstract class Renderer {
     public Sprite sprite = new Sprite();
     public Texture grid;
     public Texture background;
+    
+    public BitmapFont com64;
+    public BitmapFont com32;
+    public BitmapFont com16;
+    public BitmapFont com10;
+    public BitmapFont com32_BI;
+    public BitmapFont com16_BI;
+    public BitmapFont com10_BI;
 
-    public abstract void render(SpriteBatch batch);
+    public abstract void mobileRender(SpriteBatch batch);
+    
+    public abstract void staticRender(SpriteBatch batch);
 
     public abstract void specificUpdate();
 
     public void generalUpdate() {
-    	
-    	
     	
     	if(active){
     		specificUpdate();
@@ -135,13 +144,7 @@ public abstract class Renderer {
         com16_BI = new BitmapFont(Gdx.files.internal("data/fonts/com16_BI.fnt"), Gdx.files.internal("data/fonts/com16_BI.png"), false, false);
         com10_BI = new BitmapFont(Gdx.files.internal("data/fonts/com10_BI.fnt"), Gdx.files.internal("data/fonts/com10_BI.png"), false, false);
     }
-    public BitmapFont com64;
-    public BitmapFont com32;
-    public BitmapFont com16;
-    public BitmapFont com10;
-    public BitmapFont com32_BI;
-    public BitmapFont com16_BI;
-    public BitmapFont com10_BI;
+
 
     public float getScreenX() {
         return -(AAA_C.w / 2);
@@ -151,23 +154,16 @@ public abstract class Renderer {
         return -(AAA_C.h / 2);
     }
 
-    public void drawString(SpriteBatch batch, String string, float x, float y, BitmapFont font, Color col, float opacity,  boolean scaled) {
+    public void drawString(SpriteBatch batch, String string, float x, float y, BitmapFont font, Color col, float opacity) {
         LabelStyle style = new LabelStyle(font, col);
         Label lab = new Label(string, style);
-        if(scaled){
-        	lab.setPosition(x, y);
-        }else{
-        	lab.setPosition(x * AAA_C.getZoomScale(), y * AAA_C.getZoomScale());
-        }
-        if(!scaled){
-        	lab.setFontScale(AAA_C.getZoomScale());
-        }
+        lab.setPosition(x, y);
         lab.draw(batch, opacity);
     }
 
-    public void drawMenu(SpriteBatch batch, Menu m, int x, int y, boolean scaled) {
-        drawString(batch, m.menuTitle, x - 24, y, com32_BI, Color.WHITE, 1.0f, scaled);
-        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f, scaled);
+    public void drawMenu(SpriteBatch batch, Menu m, int x, int y) {
+        drawString(batch, m.menuTitle, x - 24, y, com32_BI, Color.WHITE, 1.0f);
+        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f);
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {
                 Activator a = m.acts.get(i);
@@ -176,7 +172,7 @@ public abstract class Renderer {
                 if(AAA_C.debug){
                     print += " - " + a.script + " - " + a.AT.toString();
                 }
-                drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f, scaled);
+                drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f);
                 if(i == m.activeAct){
                     String marker;
                     switch(a.AT){
@@ -188,11 +184,11 @@ public abstract class Renderer {
                             break;
                         default:marker = "";
                     }
-                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, 1.0f, scaled);
+                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, 1.0f);
                 }
             }
         } else {
-            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, 1.0f, scaled);
+            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, 1.0f);
         }
     }
 
@@ -215,7 +211,7 @@ public abstract class Renderer {
     }
     
     
-    public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central, boolean scaled){
+    public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
         mx += getCentralMapX(map);
         my += getCentralMapY(map);
         if(map.loaded && map.cells.length > 0){
@@ -227,15 +223,15 @@ public abstract class Renderer {
         				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false);
         			}
         			if(AAA_C.debug){
-        				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f, scaled);
-        				drawString(batch, map.cells[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f, scaled);
+        				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f);
+        				drawString(batch, map.cells[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f);
         			}
         		}
         	}
         }else{
-            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, 1.0f, scaled);
+            drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, 1.0f);
         }
-        drawString(batch, mx + ", " + my, getScreenX(), getScreenY(), com10, Color.RED, 1.0f, scaled);
+        drawString(batch, mx + ", " + my, getScreenX(), getScreenY(), com10, Color.RED, 1.0f);
     }
     /*
     public void drawPolygon(ShapeRenderer triangleBatch, Polygon pol[], int x, int y, Color col){

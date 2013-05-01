@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 public abstract class Content {
 	public Content(int x, int y, ContentType type){

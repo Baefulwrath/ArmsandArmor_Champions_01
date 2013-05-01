@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,8 +6,8 @@ import java.util.Scanner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-public class Menuhandler extends Content{
-    public Menuhandler(int x, int y) {
+public class Menuholder extends Content{
+    public Menuholder(int x, int y) {
 		super(x, y, ContentType.MENUHANDLER);
 	}
 

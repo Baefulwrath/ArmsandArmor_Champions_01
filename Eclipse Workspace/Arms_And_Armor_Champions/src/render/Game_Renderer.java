@@ -16,15 +16,19 @@ public class Game_Renderer extends Renderer {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void mobileRender(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true);
-        drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true, true);
+        drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true);
         if(AAA_C.gamePaused){
-            drawMenu(batch, AAA_C.getActiveMenu(), AAA_C.getActiveMenuhandler().X, AAA_C.getActiveMenuhandler().X, false);
+            drawMenu(batch, AAA_C.getActiveMenu(), AAA_C.getActiveMenuhandler().X, AAA_C.getActiveMenuhandler().X);
         }
-        drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, -getScreenY() - 16, com16, Color.RED, 1.0f, false);
-        drawString(batch, "size: " + Worldhandler.getMap().cells.length + ", " + Worldhandler.getMap().cells[0].length, -200, -350, com32, Color.RED, 1.0f, false);
     }
+
+	@Override
+	public void staticRender(SpriteBatch batch) {
+        drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, -getScreenY() - 16, com16, Color.RED, 1.0f);
+        drawString(batch, "size: " + Worldhandler.getMap().cells.length + ", " + Worldhandler.getMap().cells[0].length, -200, -350, com32, Color.RED, 1.0f);
+	}
 
     @Override
     public void specificUpdate() {

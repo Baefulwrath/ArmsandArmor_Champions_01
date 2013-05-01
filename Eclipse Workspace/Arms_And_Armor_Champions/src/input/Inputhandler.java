@@ -14,6 +14,7 @@ import static com.badlogic.gdx.Input.Keys.*;
 public class Inputhandler implements InputProcessor {
 
     public Rectangle mouse = new Rectangle(0, 0, 0, 0);
+    public Rectangle staticMouse = new Rectangle(0, 0, 0, 0);
 
     @Override
     public boolean keyDown(int keycode) {
@@ -185,5 +186,6 @@ public class Inputhandler implements InputProcessor {
     
     public void updateMouse(int screenX, int screenY){
         mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
+        staticMouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
     }
 }

@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 public enum ActivatorType {
     BUTTON, INPUT, TEXT;

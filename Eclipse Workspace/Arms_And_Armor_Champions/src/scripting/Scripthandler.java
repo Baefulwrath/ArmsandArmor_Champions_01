@@ -3,13 +3,14 @@ package scripting;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import menus.Menu;
 
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 import com.rapplebob.ArmsAndArmorChampions.State;
 
 import static com.rapplebob.ArmsAndArmorChampions.AAA_C.*;
 import com.rapplebob.ArmsAndArmorChampions.*;
+
+import containers.Menu;
 
 public class Scripthandler {
 

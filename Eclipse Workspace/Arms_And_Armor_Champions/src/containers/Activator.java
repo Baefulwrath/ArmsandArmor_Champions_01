@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 public class Activator {
     public ActivatorType AT = ActivatorType.BUTTON;

@@ -3,7 +3,6 @@ package com.rapplebob.ArmsAndArmorChampions;
 import java.awt.Rectangle;
 import java.util.Scanner;
 
-import menus.*;
 import render.*;
 import input.*;
 import world.*;
@@ -21,6 +20,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import containers.*;
 
 public class AAA_C implements ApplicationListener {
 	private static OrthographicCamera camera;
@@ -40,8 +41,8 @@ public class AAA_C implements ApplicationListener {
     public static String settings = "";
     public static Rectangle screenRect = new Rectangle(0, 0, (int) w, (int) h);
 
-    public static Main_Menuhandler MMH;
-    public static Game_Menuhandler GMH;
+    public static Main_Menuholder MMH;
+    public static Game_Menuholder GMH;
     
     public static Inputhandler inputhandler;
     
@@ -71,8 +72,8 @@ public class AAA_C implements ApplicationListener {
         Worldhandler.load();
         inputhandler = new Inputhandler();
         input.setInputProcessor(inputhandler);
-        MMH = new Main_Menuhandler();
-        GMH = new Game_Menuhandler();
+        MMH = new Main_Menuholder();
+        GMH = new Game_Menuholder();
         getActiveMenuhandler().openMenuByID("main");
         
         loadSettings();
@@ -113,21 +114,25 @@ public class AAA_C implements ApplicationListener {
     }
 
     public void doRender() {
-//Prepare screen
+        camera.zoom = zoom;
         graphics.getGL10().glClearColor(0, 0.05f, 0.05f, 1.0f);
         graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_STENCIL_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
         graphics.getGL10().glDisable(GL10.GL_CULL_FACE);
-//Prepare rendering tools
         camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-//Begin work
         batch.begin();
-//Get rendering orders
-        //sprite.draw(batch);
-        renderers[activeRenderer].render(batch);
-//End cycle
+        renderers[activeRenderer].mobileRender(batch);
+        batch.end();
+
+        camera.zoom = w;
+        camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.begin();
+        renderers[activeRenderer].staticRender(batch);
         batch.end();
     }
     
@@ -199,7 +204,7 @@ public class AAA_C implements ApplicationListener {
         setRendererByIndex(getRendererIDByState(state));
     }
     
-    public static Menuhandler getActiveMenuhandler(){
+    public static Menuholder getActiveMenuhandler(){
         if(state == State.GAME){
             return GMH;
         }else{
@@ -269,6 +274,7 @@ public class AAA_C implements ApplicationListener {
     
     public static int zoomLimit = 0;
     public static int zoomSpeed = 50;
+    public static float zoom = w;
     
     public static void setZoomLimit(){
     	if(state == State.DEFAULT){
@@ -283,23 +289,23 @@ public class AAA_C implements ApplicationListener {
     }
     
     public static void zoomIn(){
-    	if(camera.zoom - zoomSpeed > 500){
-    		camera.zoom -= zoomSpeed;
+    	if(zoom - zoomSpeed > 500){
+    		zoom -= zoomSpeed;
     	}
     }
     
     public static void zoomOut(){
     	setZoomLimit();
-    	if(camera.zoom + zoomSpeed < zoomLimit){
-    		camera.zoom += zoomSpeed;
+    	if(zoom + zoomSpeed < zoomLimit){
+    		zoom += zoomSpeed;
     	}
     }
     
     public static float getZoom(){
-    	return camera.zoom;
+    	return zoom;
     }
     
     public static float getZoomScale(){
-    	return camera.zoom / w;
+    	return zoom / w;
     }
 }

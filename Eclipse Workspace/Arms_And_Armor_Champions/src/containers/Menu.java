@@ -1,4 +1,4 @@
-package menus;
+package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
