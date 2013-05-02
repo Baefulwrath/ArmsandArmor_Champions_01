@@ -1,3 +1,4 @@
 newState MENU
 debug false
 showGrid true
+windowTrans 1.0

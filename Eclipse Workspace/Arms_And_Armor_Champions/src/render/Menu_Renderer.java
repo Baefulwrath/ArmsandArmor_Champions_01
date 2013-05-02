@@ -1,5 +1,6 @@
 package render;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
@@ -15,7 +16,7 @@ public class Menu_Renderer extends Renderer {
     
     @Override
     public void mobileRender(SpriteBatch batch) {
-    	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true);
+    	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
         if(ConHand.MMH.menus.size() > 0){
             drawMenu(batch, ConHand.MMH.getActiveMenu(), ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y);
         }else{

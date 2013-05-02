@@ -13,6 +13,7 @@ public class ConHand {
     public static Main_Menuholder MMH;
     public static Game_Menuholder GMH;
     public static Container[] cons = new Container[0];
+    public static float windowTransparency = 1.0f;
     
     public static void load(){
         MMH = new Main_Menuholder();

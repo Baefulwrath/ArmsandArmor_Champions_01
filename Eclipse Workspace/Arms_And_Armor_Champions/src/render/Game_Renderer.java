@@ -19,7 +19,7 @@ public class Game_Renderer extends Renderer {
 
     @Override
     public void mobileRender(SpriteBatch batch) {
-    	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true);
+    	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
         drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true);
         if(AAA_C.gamePaused){
             drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().X);
