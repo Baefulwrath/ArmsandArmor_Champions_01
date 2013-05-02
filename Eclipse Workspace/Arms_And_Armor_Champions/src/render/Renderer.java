@@ -37,6 +37,7 @@ public abstract class Renderer {
     public Texture conBack;
     public Texture conFill;
     public Texture conCon;
+    public Texture actBack;
     
     public BitmapFont com64;
     public BitmapFont com32;
@@ -68,6 +69,7 @@ public abstract class Renderer {
     	conBack = new Texture(Gdx.files.internal("data/images/conBack.png"));
     	conFill = new Texture(Gdx.files.internal("data/images/conFill.png"));
     	conCon = new Texture(Gdx.files.internal("data/images/conCon.png"));
+    	actBack = new Texture(Gdx.files.internal("data/images/actBack.png"));
     }
 
     public void drawImage(SpriteBatch batch, Texture img, float x, float y, float scale, int rotation, boolean smooth) {
@@ -278,10 +280,26 @@ public abstract class Renderer {
     }
     
     public void drawContainer(SpriteBatch batch, Container con){
+    	int cenX = con.X + (con.WIDTH / 2);
+    	int cenY = con.Y - (con.HEIGHT / 2);
+    	int conX = cenX;
+    	int conY = con.Y - (con.controlsurface.height / 2);
     	if(con.ACTIVE){
-    		drawImage(batch, conBack, con.X, con.Y, con.WIDTH, con.HEIGHT, 0, false);
-    		drawImage(batch, conFill, con.X, con.Y, con.WIDTH - 2, con.HEIGHT - 2, 0, false);
-    		drawImage(batch, conCon, con.controlsurface.x, con.controlsurface.y, con.controlsurface.width, con.controlsurface.height, 0, true);
+    		drawImage(batch, conBack, cenX, cenY, con.WIDTH + 2, con.HEIGHT + 2, 0, false);
+    		drawImage(batch, conFill, cenX, cenY, con.WIDTH, con.HEIGHT, 0, false);
+    		drawImage(batch, conCon, conX, conY, con.controlsurface.width, con.controlsurface.height, 0, true);
+    		drawString(batch, con.TITLE, con.X, con.Y - 12, com10, Color.RED, 1.0f);
+    		drawActivator(batch, con.EXIT, con.X + con.EXIT.BOX.x, con.Y, false);
     	}
+    }
+    
+    public void drawActivator(SpriteBatch batch, Activator AC, int x, int y, boolean centered){
+    	//If not centered: draw from upper left corner.
+    	if(!centered){
+        	x += AC.BOX.width / 2;
+        	y -= AC.BOX.height / 2;
+    	}
+    	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false);
+    	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, com10, Color.RED, 1.0f);
     }
 }

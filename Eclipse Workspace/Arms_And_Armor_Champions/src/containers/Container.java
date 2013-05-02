@@ -16,9 +16,11 @@ public class Container {
 	public ContainerState STATE = ContainerState.STATIC;
 	public ContainerType TYPE = ContainerType.DEFAULT;
 	public ArrayList<Content> CONTENT = new ArrayList<Content>();
+	public Activator EXIT = new Activator();
 	
 	public void update(){
-		
+		controlsurface = new Rectangle(X, Y + (HEIGHT / 2) - (conSize / 2), WIDTH, conSize);
+		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(WIDTH - conSize, HEIGHT / 2, conSize, conSize));
 	}
 	
 	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type){
@@ -29,13 +31,13 @@ public class Container {
 		Y = y;
 		WIDTH = width;
 		HEIGHT = height;
-		controlsurface = new Rectangle(X, Y + (HEIGHT / 2) - (conSize / 2), WIDTH, conSize);
 		STATE = state;
 		TYPE = type;
 		conSize = controllerSize;
 		if(WIDTH < 50){
 			WIDTH = 50;
 		}
+		update();
 	}
 	
 	public void add(Content C){
@@ -54,7 +56,7 @@ public class Container {
 		if(ACTIVE){
 			X += mx;
 			Y += my;
-			controlsurface = new Rectangle(X, Y - conSize, WIDTH, conSize);
+			update();
 		}
 	}
 }

@@ -68,7 +68,6 @@ public class ConHand {
 	                FileHandle file = Gdx.files.internal(path + files.get(i));
 	                if(file.extension().equals("txt")){
 	                	String text = file.readString();
-	                	System.out.println(text);
 	                	reader = new Scanner(text);
 	                	
 	                	String title = reader.nextLine();

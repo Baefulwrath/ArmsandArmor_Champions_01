@@ -1,5 +1,6 @@
 package containers;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -73,7 +74,7 @@ public class Menuholder extends Content{
 		                        String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 		                        String script = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
 		                        ActivatorType AT = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
-		                        act.set(AT, atitle, script);
+		                        act.set(AT, atitle, script, new Rectangle());
 		                        acts.add(act);
 		                    }
 		                    m.set(ID, title, acts);
