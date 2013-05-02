@@ -41,9 +41,6 @@ public class AAA_C implements ApplicationListener {
     public static String settings = "";
     public static Rectangle screenRect = new Rectangle(0, 0, (int) w, (int) h);
 
-    public static Main_Menuholder MMH;
-    public static Game_Menuholder GMH;
-    
     public static Inputhandler inputhandler;
     
     private Texture texture;
@@ -72,10 +69,8 @@ public class AAA_C implements ApplicationListener {
         Worldhandler.load();
         inputhandler = new Inputhandler();
         input.setInputProcessor(inputhandler);
-        MMH = new Main_Menuholder();
-        GMH = new Game_Menuholder();
-        getActiveMenuhandler().openMenuByID("main");
-        
+        ConHand.load();
+        ConHand.getActiveMenuhandler().openMenuByID("main");
         loadSettings();
         setLoadedSettings();
 	}
@@ -89,7 +84,7 @@ public class AAA_C implements ApplicationListener {
 	public void render() {
         updateRenderers();
         Scripthandler.update();
-        updateMenuhandlers();
+        ConHand.update();
         screenRect = new Rectangle((int) (getActiveRenderer().getScreenX() * getZoomScale()), (int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (w * getZoom()), (int) (h * getZoom()));
         if(newState != state){
             changeState(newState);
@@ -204,26 +199,6 @@ public class AAA_C implements ApplicationListener {
         setRendererByIndex(getRendererIDByState(state));
     }
     
-    public static Menuholder getActiveMenuhandler(){
-        if(state == State.GAME){
-            return GMH;
-        }else{
-            return MMH;
-        }
-    }
-    
-    public static Activator getActiveAct(){
-        return getActiveMenuhandler().getActiveMenu().getActiveActivator();
-    }
-    
-    public static Menu getActiveMenu(){
-        return getActiveMenuhandler().getActiveMenu();
-    }
-    
-    public static void updateMenuhandlers(){
-        MMH.update();
-        GMH.update();
-    }
     
     public static void exit(){
         System.exit(0);

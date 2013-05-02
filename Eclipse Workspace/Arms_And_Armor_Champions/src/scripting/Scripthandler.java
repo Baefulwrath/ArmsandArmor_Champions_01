@@ -10,6 +10,7 @@ import com.rapplebob.ArmsAndArmorChampions.State;
 import static com.rapplebob.ArmsAndArmorChampions.AAA_C.*;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
+import containers.ConHand;
 import containers.Menu;
 
 public class Scripthandler {
@@ -111,12 +112,12 @@ public class Scripthandler {
         }
         if (line.length() > 6) {
             if (cmd.equals("setAA_")) {
-                getActiveMenu().activeAct = Integer.parseInt(line.substring(6));
+            	ConHand.getActiveMenu().activeAct = Integer.parseInt(line.substring(6));
             }
         }
         if (line.length() == 9) {
             if (cmd.equals("activate_")) {
-                handleScript(getActiveAct().script);
+                handleScript(ConHand.getActiveAct().script);
             }
         }
         if (line.length() > 6) {
@@ -151,7 +152,7 @@ public class Scripthandler {
     public static String getActivatorTitleById(String id){
         String title = "";
         String script = "";
-        Menu m = getActiveMenu();
+        Menu m = ConHand.getActiveMenu();
         for(int i = 0; i < m.acts.size(); i++){
             if(m.acts.get(i).script.length() > 3){
                 //id:t måste vara det första kommandot som anges av activatorn.
@@ -177,6 +178,6 @@ public class Scripthandler {
 
     public static void openMenu(String cmd) {
         String id = cmd.substring(cmd.indexOf("_") + 1);
-        getActiveMenuhandler().openMenuByID(id);
+        ConHand.getActiveMenuhandler().openMenuByID(id);
     }
 }

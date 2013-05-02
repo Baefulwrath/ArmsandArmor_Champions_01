@@ -8,7 +8,7 @@ public enum ContentType {
         return super.toString();
     }
 	
-	public ContentType parseState(String state){
+	public static ContentType parseState(String state){
 		ContentType T = DEFAULT;
 		for(int i = 0; i < values().length; i++){
 			if(values()[i].toString().equals(state)){

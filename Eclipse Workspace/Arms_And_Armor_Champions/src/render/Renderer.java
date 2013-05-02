@@ -1,6 +1,7 @@
 package render;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import world.Map;
 import world.Worldhandler;
@@ -19,6 +20,8 @@ import com.rapplebob.ArmsAndArmorChampions.*;
 
 import containers.Activator;
 import containers.ActivatorType;
+import containers.Container;
+import containers.ContainerType;
 import containers.Menu;
 
 public abstract class Renderer {
@@ -31,6 +34,9 @@ public abstract class Renderer {
     public Sprite sprite = new Sprite();
     public Texture grid;
     public Texture background;
+    public Texture conBack;
+    public Texture conFill;
+    public Texture conCon;
     
     public BitmapFont com64;
     public BitmapFont com32;
@@ -59,6 +65,9 @@ public abstract class Renderer {
     public void loadResources(){
     	grid = new Texture(Gdx.files.internal("data/images/grid.png"));
     	background = new Texture(Gdx.files.internal("data/images/defaultBackground.png"));
+    	conBack = new Texture(Gdx.files.internal("data/images/conBack.png"));
+    	conFill = new Texture(Gdx.files.internal("data/images/conFill.png"));
+    	conCon = new Texture(Gdx.files.internal("data/images/conCon.png"));
     }
 
     public void drawImage(SpriteBatch batch, Texture img, float x, float y, float scale, int rotation, boolean smooth) {
@@ -254,5 +263,25 @@ public abstract class Renderer {
     public int getCentralMapY(Map map){
         float y = map.getHeight() / 2;
         return (int) y;
+    }
+    
+    public void drawContainers(SpriteBatch batch, Container[] containers, ContainerType type){
+    	ArrayList<Container> cons = new ArrayList<Container>();
+    	for(int i = 0; i < containers.length; i++){
+    		if(containers[i].TYPE == type){
+    			cons.add(containers[i]);
+    		}
+    	}
+    	for(int i = 0; i < cons.size(); i++){
+    		drawContainer(batch, cons.get(i));
+    	}
+    }
+    
+    public void drawContainer(SpriteBatch batch, Container con){
+    	if(con.ACTIVE){
+    		drawImage(batch, conBack, con.X, con.Y, con.WIDTH, con.HEIGHT, 0, false);
+    		drawImage(batch, conFill, con.X, con.Y, con.WIDTH - 2, con.HEIGHT - 2, 0, false);
+    		drawImage(batch, conCon, con.controlsurface.x, con.controlsurface.y, con.controlsurface.width, con.controlsurface.height, 0, true);
+    	}
     }
 }

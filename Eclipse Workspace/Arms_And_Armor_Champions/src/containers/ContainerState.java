@@ -8,7 +8,7 @@ public enum ContainerState {
         return super.toString();
     }
 	
-	public ContainerState parseState(String state){
+	public static ContainerState parseState(String state){
 		ContainerState T = STATIC;
 		for(int i = 0; i < values().length; i++){
 			if(values()[i].toString().equals(state)){

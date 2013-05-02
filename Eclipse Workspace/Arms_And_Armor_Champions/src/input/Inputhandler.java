@@ -8,6 +8,8 @@ import world.Worldhandler;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.rapplebob.ArmsAndArmorChampions.*;
+
+import containers.ConHand;
 import static com.badlogic.gdx.Input.Keys.*;
 
 
@@ -28,7 +30,7 @@ public class Inputhandler implements InputProcessor {
                     break;
             }
         } else if (AAA_C.state == State.MENU) {
-            if (AAA_C.getActiveMenu().thereAreHighlitActs()) {
+            if (ConHand.getActiveMenu().thereAreHighlitActs()) {
                 /*switch(keycode){
                     case ENTER:
                         Scripthandler.handleScript(Main.getActiveAct().script);
@@ -41,40 +43,40 @@ public class Inputhandler implements InputProcessor {
             } else {
                 switch (keycode) {
                     case UP:
-                    	AAA_C.getActiveMenu().up();
+                    	ConHand.getActiveMenu().up();
                         break;
                     case DOWN:
-                    	AAA_C.getActiveMenu().down();
+                    	ConHand.getActiveMenu().down();
                         break;
                     case ENTER:
-                        Scripthandler.handleScript(AAA_C.getActiveAct().script);
+                        Scripthandler.handleScript(ConHand.getActiveAct().script);
                         break;
                     case NUM_1:
-                    	AAA_C.getActiveMenu().activeAct = 0;
+                    	ConHand.getActiveMenu().activeAct = 0;
                         break;
                     case NUM_2:
-                    	AAA_C.getActiveMenu().activeAct = 1;
+                    	ConHand.getActiveMenu().activeAct = 1;
                         break;
                     case NUM_3:
-                    	AAA_C.getActiveMenu().activeAct = 2;
+                    	ConHand.getActiveMenu().activeAct = 2;
                         break;
                     case NUM_4:
-                    	AAA_C.getActiveMenu().activeAct = 3;
+                    	ConHand.getActiveMenu().activeAct = 3;
                         break;
                     case NUM_5:
-                    	AAA_C.getActiveMenu().activeAct = 4;
+                    	ConHand.getActiveMenu().activeAct = 4;
                         break;
                     case NUM_6:
-                    	AAA_C.getActiveMenu().activeAct = 5;
+                    	ConHand.getActiveMenu().activeAct = 5;
                         break;
                     case NUM_7:
-                    	AAA_C.getActiveMenu().activeAct = 6;
+                    	ConHand.getActiveMenu().activeAct = 6;
                         break;
                     case NUM_8:
-                    	AAA_C.getActiveMenu().activeAct = 7;
+                    	ConHand.getActiveMenu().activeAct = 7;
                         break;
                     case NUM_9:
-                    	AAA_C.getActiveMenu().activeAct = 8;
+                    	ConHand.getActiveMenu().activeAct = 8;
                         break;
                 }
             }
@@ -91,13 +93,13 @@ public class Inputhandler implements InputProcessor {
             if (AAA_C.gamePaused) {
                 switch (keycode) {
                     case UP:
-                    	AAA_C.getActiveMenuhandler().getActiveMenu().up();
+                    	ConHand.getActiveMenuhandler().getActiveMenu().up();
                         break;
                     case DOWN:
-                    	AAA_C.getActiveMenuhandler().getActiveMenu().down();
+                    	ConHand.getActiveMenuhandler().getActiveMenu().down();
                         break;
                     case ENTER:
-                        Scripthandler.handleScript(AAA_C.getActiveAct().script);
+                        Scripthandler.handleScript(ConHand.getActiveAct().script);
                         break;
                 }
             } else {
@@ -144,7 +146,7 @@ public class Inputhandler implements InputProcessor {
         } else if (AAA_C.state == State.MENU) {
             switch (button) {
                 case Buttons.LEFT:
-                    Scripthandler.handleScript(AAA_C.getActiveAct().script);
+                    Scripthandler.handleScript(ConHand.getActiveAct().script);
                     break;
             }
         } else if (AAA_C.state == State.GAME) {
@@ -170,7 +172,7 @@ public class Inputhandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
     	updateMouse(screenX, screenY);
-        AAA_C.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(AAA_C.getActiveMenuhandler().X, AAA_C.getActiveMenuhandler().Y, 0, 0), AAA_C.getActiveRenderer().com32);
+    	ConHand.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y, 0, 0), AAA_C.getActiveRenderer().com32);
         return true;
     }
 

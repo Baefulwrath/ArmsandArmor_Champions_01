@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
+import containers.ConHand;
+import containers.ContainerType;
+
 public class Default_Renderer extends Renderer {
     
     public Texture testImg;
@@ -43,6 +46,7 @@ public class Default_Renderer extends Renderer {
 	public void staticRender(SpriteBatch batch) {
         drawString(batch, "ESC to quit, F1 to return to menus.", getScreenX(), -getScreenY() - 10, com10, Color.RED, 1.0f);
         drawString(batch, "DEFAULT RENDERER", getScreenX(), getScreenY(), com16, Color.RED, 1.0f);
+        drawContainers(batch, ConHand.cons, ContainerType.DEFAULT);
 	}
 
     @Override

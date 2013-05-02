@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
+import containers.ConHand;
+
 public class Game_Renderer extends Renderer {
     public Game_Renderer(){
         ID = "DEFAULT";
@@ -20,7 +22,7 @@ public class Game_Renderer extends Renderer {
     	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true);
         drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true);
         if(AAA_C.gamePaused){
-            drawMenu(batch, AAA_C.getActiveMenu(), AAA_C.getActiveMenuhandler().X, AAA_C.getActiveMenuhandler().X);
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().X);
         }
     }
 
