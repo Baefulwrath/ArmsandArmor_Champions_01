@@ -7,36 +7,30 @@ public class Container {
 	public Rectangle controlsurface = new Rectangle(0, 0, 0, 0);
 	public String TITLE = "";
 	public String ID = "";
-	public int X = 0;
-	public int Y = 0;
-	public int WIDTH = 0;
-	public int HEIGHT = 0;
 	public int conSize = 20;
 	public boolean ACTIVE = false;
 	public ContainerState STATE = ContainerState.STATIC;
 	public ContainerType TYPE = ContainerType.DEFAULT;
 	public ArrayList<Content> CONTENT = new ArrayList<Content>();
 	public Activator EXIT = new Activator();
+	public Rectangle BOX = new Rectangle(0, 0, 0, 0);
 	
 	public void update(){
-		controlsurface = new Rectangle(X, Y + (HEIGHT / 2) - (conSize / 2), WIDTH, conSize);
-		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(WIDTH - conSize, HEIGHT / 2, conSize, conSize));
+		controlsurface = new Rectangle(BOX.x, BOX.y + (BOX.height / 2) - (conSize / 2), BOX.width, conSize);
+		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(BOX.width - conSize, BOX.height / 2, conSize, conSize));
 	}
 	
 	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type){
 		ID = id;
 		TITLE = title;
 		ACTIVE = active;
-		X = x;
-		Y = y;
-		WIDTH = width;
-		HEIGHT = height;
 		STATE = state;
 		TYPE = type;
 		conSize = controllerSize;
-		if(WIDTH < 50){
-			WIDTH = 50;
+		if(width < 50){
+			width = 50;
 		}
+		BOX = new Rectangle(x, y, width, height);
 		update();
 	}
 	
@@ -52,11 +46,19 @@ public class Container {
 		}
 	}
 	
-	public void move(int mx, int my){
+	public void move(int diffX, int diffY){
 		if(ACTIVE){
-			X += mx;
-			Y += my;
+			BOX.x += diffX;
+			BOX.y += diffY;
 			update();
+		}
+	}
+	
+	public boolean collides(Rectangle r){
+		if(r.intersects(BOX)){
+			return true;
+		}else{
+			return false;
 		}
 	}
 }

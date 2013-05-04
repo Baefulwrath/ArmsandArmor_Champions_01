@@ -285,16 +285,16 @@ public abstract class Renderer {
     }
     
     public void drawContainer(SpriteBatch batch, Container con){
-    	int cenX = con.X + (con.WIDTH / 2);
-    	int cenY = con.Y - (con.HEIGHT / 2);
+    	int cenX = con.BOX.x + (con.BOX.width / 2);
+    	int cenY = con.BOX.y - (con.BOX.height / 2);
     	int conX = cenX;
-    	int conY = con.Y - (con.controlsurface.height / 2);
+    	int conY = con.BOX.y - (con.controlsurface.height / 2);
     	if(con.ACTIVE){
-    		drawImage(batch, conBack, cenX, cenY, con.WIDTH + 2, con.HEIGHT + 2, 0, false, Color.WHITE, ConHand.windowTransparency);
-    		drawImage(batch, conFill, cenX, cenY, con.WIDTH, con.HEIGHT, 0, false, Color.WHITE, ConHand.windowTransparency);
+    		drawImage(batch, conBack, cenX, cenY, con.BOX.width + 2, con.BOX.height + 2, 0, false, Color.WHITE, ConHand.windowTransparency);
+    		drawImage(batch, conFill, cenX, cenY, con.BOX.width, con.BOX.height, 0, false, Color.WHITE, ConHand.windowTransparency);
     		drawImage(batch, conCon, conX, conY, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, ConHand.windowTransparency);
-    		drawString(batch, con.TITLE, con.X, con.Y - 12, com10, Color.RED, ConHand.windowTransparency);
-    		drawActivator(batch, con.EXIT, con.X + con.EXIT.BOX.x, con.Y, false, Color.RED, Color.WHITE, ConHand.windowTransparency);
+    		drawString(batch, con.TITLE, con.BOX.x, con.BOX.y - 12, com10, Color.RED, ConHand.windowTransparency);
+    		drawActivator(batch, con.EXIT, con.BOX.x + con.EXIT.BOX.x, con.BOX.y, false, Color.RED, Color.WHITE, ConHand.windowTransparency);
     	}
     }
     

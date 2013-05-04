@@ -1,5 +1,6 @@
 package containers;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -89,5 +90,16 @@ public class ConHand {
     	}catch(Exception ex){
     		ex.printStackTrace(System.out);
     	}
+    }
+    
+    public static boolean collides(Rectangle r, ContainerType type){
+    	boolean temp = false;
+    	for(int i = 0; i < cons.length; i++){
+    		if(cons[i].TYPE == type && cons[i].collides(r)){
+    			temp = true;
+    			break;
+    		}
+    	}
+    	return temp;
     }
 }

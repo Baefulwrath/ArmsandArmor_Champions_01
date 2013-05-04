@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
 import containers.ConHand;
+import containers.ContainerType;
 import static com.badlogic.gdx.Input.Keys.*;
 
 
@@ -81,6 +82,9 @@ public class Inputhandler implements InputProcessor {
                 }
             }
         } else if (AAA_C.state == State.GAME) {
+        	if(ConHand.collides(mouse, ContainerType.GAME)){
+        		
+        	}else{
             switch (keycode) {
                 case ESCAPE:
                     if (AAA_C.gamePaused) {
@@ -118,6 +122,7 @@ public class Inputhandler implements InputProcessor {
                 	break;
                 }
             }
+        	}
         }
         return true;
     }
