@@ -7,11 +7,11 @@ public class ImageButton extends Button{
 	
 	public BufferedImage image;
 
-	public ImageButton(BufferedImage img, String title, String cmd, int x, int y) {
+	public ImageButton(BufferedImage img, String title, String cmd, int x, int y, int width, int height) {
 		super(title, cmd, x, y);
 		// TODO Auto-generated constructor stub
 		image = img;
-		BOX = new Rectangle(x, y, img.getWidth(), img.getHeight());
+		BOX = new Rectangle(x, y, width, height);
 	}
 
 }

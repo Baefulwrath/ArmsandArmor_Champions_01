@@ -54,7 +54,7 @@ public class Cell {
     }
     
     public void mirror(Cell cell){
-    	set(cell.WIDTH);
+    	set(Main.getHexWidth());
     	TERRAIN = cell.TERRAIN;
     	CLIMATE = cell.CLIMATE;
     }

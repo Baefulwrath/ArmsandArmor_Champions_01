@@ -94,7 +94,7 @@ public class Screen extends JPanel{
 						g2d.setPaint(Color.LIGHT_GRAY);
 					}
 					g2d.fill(new Rectangle2D.Float(Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, Main.imgButtons.get(i).BOX.width, Main.imgButtons.get(i).BOX.height));
-					g2d.drawImage(Main.imgButtons.get(i).image, Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, null);
+					g2d.drawImage(Main.imgButtons.get(i).image, Main.imgButtons.get(i).BOX.x, Main.imgButtons.get(i).BOX.y, Main.imgButtons.get(i).BOX.width, Main.imgButtons.get(i).BOX.height, null);
 					g2d.setColor(Color.WHITE);
 					g2d.drawString(Main.imgButtons.get(i).TITLE, Main.imgButtons.get(i).BOX.x + 2, Main.imgButtons.get(i).BOX.y + Main.imgButtons.get(i).BOX.height + 12);
 					g2d.setColor(Color.BLACK);

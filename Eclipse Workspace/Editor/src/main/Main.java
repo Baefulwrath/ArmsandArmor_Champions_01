@@ -43,10 +43,11 @@ public class Main{
 	public static int mousey = 0;
 	public static ArrayList<Button> buttons = new ArrayList<Button>();
 	public static ArrayList<ImageButton> imgButtons = new ArrayList<ImageButton>();
-	public static Brush brush = new Brush(56, 0, 0);
+	public static Brush brush = new Brush(getHexWidth(), 0, 0);
 	public static BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 	public static double zoom = 1.0;
+	public static int hexDiameter = 128;
 	
 	public static void main(String[] args) {
 		init();
@@ -238,10 +239,10 @@ public class Main{
     	try{
     		climateImages.clear();
     		climatemap = ImageIO.read(new File("data/images/climatemap.png"));
-    		int length = climatemap.getWidth() / 64;
+    		int length = climatemap.getWidth() / hexDiameter;
     		for(int i = 0; i < length; i++){
     			ClimateImage CI = new ClimateImage();
-    			BufferedImage img = climatemap.getSubimage(64 * i, 0, 64, 64);
+    			BufferedImage img = climatemap.getSubimage(hexDiameter * i, 0, hexDiameter, hexDiameter);
     			CI.set(img, i);
     			climateImages.add(CI);
     		}
@@ -315,8 +316,8 @@ public class Main{
 
     	
     	imgButtons.clear();
-    	imgButtons.add(new ImageButton(getClimateImageByClimate(brush.CLIMATE), getClimateName(brush.CLIMATE), "changeBrushClimate", 450, 0));
-    	imgButtons.add(new ImageButton(getTerrainImage(brush.TERRAIN), getTerrainName(brush.TERRAIN), "changeBrushTerrain", 600, 0));
+    	imgButtons.add(new ImageButton(getClimateImageByClimate(brush.CLIMATE), getClimateName(brush.CLIMATE), "changeBrushClimate", 450, 0, 64, 64));
+    	imgButtons.add(new ImageButton(getTerrainImage(brush.TERRAIN), getTerrainName(brush.TERRAIN), "changeBrushTerrain", 600, 0, 64, 64));
 
 		for(int i = 0; i < buttons.size(); i++){
 			if(buttons.get(i).BOX.intersects(new Rectangle(mousex, mousey, 1, 1))){
@@ -504,6 +505,10 @@ public class Main{
 			//Main.map.y += (Main.map.getHeight() - (Main.map.getHeight() * 1.1)) / 2;
 			zoom += 0.1;
 		}
+	}
+	
+	public static int getHexWidth(){
+		return (int) (Main.hexDiameter / 1.547);
 	}
 
 }
