@@ -22,11 +22,13 @@ public class Menu_Renderer extends Renderer {
         }else{
             com64.draw(batch, "NO MENUS TO DRAW", getScreenX(), 0);
         }
+        drawString(batch, "+", AAA_C.inputhandler.mouse.x, AAA_C.inputhandler.mouse.y, com16, Color.RED, 1.0f);
     }
 
 	@Override
 	public void staticRender(SpriteBatch batch) {
-		drawContainers(batch, ConHand.cons, ContainerType.MAIN);
+		drawContainers(batch, ContainerType.MAIN);
+        drawString(batch, "+", AAA_C.inputhandler.staticMouse.x, AAA_C.inputhandler.mouse.y, com16, Color.CYAN, 1.0f);
 	}
 
     @Override

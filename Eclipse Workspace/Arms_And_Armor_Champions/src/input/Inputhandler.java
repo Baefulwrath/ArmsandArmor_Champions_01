@@ -42,86 +42,89 @@ public class Inputhandler implements InputProcessor {
                         break;
                 }*/
             } else {
-                switch (keycode) {
-                    case UP:
-                    	ConHand.getActiveMenu().up();
-                        break;
-                    case DOWN:
-                    	ConHand.getActiveMenu().down();
-                        break;
-                    case ENTER:
-                        Scripthandler.handleScript(ConHand.getActiveAct().script);
-                        break;
-                    case NUM_1:
-                    	ConHand.getActiveMenu().activeAct = 0;
-                        break;
-                    case NUM_2:
-                    	ConHand.getActiveMenu().activeAct = 1;
-                        break;
-                    case NUM_3:
-                    	ConHand.getActiveMenu().activeAct = 2;
-                        break;
-                    case NUM_4:
-                    	ConHand.getActiveMenu().activeAct = 3;
-                        break;
-                    case NUM_5:
-                    	ConHand.getActiveMenu().activeAct = 4;
-                        break;
-                    case NUM_6:
-                    	ConHand.getActiveMenu().activeAct = 5;
-                        break;
-                    case NUM_7:
-                    	ConHand.getActiveMenu().activeAct = 6;
-                        break;
-                    case NUM_8:
-                    	ConHand.getActiveMenu().activeAct = 7;
-                        break;
-                    case NUM_9:
-                    	ConHand.getActiveMenu().activeAct = 8;
-                        break;
-                }
+            	if(ConHand.collides(mouse, ContainerType.MAIN)){
+            		System.out.println("fisk");
+            	}else{
+	                switch (keycode) {
+	                    case UP:
+	                    	ConHand.getActiveMenu().up();
+	                        break;
+	                    case DOWN:
+	                    	ConHand.getActiveMenu().down();
+	                        break;
+	                    case ENTER:
+	                        Scripthandler.handleScript(ConHand.getActiveAct().script);
+	                        break;
+	                    case NUM_1:
+	                    	ConHand.getActiveMenu().activeAct = 0;
+	                        break;
+	                    case NUM_2:
+	                    	ConHand.getActiveMenu().activeAct = 1;
+	                        break;
+	                    case NUM_3:
+	                    	ConHand.getActiveMenu().activeAct = 2;
+	                        break;
+	                    case NUM_4:
+	                    	ConHand.getActiveMenu().activeAct = 3;
+	                        break;
+	                    case NUM_5:
+	                    	ConHand.getActiveMenu().activeAct = 4;
+	                        break;
+	                    case NUM_6:
+	                    	ConHand.getActiveMenu().activeAct = 5;
+	                        break;
+	                    case NUM_7:
+	                    	ConHand.getActiveMenu().activeAct = 6;
+	                        break;
+	                    case NUM_8:
+	                    	ConHand.getActiveMenu().activeAct = 7;
+	                        break;
+	                    case NUM_9:
+	                    	ConHand.getActiveMenu().activeAct = 8;
+	                        break;
+	                }
+            	}
             }
         } else if (AAA_C.state == State.GAME) {
         	if(ConHand.collides(mouse, ContainerType.GAME)){
-        		
         	}else{
-            switch (keycode) {
-                case ESCAPE:
-                    if (AAA_C.gamePaused) {
-                    	AAA_C.gamePaused = false;
-                    } else {
-                    	AAA_C.gamePaused = true;
-                    };
-                    break;
-            }
-            if (AAA_C.gamePaused) {
-                switch (keycode) {
-                    case UP:
-                    	ConHand.getActiveMenuhandler().getActiveMenu().up();
-                        break;
-                    case DOWN:
-                    	ConHand.getActiveMenuhandler().getActiveMenu().down();
-                        break;
-                    case ENTER:
-                        Scripthandler.handleScript(ConHand.getActiveAct().script);
-                        break;
-                }
-            } else {
-                switch (keycode) {
-                	case UP:Worldhandler.getMap().y -= Worldhandler.mapSpeed;
-                	break;
-                	case DOWN:Worldhandler.getMap().y += Worldhandler.mapSpeed;
-                	break;
-                	case LEFT:Worldhandler.getMap().x += Worldhandler.mapSpeed;
-                	break;
-                	case RIGHT:Worldhandler.getMap().x -= Worldhandler.mapSpeed;
-                	break;
-                	case SPACE:if(AAA_C.showGrid){AAA_C.showGrid = false;}else{AAA_C.showGrid = true;};
-                	break;
-                	case TAB:if(AAA_C.debug){AAA_C.debug = false;}else{AAA_C.debug = true;};
-                	break;
-                }
-            }
+	            switch (keycode) {
+	                case ESCAPE:
+	                    if (AAA_C.gamePaused) {
+	                    	AAA_C.gamePaused = false;
+	                    } else {
+	                    	AAA_C.gamePaused = true;
+	                    };
+	                    break;
+	            }
+	            if (AAA_C.gamePaused) {
+	                switch (keycode) {
+	                    case UP:
+	                    	ConHand.getActiveMenuhandler().getActiveMenu().up();
+	                        break;
+	                    case DOWN:
+	                    	ConHand.getActiveMenuhandler().getActiveMenu().down();
+	                        break;
+	                    case ENTER:
+	                        Scripthandler.handleScript(ConHand.getActiveAct().script);
+	                        break;
+	                }
+	            } else {
+	                switch (keycode) {
+	                	case UP:Worldhandler.getMap().y -= Worldhandler.mapSpeed;
+	                	break;
+	                	case DOWN:Worldhandler.getMap().y += Worldhandler.mapSpeed;
+	                	break;
+	                	case LEFT:Worldhandler.getMap().x += Worldhandler.mapSpeed;
+	                	break;
+	                	case RIGHT:Worldhandler.getMap().x -= Worldhandler.mapSpeed;
+	                	break;
+	                	case SPACE:if(AAA_C.showGrid){AAA_C.showGrid = false;}else{AAA_C.showGrid = true;};
+	                	break;
+	                	case TAB:if(AAA_C.debug){AAA_C.debug = false;}else{AAA_C.debug = true;};
+	                	break;
+	                }
+	            }
         	}
         }
         return true;
@@ -149,11 +152,15 @@ public class Inputhandler implements InputProcessor {
         		case Buttons.MIDDLE:AAA_C.resetZoom();
             }
         } else if (AAA_C.state == State.MENU) {
-            switch (button) {
-                case Buttons.LEFT:
-                    Scripthandler.handleScript(ConHand.getActiveAct().script);
-                    break;
-            }
+        	if(ConHand.collides(mouse, ContainerType.MAIN)){
+        		
+        	}else{
+	            switch (button) {
+	                case Buttons.LEFT:
+	                    Scripthandler.handleScript(ConHand.getActiveAct().script);
+	                    break;
+	            }
+        	}
         } else if (AAA_C.state == State.GAME) {
             
         }
@@ -193,6 +200,6 @@ public class Inputhandler implements InputProcessor {
     
     public void updateMouse(int screenX, int screenY){
         mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
-        staticMouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
+        staticMouse = new Rectangle(screenX, screenY, 1, 1);
     }
 }

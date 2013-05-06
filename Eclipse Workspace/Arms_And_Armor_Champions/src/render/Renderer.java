@@ -272,15 +272,10 @@ public abstract class Renderer {
         return (int) y;
     }
     
-    public void drawContainers(SpriteBatch batch, Container[] containers, ContainerType type){
-    	ArrayList<Container> cons = new ArrayList<Container>();
-    	for(int i = 0; i < containers.length; i++){
-    		if(containers[i].TYPE == type){
-    			cons.add(containers[i]);
-    		}
-    	}
-    	for(int i = 0; i < cons.size(); i++){
-    		drawContainer(batch, cons.get(i));
+    public void drawContainers(SpriteBatch batch, ContainerType type){
+    	Container[] CA = ConHand.getCons(type);
+    	for(int i = 0; i < CA.length; i++){
+    		drawContainer(batch, CA[i]);
     	}
     }
     

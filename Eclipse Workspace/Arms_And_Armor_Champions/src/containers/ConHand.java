@@ -102,4 +102,18 @@ public class ConHand {
     	}
     	return temp;
     }
+    
+    public static Container[] getCons(ContainerType type){
+    	ArrayList<Container> C = new ArrayList<Container>();
+    	for(int i = 0; i < cons.length; i++){
+    		if(cons[i].TYPE == type){
+    			C.add(cons[i]);
+    		}
+    	}
+    	Container[] CA = new Container[C.size()];
+    	for(int i = 0; i < C.size(); i++){
+    		CA[i] = C.get(i);
+    	}
+    	return CA;
+    }
 }
