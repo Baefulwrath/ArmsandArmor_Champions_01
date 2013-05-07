@@ -48,6 +48,7 @@ public class Main{
 	public static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 	public static double zoom = 1.0;
 	public static int hexDiameter = 128;
+	public static int hexWidth = 110;
 	
 	public static void main(String[] args) {
 		init();
@@ -72,6 +73,7 @@ public class Main{
 		updateButtons();
 		createNewMap();
 		frame.getContentPane().setCursor(cursor);
+		loadSettings();
 	}
 	
 	public static void run(){
@@ -225,10 +227,10 @@ public class Main{
     	try{
     		terrainImages.clear();
     		terrainmap = ImageIO.read(new File("data/images/terrainmap.png"));
-    		int length = terrainmap.getWidth() / 64;
+    		int length = terrainmap.getWidth() / hexDiameter;
     		for(int i = 0; i < length; i++){
     			TerrainImage TI = new TerrainImage();
-    			BufferedImage img = terrainmap.getSubimage(64 * i, 0, 64, 64);
+    			BufferedImage img = terrainmap.getSubimage(hexDiameter * i, 0, hexDiameter, hexDiameter);
     			TI.set(img, i);
     			terrainImages.add(TI);
     		}
@@ -508,7 +510,17 @@ public class Main{
 	}
 	
 	public static int getHexWidth(){
-		return (int) (Main.hexDiameter / 1.547);
+		//return (int) (Main.hexDiameter / 1.547);
+		return hexWidth;
+	}
+	
+	public static void loadSettings(){
+		try{
+			Scanner reader = new Scanner(new File("data/settings.txt"));
+			hexDiameter = Integer.parseInt(reader.nextLine().substring(9));
+			hexWidth = Integer.parseInt(reader.nextLine().substring(6));
+			reader.close();
+		}catch(Exception ex){}
 	}
 
 }

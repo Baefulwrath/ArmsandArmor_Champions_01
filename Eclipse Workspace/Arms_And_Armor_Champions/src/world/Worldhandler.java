@@ -20,6 +20,8 @@ public class Worldhandler {
 	public static ArrayList<Climate> climates = new ArrayList<Climate>();
 	public static Texture terrainmap;
 	public static Texture climatemap;
+    public static int hexDiameter = 128;
+    public static int hexWidth = 110;
     
     public static Map getMap(){
         return maps.get(activeMap);
@@ -51,10 +53,10 @@ public class Worldhandler {
     	try{
     		terrainImages.clear();
     		terrainmap = new Texture(Gdx.files.internal("data/images/terrainmap.png"));
-    		int length = terrainmap.getWidth() / 64;
+    		int length = terrainmap.getWidth() / hexDiameter;
     		for(int i = 0; i < length; i++){
     			TerrainImage TI = new TerrainImage();
-    			TextureRegion img = new TextureRegion(terrainmap, 64 * i, 0, 64, 64);
+    			TextureRegion img = new TextureRegion(terrainmap, hexDiameter * i, 0, hexDiameter, hexDiameter);
     			TI.set(img, i);
     			terrainImages.add(TI);
     		}
@@ -65,10 +67,10 @@ public class Worldhandler {
     	try{
     		climateImages.clear();
     		climatemap = new Texture(Gdx.files.internal("data/images/climatemap.png"));
-    		int length = climatemap.getWidth() / 64;
+    		int length = climatemap.getWidth() / hexDiameter;
     		for(int i = 0; i < length; i++){
     			ClimateImage CI = new ClimateImage();
-    			TextureRegion img = new TextureRegion(climatemap, 64 * i, 0, 64, 64);
+    			TextureRegion img = new TextureRegion(climatemap, hexDiameter * i, 0, hexDiameter, hexDiameter);
     			CI.set(img, i);
     			climateImages.add(CI);
     		}
