@@ -16,16 +16,14 @@ import static com.badlogic.gdx.Gdx.*;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import containers.*;
 
 public class AAA_C implements ApplicationListener {
-	private static OrthographicCamera camera;
-	private static SpriteBatch batch;
+	public static OrthographicCamera camera;
+	public static SpriteBatch batch;
     public static Renderer[] renderers = new Renderer[3];
     public static int activeRenderer = 0;
     public static int fps = 120;
@@ -43,9 +41,6 @@ public class AAA_C implements ApplicationListener {
 
     public static Inputhandler inputhandler;
     
-    private Texture texture;
-	private Sprite sprite;
-    
 	@Override
 	public void create() {
 		w = graphics.getWidth();
@@ -53,17 +48,6 @@ public class AAA_C implements ApplicationListener {
 		camera = new OrthographicCamera(1, h/w);
 		camera.zoom = w;
 		batch = new SpriteBatch();
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(sprite.getWidth(), sprite.getHeight());
-		sprite.setScale(1);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		sprite.setPosition(0, 0);
-		
         loadRenderers();
         setRendererByState(state);
         Worldhandler.load();
@@ -85,7 +69,7 @@ public class AAA_C implements ApplicationListener {
         updateRenderers();
         Scripthandler.update();
         ConHand.update();
-        screenRect = new Rectangle((int) (getActiveRenderer().getScreenX() * getZoomScale()), (int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (w * getZoom()), (int) (h * getZoom()));
+        screenRect = new Rectangle((int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (w * getZoom()), (int) (h * getZoom()));
         if(newState != state){
             changeState(newState);
         }
