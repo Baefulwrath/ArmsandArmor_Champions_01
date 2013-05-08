@@ -29,6 +29,7 @@ public class Menu_Renderer extends Renderer {
 	public void staticRender(SpriteBatch batch) {
 		drawContainers(batch, ContainerType.MAIN);
         drawString(batch, "+", AAA_C.inputhandler.staticMouse.x, AAA_C.inputhandler.mouse.y, com16, Color.CYAN, 1.0f);
+        drawString(batch, AAA_C.inputhandler.staticMouse.x + ", " + AAA_C.inputhandler.staticMouse.y, 200, 200, com16, Color.BLUE, 0.5f);
 	}
 
     @Override
