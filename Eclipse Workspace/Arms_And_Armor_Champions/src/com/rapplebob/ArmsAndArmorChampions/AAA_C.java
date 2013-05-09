@@ -274,4 +274,18 @@ public class AAA_C implements ApplicationListener {
     public static float getZoomScale_In(){
     	return zoom / w - 1;
     }
+    
+    public static ContainerType getCTypeFromState(State st){
+    	ContainerType ty = ContainerType.DEFAULT;
+    	switch(st){
+    		case DEFAULT:ty = ContainerType.DEFAULT;
+    		break;
+    		case MENU:ty = ContainerType.MAIN;
+    		break;
+    		case GAME:ty = ContainerType.GAME;
+    		break;
+    		default:ty = ContainerType.DEFAULT;
+    	}
+    	return ty;
+    }
 }

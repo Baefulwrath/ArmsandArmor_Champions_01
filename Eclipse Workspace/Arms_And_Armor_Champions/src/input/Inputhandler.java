@@ -42,9 +42,6 @@ public class Inputhandler implements InputProcessor {
                         break;
                 }*/
             } else {
-            	if(ConHand.collides(mouse, ContainerType.MAIN)){
-            		System.out.println("fisk");
-            	}else{
 	                switch (keycode) {
 	                    case UP:
 	                    	ConHand.getActiveMenu().up();
@@ -83,11 +80,8 @@ public class Inputhandler implements InputProcessor {
 	                    	ConHand.getActiveMenu().activeAct = 8;
 	                        break;
 	                }
-            	}
             }
         } else if (AAA_C.state == State.GAME) {
-        	if(ConHand.collides(mouse, ContainerType.GAME)){
-        	}else{
 	            switch (keycode) {
 	                case ESCAPE:
 	                    if (AAA_C.gamePaused) {
@@ -125,7 +119,6 @@ public class Inputhandler implements InputProcessor {
 	                	break;
 	                }
 	            }
-        	}
         }
         return true;
     }
@@ -147,28 +140,39 @@ public class Inputhandler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	updateMouse(screenX, screenY);
-        if (AAA_C.state == State.DEFAULT) {
-            switch (button) {
-        		case Buttons.MIDDLE:AAA_C.resetZoom();
-            }
-        } else if (AAA_C.state == State.MENU) {
-        	if(ConHand.collides(mouse, ContainerType.MAIN)){
-        		
-        	}else{
+    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
+    		touchDown_Container(button);
+        }else{
+	        if (AAA_C.state == State.DEFAULT) {
 	            switch (button) {
-	                case Buttons.LEFT:
-	                    Scripthandler.handleScript(ConHand.getActiveAct().script);
-	                    break;
+	        		case Buttons.MIDDLE:AAA_C.resetZoom();
 	            }
-        	}
-        } else if (AAA_C.state == State.GAME) {
-            
-        }
-        switch(button){
-        	case Buttons.MIDDLE:AAA_C.resetZoom();
-        	break;
+	        } else if (AAA_C.state == State.MENU) {
+	        	if(ConHand.collides(mouse, ContainerType.MAIN)){
+	        		
+	        	}else{
+		            switch (button) {
+		                case Buttons.LEFT:
+		                    Scripthandler.handleScript(ConHand.getActiveAct().script);
+		                    break;
+		            }
+	        	}
+	        } else if (AAA_C.state == State.GAME) {
+	            
+	        }
+	        switch(button){
+	        	case Buttons.MIDDLE:AAA_C.resetZoom();
+	        	break;
+	        }
         }
         return true;
+    }
+    
+    public void touchDown_Container(int button){
+    	switch(button){
+	    	case Buttons.LEFT:ConHand.leftClick(staticMouse);
+	    	break;
+    	}
     }
 
     @Override
@@ -184,8 +188,10 @@ public class Inputhandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
     	updateMouse(screenX, screenY);
-    	ConHand.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y, 0, 0), AAA_C.getActiveRenderer().com32);
-        return true;
+    	if(!ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
+    		ConHand.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y, 0, 0), AAA_C.getActiveRenderer().com32);
+    	}
+    	return true;
     }
 
     @Override
@@ -200,6 +206,6 @@ public class Inputhandler implements InputProcessor {
     
     public void updateMouse(int screenX, int screenY){
         mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
-        staticMouse = new Rectangle((int) (screenX + AAA_C.getActiveRenderer().getScreenX()), (int) ((screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale_In()), 1, 1);
+        staticMouse = new Rectangle((int) (screenX + AAA_C.getActiveRenderer().getScreenX()), (int) (-screenY - AAA_C.getActiveRenderer().getScreenY()), 1, 1);
     }
 }

@@ -116,4 +116,17 @@ public class ConHand {
     	}
     	return CA;
     }
+    
+    public static Container getActiveContainer(){
+    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT);
+//Hitta active container
+    	return C;
+    }
+    
+    public static void leftClick(Rectangle r){
+    	System.out.println("LEFT CLICK");
+    	if(r.intersects(getActiveContainer().EXIT.BOX)){
+//Aktivera knapp
+    	}
+    }
 }
