@@ -200,6 +200,6 @@ public class Inputhandler implements InputProcessor {
     
     public void updateMouse(int screenX, int screenY){
         mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
-        staticMouse = new Rectangle((int) (screenX + AAA_C.getActiveRenderer().getScreenX()), (int) (screenY - AAA_C.getActiveRenderer().getScreenY()), 1, 1);
+        staticMouse = new Rectangle((int) (screenX + AAA_C.getActiveRenderer().getScreenX()), (int) ((screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale_In()), 1, 1);
     }
 }

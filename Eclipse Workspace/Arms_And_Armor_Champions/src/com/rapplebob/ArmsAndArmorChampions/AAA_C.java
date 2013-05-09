@@ -270,4 +270,8 @@ public class AAA_C implements ApplicationListener {
     public static float getZoomScale(){
     	return zoom / w;
     }
+    
+    public static float getZoomScale_In(){
+    	return zoom / w - 1;
+    }
 }
