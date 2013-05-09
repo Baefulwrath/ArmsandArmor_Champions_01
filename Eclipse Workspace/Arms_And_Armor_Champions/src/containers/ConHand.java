@@ -13,12 +13,14 @@ public class ConHand {
 
     public static Main_Menuholder MMH;
     public static Game_Menuholder GMH;
+    public static Editor_Menuholder EMH;
     public static Container[] cons = new Container[0];
     public static float windowTransparency = 1.0f;
     
     public static void load(){
         MMH = new Main_Menuholder();
         GMH = new Game_Menuholder();
+        EMH = new Editor_Menuholder();
         loadContainers();
     }
     
@@ -27,7 +29,7 @@ public class ConHand {
     	updateContainers();
     }
     
-    public static Menuholder getActiveMenuhandler(){
+    public static Menuholder getActiveMenuholder(){
         if(AAA_C.state == State.GAME){
             return GMH;
         }else{
@@ -36,11 +38,11 @@ public class ConHand {
     }
     
     public static Activator getActiveAct(){
-        return getActiveMenuhandler().getActiveMenu().getActiveActivator();
+        return getActiveMenuholder().getActiveMenu().getActiveActivator();
     }
     
     public static Menu getActiveMenu(){
-        return getActiveMenuhandler().getActiveMenu();
+        return getActiveMenuholder().getActiveMenu();
     }
     
     public static void updateMenuhandlers(){

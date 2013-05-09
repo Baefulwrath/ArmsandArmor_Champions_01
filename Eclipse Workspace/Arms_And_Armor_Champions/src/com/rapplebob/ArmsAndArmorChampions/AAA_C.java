@@ -24,7 +24,7 @@ import containers.*;
 public class AAA_C implements ApplicationListener {
 	public static OrthographicCamera camera;
 	public static SpriteBatch batch;
-    public static Renderer[] renderers = new Renderer[3];
+    public static Renderer[] renderers = new Renderer[4];
     public static int activeRenderer = 0;
     public static int fps = 120;
     public static long lastRender = 0;
@@ -33,6 +33,7 @@ public class AAA_C implements ApplicationListener {
     public static State newState = State.DEFAULT;
     public static boolean debug = true;
     public static boolean gamePaused = false;
+    public static boolean editorPaused = false;
     public static float w = 1280;
     public static float h = 800;
     public static boolean showGrid = true;
@@ -54,7 +55,7 @@ public class AAA_C implements ApplicationListener {
         inputhandler = new Inputhandler();
         input.setInputProcessor(inputhandler);
         ConHand.load();
-        ConHand.getActiveMenuhandler().openMenuByID("main");
+        ConHand.getActiveMenuholder().openMenuByID("main");
         loadSettings();
         setLoadedSettings();
 	}
@@ -154,6 +155,7 @@ public class AAA_C implements ApplicationListener {
             renderers[0] = new Default_Renderer();
             renderers[1] = new Menu_Renderer();
             renderers[2] = new Game_Renderer();
+            renderers[3] = new Editor_Renderer();
             for(int i = 0; i < renderers.length; i++){
                 renderers[i].loadResources();
                 renderers[i].loadSpecificResources();
@@ -283,6 +285,8 @@ public class AAA_C implements ApplicationListener {
     		case MENU:ty = ContainerType.MAIN;
     		break;
     		case GAME:ty = ContainerType.GAME;
+    		break;
+    		case EDITOR:ty = ContainerType.EDITOR;
     		break;
     		default:ty = ContainerType.DEFAULT;
     	}

@@ -1,0 +1,6 @@
+main
+Editor Paused
+{
+(Continue):unpauseEditor_;[BUTTON]
+(Main Menu):openMenu_exit;[BUTTON]
+}

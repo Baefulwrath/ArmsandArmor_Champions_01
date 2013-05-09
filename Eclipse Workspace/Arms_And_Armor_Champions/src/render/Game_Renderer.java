@@ -13,7 +13,7 @@ import containers.ConHand;
 
 public class Game_Renderer extends Renderer {
     public Game_Renderer(){
-        ID = "DEFAULT";
+        ID = "GAME";
         state = State.GAME;
     }
 
@@ -22,7 +22,7 @@ public class Game_Renderer extends Renderer {
     	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
         drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true);
         if(AAA_C.gamePaused){
-            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().X);
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().X);
         }
     }
 

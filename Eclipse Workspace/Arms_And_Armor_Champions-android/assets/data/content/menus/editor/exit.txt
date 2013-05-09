@@ -1,0 +1,6 @@
+exit
+Close Editor?
+{
+(Yes!):setState_MENU;[BUTTON]
+(Nope.):openMenu_main;[BUTTON]
+}

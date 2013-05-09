@@ -1,7 +1,7 @@
 package com.rapplebob.ArmsAndArmorChampions;
 
 public enum State {
-    DEFAULT, MENU, GAME;
+    DEFAULT, MENU, GAME, EDITOR;
     
     
     @Override

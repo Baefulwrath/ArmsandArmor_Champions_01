@@ -4,6 +4,7 @@ Main Menu
 (New Game):openMenu_newgame;[BUTTON]
 (TEST):openMenu_TEST;[BUTTON]
 (Options):openMenu_options;[BUTTON]
+(Editor):setState_EDITOR;[BUTTON]
 (About):openMenu_about;[BUTTON]
 (DEFAULT STATE):setState_DEFAULT;[BUTTON]
 (Exit):openMenu_exit;[BUTTON]

@@ -94,10 +94,10 @@ public class Inputhandler implements InputProcessor {
 	            if (AAA_C.gamePaused) {
 	                switch (keycode) {
 	                    case UP:
-	                    	ConHand.getActiveMenuhandler().getActiveMenu().up();
+	                    	ConHand.getActiveMenuholder().getActiveMenu().up();
 	                        break;
 	                    case DOWN:
-	                    	ConHand.getActiveMenuhandler().getActiveMenu().down();
+	                    	ConHand.getActiveMenuholder().getActiveMenu().down();
 	                        break;
 	                    case ENTER:
 	                        Scripthandler.handleScript(ConHand.getActiveAct().script);
@@ -119,6 +119,16 @@ public class Inputhandler implements InputProcessor {
 	                	break;
 	                }
 	            }
+        } else if (AAA_C.state == State.EDITOR) {
+            switch (keycode) {
+            case ESCAPE:
+                if (AAA_C.editorPaused) {
+                	AAA_C.editorPaused = false;
+                } else {
+                	AAA_C.editorPaused = true;
+                };
+                break;
+            }
         }
         return true;
     }
@@ -148,17 +158,19 @@ public class Inputhandler implements InputProcessor {
 	        		case Buttons.MIDDLE:AAA_C.resetZoom();
 	            }
 	        } else if (AAA_C.state == State.MENU) {
-	        	if(ConHand.collides(mouse, ContainerType.MAIN)){
-	        		
-	        	}else{
-		            switch (button) {
-		                case Buttons.LEFT:
-		                    Scripthandler.handleScript(ConHand.getActiveAct().script);
-		                    break;
-		            }
-	        	}
+	        	switch (button) {
+		            case Buttons.LEFT:
+		                Scripthandler.handleScript(ConHand.getActiveAct().script);
+		                break;
+		        }
 	        } else if (AAA_C.state == State.GAME) {
 	            
+	        } else if (AAA_C.state == State.EDITOR) {
+		        switch (button) {
+	                case Buttons.LEFT:
+	                	Scripthandler.handleScript(ConHand.getActiveAct().script);
+	                	break;
+		        }
 	        }
 	        switch(button){
 	        	case Buttons.MIDDLE:AAA_C.resetZoom();
@@ -189,7 +201,7 @@ public class Inputhandler implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
     	updateMouse(screenX, screenY);
     	if(!ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
-    		ConHand.getActiveMenuhandler().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y, 0, 0), AAA_C.getActiveRenderer().com32);
+    		ConHand.getActiveMenuholder().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, 0, 0), AAA_C.getActiveRenderer().com32);
     	}
     	return true;
     }

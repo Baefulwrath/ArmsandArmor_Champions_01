@@ -9,7 +9,7 @@ import containers.ContainerType;
 
 public class Menu_Renderer extends Renderer {
     public Menu_Renderer(){
-        ID = "DEFAULT";
+        ID = "MENU";
         state = State.MENU;
     }
 
@@ -18,7 +18,7 @@ public class Menu_Renderer extends Renderer {
     public void mobileRender(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
         if(ConHand.MMH.menus.size() > 0){
-            drawMenu(batch, ConHand.MMH.getActiveMenu(), ConHand.getActiveMenuhandler().X, ConHand.getActiveMenuhandler().Y);
+            drawMenu(batch, ConHand.MMH.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
         }else{
             com64.draw(batch, "NO MENUS TO DRAW", getScreenX(), 0);
         }
@@ -27,8 +27,6 @@ public class Menu_Renderer extends Renderer {
 	@Override
 	public void staticRender(SpriteBatch batch) {
 		drawContainers(batch, ContainerType.MAIN);
-        drawString(batch, "+", AAA_C.inputhandler.staticMouse.x, AAA_C.inputhandler.staticMouse.y, com16, Color.CYAN, 0.1f);
-        drawString(batch, AAA_C.inputhandler.staticMouse.x + ", " + AAA_C.inputhandler.staticMouse.y, 200, 200, com16, Color.BLUE, 0.5f);
 	}
 
     @Override

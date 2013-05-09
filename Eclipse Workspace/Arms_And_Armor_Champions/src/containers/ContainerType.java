@@ -1,7 +1,7 @@
 package containers;
 
 public enum ContainerType {
-	DEFAULT, MAIN, GAME;
+	DEFAULT, MAIN, GAME, EDITOR;
 
     @Override
     public String toString() {

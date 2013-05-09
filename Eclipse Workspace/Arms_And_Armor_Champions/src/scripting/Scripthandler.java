@@ -142,6 +142,11 @@ public class Scripthandler {
                 gamePaused = false;
             }
         }
+        if (line.length() == 9) {
+            if (cmd.equals("unpauseEditor_")) {
+                editorPaused = false;
+            }
+        }
         if (line.length() > 9) {
             if (cmd.equals("setState_")) {
                 setState(line.substring(9));
@@ -178,6 +183,6 @@ public class Scripthandler {
 
     public static void openMenu(String cmd) {
         String id = cmd.substring(cmd.indexOf("_") + 1);
-        ConHand.getActiveMenuhandler().openMenuByID(id);
+        ConHand.getActiveMenuholder().openMenuByID(id);
     }
 }
