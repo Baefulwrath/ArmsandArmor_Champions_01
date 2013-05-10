@@ -152,6 +152,11 @@ public class Scripthandler {
                 setState(line.substring(9));
             }
         }
+        if (line.length() > 10) {
+            if (cmd.equals("switchCon_")) {
+            	switchContainer(cmd.substring(10));
+            }
+        }
     }
     
     public static String getActivatorTitleById(String id){
@@ -184,5 +189,13 @@ public class Scripthandler {
     public static void openMenu(String cmd) {
         String id = cmd.substring(cmd.indexOf("_") + 1);
         ConHand.getActiveMenuholder().openMenuByID(id);
+    }
+    
+    public static void switchContainer(String ID){
+    	if(ConHand.getContainer(ID).ACTIVE){
+    		ConHand.getContainer(ID).ACTIVE = false;
+    	}else{
+    		ConHand.getContainer(ID).ACTIVE = true;
+    	}
     }
 }

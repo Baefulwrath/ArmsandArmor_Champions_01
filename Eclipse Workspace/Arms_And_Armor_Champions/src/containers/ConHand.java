@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import scripting.Scripthandler;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
@@ -143,7 +145,12 @@ public class ConHand {
     
     public static Container getActiveContainer(){
     	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, true, 1.0f, true);
-//Hitta active container
+    	for(int i = 0; i < cons.length; i++){
+    		if(cons[i].BOX.intersects(AAA_C.inputhandler.staticMouse)){
+    			C = cons[i];
+    			break;
+    		}
+    	}
     	return C;
     }
     
@@ -164,9 +171,20 @@ public class ConHand {
     public static boolean leftClick_Decoration(Rectangle r){
     	boolean clicked = false;
     	if(r.intersects(getActiveContainer().EXIT.BOX)){
-//Aktivera knapp
+    		Scripthandler.handleScript(getActiveContainer().EXIT.script);
     		clicked = true;
     	}
     	return clicked;
+    }
+    
+    public static Container getContainer(String ID){
+    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, true, 1.0f, true);
+    	for(int i = 0; i < cons.length; i++){
+    		if(cons[i].ID.equals(ID)){
+    			C = cons[i];
+    			break;
+    		}
+    	}
+    	return C;
     }
 }

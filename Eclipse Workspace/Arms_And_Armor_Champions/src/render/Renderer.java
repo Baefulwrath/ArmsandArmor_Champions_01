@@ -139,9 +139,9 @@ public abstract class Renderer {
     }
     
     private void actualDrawImage(SpriteBatch batch){
-    	if(onScreen(sprite)){
+    	//if(onScreen(sprite)){
     		sprite.draw(batch);
-    	}
+    	//}
     }
     
     public boolean onScreen(Sprite spr){
@@ -307,7 +307,11 @@ public abstract class Renderer {
         	x += AC.BOX.width / 2;
         	y -= AC.BOX.height / 2;
     	}
-    	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity);
+    	if(AC.textured){
+    		drawImage(batch, AC.TEX, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity);
+    	}else{
+        	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity);
+    	}
     	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, com10, col, opacity);
     }
 }
