@@ -28,4 +28,21 @@ public class Activator {
         TEX = tex;
         textured = true;
     }
+    
+    public boolean intersects(Rectangle r, int x, int y){
+    	boolean temp = false;
+    	Rectangle box = new Rectangle(BOX.x + x, BOX.y + y, BOX.width, BOX.height);
+    	if(r.intersects(box)){
+    		temp = true;
+    	}
+    	return temp;
+    }
+    
+    public boolean intersects(Rectangle r){
+    	boolean temp = false;
+    	if(r.intersects(BOX)){
+    		temp = true;
+    	}
+    	return temp;
+    }
 }

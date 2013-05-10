@@ -3,6 +3,8 @@ package containers;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import com.rapplebob.ArmsAndArmorChampions.AAA_C;
+
 public class Container {
 	public Rectangle controlsurface = new Rectangle(0, 0, 0, 0);
 	public String TITLE = "";
@@ -13,7 +15,7 @@ public class Container {
 	public ContainerType TYPE = ContainerType.DEFAULT;
 	public ArrayList<Content> CONTENT = new ArrayList<Content>();
 	public Activator EXIT = new Activator();
-	public Rectangle BOX = new Rectangle(0, 0, 0, 0);
+	private Rectangle BOX = new Rectangle(0, 0, 0, 0);
 	public Alignment ALIGNMENT = Alignment.CENTER;
 	public boolean DECORATED = true;
 	public float TRANSPARENCY = 1.0f;
@@ -68,5 +70,9 @@ public class Container {
 		}else{
 			return false;
 		}
+	}
+	
+	public Rectangle getBox(){
+		return new Rectangle(BOX.x + Alignment.getX(AAA_C.w, ALIGNMENT), BOX.y + Alignment.getY(AAA_C.h, ALIGNMENT), BOX.width, BOX.height);
 	}
 }

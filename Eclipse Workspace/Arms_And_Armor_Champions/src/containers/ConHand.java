@@ -146,7 +146,7 @@ public class ConHand {
     public static Container getActiveContainer(){
     	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, true, 1.0f, true);
     	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].BOX.intersects(AAA_C.inputhandler.staticMouse)){
+    		if(cons[i].getBox().intersects(AAA_C.inputhandler.staticMouse)){
     			C = cons[i];
     			break;
     		}
@@ -170,7 +170,15 @@ public class ConHand {
     
     public static boolean leftClick_Decoration(Rectangle r){
     	boolean clicked = false;
-    	if(r.intersects(getActiveContainer().EXIT.BOX)){
+    	Container con = getActiveContainer();
+    	int botX = con.getBox().x;
+    	int botY = con.getBox().y;
+    	int topY = con.getBox().y + con.getBox().height;
+    	int cenX = botX + (con.getBox().width / 2);
+    	int cenY = botY + (con.getBox().height / 2);
+    	int conX = cenX;
+    	int conY = topY - (con.controlsurface.height / 2);
+    	if(con.EXIT.intersects(r, botX, topY)){
     		Scripthandler.handleScript(getActiveContainer().EXIT.script);
     		clicked = true;
     	}
