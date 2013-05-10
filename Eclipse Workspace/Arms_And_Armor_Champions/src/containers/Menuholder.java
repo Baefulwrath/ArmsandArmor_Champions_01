@@ -6,14 +6,18 @@ import java.util.Scanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.rapplebob.ArmsAndArmorChampions.State;
 
 public class Menuholder extends Content{
-    public Menuholder(int x, int y) {
+    public Menuholder(String name, int x, int y) {
 		super(x, y, ContentType.MENUHANDLER);
+		NAME = name;
 	}
 
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
     public int activeMenu = 0;
+    public State gameState = State.DEFAULT;
+    public String NAME = "";
     
     public void openMenuByID(String ID){
         for(int i = 0; i < menus.size(); i++){

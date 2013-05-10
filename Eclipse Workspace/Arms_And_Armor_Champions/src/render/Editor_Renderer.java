@@ -19,7 +19,7 @@ public class Editor_Renderer extends Renderer {
 	public void mobileRender(SpriteBatch batch) {
 		drawString(batch, "Map", 0.0f, 0.0f, com10, Color.RED, 1.0f);
         if(AAA_C.editorPaused){
-            drawMenu(batch, ConHand.EMH.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
         }
 	}
 

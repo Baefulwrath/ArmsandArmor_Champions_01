@@ -20,6 +20,7 @@ import com.rapplebob.ArmsAndArmorChampions.*;
 
 import containers.Activator;
 import containers.ActivatorType;
+import containers.Alignment;
 import containers.ConHand;
 import containers.Container;
 import containers.ContainerType;
@@ -280,19 +281,23 @@ public abstract class Renderer {
     }
     
     public void drawContainer(SpriteBatch batch, Container con){
-    	int botX = con.BOX.x;
-    	int botY = con.BOX.y;
-    	int topY = con.BOX.y + con.BOX.height;
+    	int botX = con.BOX.x + Alignment.getX(AAA_C.w, con.ALIGNMENT);
+    	int botY = con.BOX.y + Alignment.getY(AAA_C.h, con.ALIGNMENT);
+    	int topY = con.BOX.y + con.BOX.height + Alignment.getY(AAA_C.h, con.ALIGNMENT);
     	int cenX = botX + (con.BOX.width / 2);
     	int cenY = botY + (con.BOX.height / 2);
     	int conX = cenX;
     	int conY = topY - (con.controlsurface.height / 2);
     	if(con.ACTIVE){
-    		drawImage(batch, conBack, cenX, cenY, con.BOX.width + 2, con.BOX.height + 2, 0, false, Color.WHITE, ConHand.windowTransparency);
-    		drawImage(batch, conFill, cenX, cenY, con.BOX.width, con.BOX.height, 0, false, Color.WHITE, ConHand.windowTransparency);
-    		drawImage(batch, conCon, conX, conY, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, ConHand.windowTransparency);
-    		drawString(batch, con.TITLE, botX, topY - 12, com10, Color.RED, ConHand.windowTransparency);
-    		drawActivator(batch, con.EXIT, botX + con.EXIT.BOX.x, topY, false, Color.RED, Color.WHITE, ConHand.windowTransparency);
+    		if(con.BACKGROUND){
+    			drawImage(batch, conBack, cenX, cenY, con.BOX.width + 2, con.BOX.height + 2, 0, false, Color.WHITE, con.TRANSPARENCY);
+    			drawImage(batch, conFill, cenX, cenY, con.BOX.width, con.BOX.height, 0, false, Color.WHITE, con.TRANSPARENCY);
+    		}
+    		if(con.DECORATED){
+    			drawImage(batch, conCon, conX, conY, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, con.TRANSPARENCY);
+        		drawString(batch, con.TITLE, botX, topY - 12, com10, Color.RED, con.TRANSPARENCY);
+        		drawActivator(batch, con.EXIT, botX + con.EXIT.BOX.x, topY, false, Color.RED, Color.WHITE, con.TRANSPARENCY);
+    		}
     	}
     }
     

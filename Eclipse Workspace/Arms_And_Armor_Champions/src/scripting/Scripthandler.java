@@ -142,7 +142,7 @@ public class Scripthandler {
                 gamePaused = false;
             }
         }
-        if (line.length() == 9) {
+        if (line.length() == 14) {
             if (cmd.equals("unpauseEditor_")) {
                 editorPaused = false;
             }

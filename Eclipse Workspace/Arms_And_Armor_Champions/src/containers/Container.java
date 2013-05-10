@@ -14,13 +14,17 @@ public class Container {
 	public ArrayList<Content> CONTENT = new ArrayList<Content>();
 	public Activator EXIT = new Activator();
 	public Rectangle BOX = new Rectangle(0, 0, 0, 0);
+	public Alignment ALIGNMENT = Alignment.CENTER;
+	public boolean DECORATED = true;
+	public float TRANSPARENCY = 1.0f;
+	public boolean BACKGROUND = true;
 	
 	public void update(){
 		controlsurface = new Rectangle(BOX.x, BOX.y + (BOX.height / 2) - (conSize / 2), BOX.width, conSize);
 		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(BOX.width - conSize, BOX.height / 2, conSize, conSize));
 	}
 	
-	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type){
+	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type, Alignment alig, boolean decorated, float trans, boolean background){
 		ID = id;
 		TITLE = title;
 		ACTIVE = active;
@@ -31,6 +35,10 @@ public class Container {
 			width = 50;
 		}
 		BOX = new Rectangle(x, y, width, height);
+		ALIGNMENT = alig;
+		DECORATED = decorated;
+		TRANSPARENCY = trans;
+		BACKGROUND = background;
 		update();
 	}
 	

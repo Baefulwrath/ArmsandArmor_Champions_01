@@ -193,6 +193,9 @@ public class AAA_C implements ApplicationListener {
     public static void changeState(State s){
         setRendererByState(s);
         state = newState;
+        editorPaused = false;
+        gamePaused = false;
+        ConHand.resetMenuholders();
         resetZoom();
     }
     
@@ -235,6 +238,9 @@ public class AAA_C implements ApplicationListener {
     public static void resetZoom(){
     	camera.zoom = w;
     }
+    public static void resetActualZoom(){
+    	zoom = w;
+    }
     
     public static int zoomLimit = 0;
     public static int zoomSpeed = 50;
@@ -246,6 +252,8 @@ public class AAA_C implements ApplicationListener {
     	}else if(state == State.MENU){
     		zoomLimit = (int) (w * 1.1);
     	}else if(state == State.GAME){
+    		zoomLimit = (int) (w * 2);
+    	}else if(state == State.EDITOR){
     		zoomLimit = (int) (w * 2);
     	}else{
     		zoomLimit = 0;

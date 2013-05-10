@@ -129,6 +129,25 @@ public class Inputhandler implements InputProcessor {
                 };
                 break;
             }
+            if (AAA_C.editorPaused) {
+                switch (keycode) {
+                    case UP:
+                    	ConHand.getActiveMenuholder().getActiveMenu().up();
+                        break;
+                    case DOWN:
+                    	ConHand.getActiveMenuholder().getActiveMenu().down();
+                        break;
+                    case ENTER:
+                        Scripthandler.handleScript(ConHand.getActiveAct().script);
+                        break;
+                }
+            } else {
+            	
+            }
+        }
+        switch (keycode) {
+        	case Z:AAA_C.resetActualZoom();
+        	break;
         }
         return true;
     }
@@ -164,13 +183,21 @@ public class Inputhandler implements InputProcessor {
 		                break;
 		        }
 	        } else if (AAA_C.state == State.GAME) {
-	            
+	        	if(AAA_C.gamePaused){
+			        switch (button) {
+		                case Buttons.LEFT:
+		                	Scripthandler.handleScript(ConHand.getActiveAct().script);
+		                	break;
+			        }
+	        	}
 	        } else if (AAA_C.state == State.EDITOR) {
-		        switch (button) {
-	                case Buttons.LEFT:
-	                	Scripthandler.handleScript(ConHand.getActiveAct().script);
-	                	break;
-		        }
+	        	if(AAA_C.editorPaused){
+			        switch (button) {
+		                case Buttons.LEFT:
+		                	Scripthandler.handleScript(ConHand.getActiveAct().script);
+		                	break;
+			        }
+	        	}
 	        }
 	        switch(button){
 	        	case Buttons.MIDDLE:AAA_C.resetZoom();
