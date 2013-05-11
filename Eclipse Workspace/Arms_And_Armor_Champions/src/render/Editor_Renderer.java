@@ -17,6 +17,7 @@ public class Editor_Renderer extends Renderer {
 
 	@Override
 	public void mobileRender(SpriteBatch batch) {
+    	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f, true);
 		drawString(batch, "Map", 0.0f, 0.0f, com10, Color.RED, 1.0f);
         if(AAA_C.editorPaused){
             drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);

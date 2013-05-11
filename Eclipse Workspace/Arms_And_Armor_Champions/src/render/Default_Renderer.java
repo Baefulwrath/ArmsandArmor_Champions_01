@@ -21,14 +21,14 @@ public class Default_Renderer extends Renderer {
     private int rot = 0;
     
     public void mobileRender(SpriteBatch batch) {
-    	drawImage(batch, background, 0.0f, 0.0f, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
+    	drawImage(batch, background, 0.0f, 0.0f, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f, true);
         if(rot < 360){
             rot++;
         }else{
             rot = 0;
         }
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        drawImage(batch, testImg, 0, 0, 20, rot, false, Color.WHITE, 1.0f);
+        drawImage(batch, testImg, 0, 0, 20, rot, false, Color.WHITE, 1.0f, false);
         if(AAA_C.debug){
 	        com10.draw(batch,  AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, -getScreenY() - 10);
 	        com64.draw(batch, "com64", 0, 0);

@@ -171,14 +171,9 @@ public class ConHand {
     public static boolean leftClick_Decoration(Rectangle r){
     	boolean clicked = false;
     	Container con = getActiveContainer();
-    	int botX = con.getBox().x;
-    	int botY = con.getBox().y;
-    	int topY = con.getBox().y + con.getBox().height;
-    	int cenX = botX + (con.getBox().width / 2);
-    	int cenY = botY + (con.getBox().height / 2);
-    	int conX = cenX;
-    	int conY = topY - (con.controlsurface.height / 2);
-    	if(con.EXIT.intersects(r, botX, topY)){
+    	int x = con.getBox().x;
+    	int y = con.getBox().y;
+    	if(con.EXIT.intersects(r, x, y)){
     		Scripthandler.handleScript(getActiveContainer().EXIT.script);
     		clicked = true;
     	}

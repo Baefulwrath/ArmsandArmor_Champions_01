@@ -16,7 +16,7 @@ public class Menu_Renderer extends Renderer {
     
     @Override
     public void mobileRender(SpriteBatch batch) {
-    	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f);
+    	drawImage(batch, background, 0, 0, (int) AAA_C.getZoom(), (int) AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f, true);
         if(ConHand.getActiveMenuholder().menus.size() > 0){
             drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
         }else{

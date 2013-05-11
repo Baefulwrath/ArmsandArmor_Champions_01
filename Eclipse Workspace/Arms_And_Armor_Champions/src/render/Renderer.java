@@ -74,11 +74,15 @@ public abstract class Renderer {
     	actBack = new Texture(Gdx.files.internal("data/images/actBack.png"));
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float scale, int rotation, boolean smooth, Color tint, float opacity) {
+    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float scale, int rotation, boolean smooth, Color tint, float opacity, boolean centered) {
     	if(smooth){
         	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
         	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	if(!centered){
+    		x += img.getWidth() / 2;
+    		y += img.getHeight() / 2;
     	}
     	sprite = new Sprite(img);
     	sprite.setSize(sprite.getWidth(), sprite.getHeight());
@@ -90,11 +94,15 @@ public abstract class Renderer {
     	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float width, float height, int rotation, boolean smooth, Color tint, float opacity) {
+    public void drawImage(SpriteBatch batch, Texture img, float x, float y, float width, float height, int rotation, boolean smooth, Color tint, float opacity, boolean centered) {
     	if(smooth){
         	img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
         	img.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	if(!centered){
+    		x += width / 2;
+    		y += height / 2;
     	}
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
@@ -106,11 +114,15 @@ public abstract class Renderer {
     	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float scale, int rotation, boolean smooth, Color tint, float opacity) {
+    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float scale, int rotation, boolean smooth, Color tint, float opacity, boolean centered) {
     	if(smooth){
         	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
         	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	if(!centered){
+    		x += img.getRegionWidth() / 2;
+    		y += img.getRegionHeight() / 2;
     	}
     	sprite = new Sprite(img);
     	sprite.setSize(sprite.getWidth(), sprite.getHeight());
@@ -122,11 +134,15 @@ public abstract class Renderer {
     	actualDrawImage(batch);
     }
 
-    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float width, float height, int rotation, boolean smooth, Color tint, float opacity) {
+    public void drawImage(SpriteBatch batch, TextureRegion img, float x, float y, float width, float height, int rotation, boolean smooth, Color tint, float opacity, boolean centered) {
     	if(smooth){
         	img.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	}else{
         	img.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    	}
+    	if(!centered){
+    		x += width / 2;
+    		y += height / 2;
     	}
     	sprite = new Sprite(img);
     	sprite.setSize(1, 1);
@@ -234,10 +250,10 @@ public abstract class Renderer {
         if(map.loaded && map.cells.length > 0){
         	for(int x = 0; x < map.cells.length; x++){
         		for(int y = 0; y < map.cells[x].length; y++){
-        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f);
-        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f);
+        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
         			if(AAA_C.showGrid){
-        				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f);
+        				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
         			}
         			if(AAA_C.debug){
         				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f);
@@ -281,22 +297,17 @@ public abstract class Renderer {
     }
     
     public void drawContainer(SpriteBatch batch, Container con){
-    	int botX = con.getBox().x;
-    	int botY = con.getBox().y;
-    	int topY = con.getBox().y + con.getBox().height;
-    	int cenX = botX + (con.getBox().width / 2);
-    	int cenY = botY + (con.getBox().height / 2);
-    	int conX = cenX;
-    	int conY = topY - (con.controlsurface.height / 2);
+    	int x = con.getBox().x;
+    	int y = con.getBox().y;
     	if(con.ACTIVE){
     		if(con.BACKGROUND){
-    			drawImage(batch, conBack, cenX, cenY, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY);
-    			drawImage(batch, conFill, cenX, cenY, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY);
+    			drawImage(batch, conBack, x, y, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY, false);
+    			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
     		if(con.DECORATED){
-    			drawImage(batch, conCon, conX, conY, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, con.TRANSPARENCY);
-        		drawString(batch, con.TITLE, botX, topY - 12, com10, Color.RED, con.TRANSPARENCY);
-        		drawActivator(batch, con.EXIT, botX + con.EXIT.BOX.x, topY, false, Color.RED, Color.WHITE, con.TRANSPARENCY);
+    			drawImage(batch, conCon, x, y, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
+        		drawString(batch, con.TITLE, x, y - 12, com10, Color.RED, con.TRANSPARENCY);
+        		drawActivator(batch, con.EXIT, x + con.EXIT.BOX.x, y + con.EXIT.BOX.y, false, Color.RED, Color.WHITE, con.TRANSPARENCY);
     		}
     	}
     }
@@ -305,12 +316,12 @@ public abstract class Renderer {
     	//If not centered: draw from upper left corner.
     	if(!centered){
         	x += AC.BOX.width / 2;
-        	y -= AC.BOX.height / 2;
+        	y += AC.BOX.height / 2;
     	}
     	if(AC.textured){
-    		drawImage(batch, AC.TEX, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity);
+    		drawImage(batch, AC.TEX, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, false);
     	}else{
-        	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity);
+        	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, false);
     	}
     	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, com10, col, opacity);
     }

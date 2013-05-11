@@ -32,6 +32,7 @@ public class Activator {
     public boolean intersects(Rectangle r, int x, int y){
     	boolean temp = false;
     	Rectangle box = new Rectangle(BOX.x + x, BOX.y + y, BOX.width, BOX.height);
+    	System.out.println(r.x + ", " + r.y + ", " + r.width + ", " + r.height + " :: " + box.x + ", " + box.y + ", " + box.width + ", " + box.height);
     	if(r.intersects(box)){
     		temp = true;
     	}
