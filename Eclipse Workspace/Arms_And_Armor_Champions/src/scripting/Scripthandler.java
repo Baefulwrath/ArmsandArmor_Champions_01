@@ -154,7 +154,7 @@ public class Scripthandler {
         }
         if (line.length() > 10) {
             if (cmd.equals("switchCon_")) {
-            	switchContainer(cmd.substring(10));
+            	switchContainer(line.substring(10));
             }
         }
     }

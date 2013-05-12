@@ -1,15 +1,16 @@
 titl Test Container 2
-idid test
+idid test2
 acti true
 xval 0
-yval 0
-widt 1280
-heig 200
+yval 100
+widt 200
+heig -100
 conh 20
 stat STATIC
 type EDITOR
 alig BOTTOM_LEFT
-deco false
+fill HEIGHT
+deco true
 tran 1.0
 back true
 # content (list)

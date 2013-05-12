@@ -105,10 +105,11 @@ public class ConHand {
 	                	ContainerState state = ContainerState.parseState(reader.nextLine().substring(5));
 	                	ContainerType type = ContainerType.parseState(reader.nextLine().substring(5));
 	                	Alignment alig = Alignment.parseAlignment(reader.nextLine().substring(5));
+	                	Fill fill = Fill.parseFill(reader.nextLine().substring(5));
 	                	boolean decorated = Boolean.parseBoolean(reader.nextLine().substring(5));
 	                	float transparency = Float.parseFloat(reader.nextLine().substring(5));
 	                	boolean back = Boolean.parseBoolean(reader.nextLine().substring(5));
-	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, decorated, transparency, back);
+	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, fill, decorated, transparency, back);
 	                	cons[i] = CT;
 	                }
 	            }
@@ -144,9 +145,9 @@ public class ConHand {
     }
     
     public static Container getActiveContainer(){
-    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, true, 1.0f, true);
+    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, Fill.NONE, true, 1.0f, false);
     	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].getBox().intersects(AAA_C.inputhandler.staticMouse)){
+    		if(cons[i].getBox().intersects(AAA_C.inputhandler.staticMouse) && cons[i].ACTIVE){
     			C = cons[i];
     			break;
     		}
@@ -155,15 +156,13 @@ public class ConHand {
     }
     
     public static void leftClick(Rectangle r){
-    	System.out.println("LEFT CLICK");
     	if(getActiveContainer().ACTIVE){
     		boolean deco = false;
     		if(getActiveContainer().DECORATED){
     			deco = leftClick_Decoration(r);
-    		}else{
-    			if(!deco){
-    				//Testa content buttons
-    			}
+    		}
+    		if(!deco){
+    			//Testa content buttons
     		}
     	}
     }
@@ -173,6 +172,7 @@ public class ConHand {
     	Container con = getActiveContainer();
     	int x = con.getBox().x;
     	int y = con.getBox().y;
+    	System.out.println(x + ", " + y);
     	if(con.EXIT.intersects(r, x, y)){
     		Scripthandler.handleScript(getActiveContainer().EXIT.script);
     		clicked = true;
@@ -181,7 +181,7 @@ public class ConHand {
     }
     
     public static Container getContainer(String ID){
-    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, true, 1.0f, true);
+    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, Fill.NONE, true, 1.0f, false);
     	for(int i = 0; i < cons.length; i++){
     		if(cons[i].ID.equals(ID)){
     			C = cons[i];

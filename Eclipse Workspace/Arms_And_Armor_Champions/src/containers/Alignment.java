@@ -1,7 +1,7 @@
 package containers;
 
 public enum Alignment {
-	TOP_LEFT, TOP_CENTER, RIGHT_CENTER, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
+	TOP_LEFT, TOP_CENTER, TOP_RIGHT, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
 	
     @Override
     public String toString() {
@@ -25,7 +25,7 @@ public enum Alignment {
 		switch(A){
 			case TOP_LEFT:x = -(w / 2);break;
 			case TOP_CENTER:x = 0;break;
-			case RIGHT_CENTER:x = (w / 2);break;
+			case TOP_RIGHT:x = (w / 2);break;
 			case LEFT:x = -(w / 2);break;
 			case CENTER:x = 0;break;
 			case RIGHT:x = (w / 2);break;
@@ -42,7 +42,7 @@ public enum Alignment {
 		switch(A){
 			case TOP_LEFT:y = (h / 2);break;
 			case TOP_CENTER:y = (h / 2);break;
-			case RIGHT_CENTER:y = (h / 2);break;
+			case TOP_RIGHT:y = (h / 2);break;
 			case LEFT:y = 0;break;
 			case CENTER:y = 0;break;
 			case RIGHT:y = 0;break;

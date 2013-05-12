@@ -301,12 +301,12 @@ public abstract class Renderer {
     	int y = con.getBox().y;
     	if(con.ACTIVE){
     		if(con.BACKGROUND){
-    			drawImage(batch, conBack, x, y, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY, false);
+    			drawImage(batch, conBack, x - 1, y - 1, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
     		if(con.DECORATED){
-    			drawImage(batch, conCon, x, y, con.controlsurface.width, con.controlsurface.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
-        		drawString(batch, con.TITLE, x, y - 12, com10, Color.RED, con.TRANSPARENCY);
+    			drawImage(batch, conCon, x + con.conSurf.x, y + con.conSurf.y, con.conSurf.width, con.conSurf.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
+        		drawString(batch, con.TITLE, x + con.conSurf.x, y + con.conSurf.y + con.conSurf.height - 12, com10, Color.RED, con.TRANSPARENCY);
         		drawActivator(batch, con.EXIT, x + con.EXIT.BOX.x, y + con.EXIT.BOX.y, false, Color.RED, Color.WHITE, con.TRANSPARENCY);
     		}
     	}
@@ -319,9 +319,9 @@ public abstract class Renderer {
         	y += AC.BOX.height / 2;
     	}
     	if(AC.textured){
-    		drawImage(batch, AC.TEX, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, false);
+    		drawImage(batch, AC.TEX, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, true);
     	}else{
-        	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, false);
+        	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, true);
     	}
     	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, com10, col, opacity);
     }

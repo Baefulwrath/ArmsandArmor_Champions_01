@@ -23,6 +23,7 @@ public class Editor_Renderer extends Renderer {
             drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
         }
         drawString(batch, ConHand.getActiveContainer().EXIT.BOX.x + ", " + ConHand.getActiveContainer().EXIT.BOX.y, -100, 100, com10, Color.CYAN, 0.5f);
+        drawString(batch, ConHand.getActiveContainer().getBox().x + ", " + ConHand.getActiveContainer().getBox().y, 0, 100, com10, Color.CYAN, 0.5f);
         drawString(batch, AAA_C.inputhandler.staticMouse.x + ", " + AAA_C.inputhandler.staticMouse.y, -100, 50, com10, Color.BLUE, 0.5f);
 	}
 

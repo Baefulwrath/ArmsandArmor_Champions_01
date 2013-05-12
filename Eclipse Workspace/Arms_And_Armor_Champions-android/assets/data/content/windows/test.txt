@@ -1,14 +1,15 @@
 titl Test Container
 idid test
 acti true
-xval 50
-yval 50
-widt 200
-heig 150
+xval 0
+yval 0
+widt 0
+heig 100
 conh 20
 stat STATIC
 type EDITOR
-alig CENTER
+alig BOTTOM_LEFT
+fill WIDTH
 deco true
 tran 1.0
 back true

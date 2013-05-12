@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 
 public class Container {
-	public Rectangle controlsurface = new Rectangle(0, 0, 0, 0);
+	public Rectangle conSurf = new Rectangle(0, 0, 0, 0);
 	public String TITLE = "";
 	public String ID = "";
 	public int conSize = 20;
@@ -17,27 +17,29 @@ public class Container {
 	public Activator EXIT = new Activator();
 	private Rectangle BOX = new Rectangle(0, 0, 0, 0);
 	public Alignment ALIGNMENT = Alignment.CENTER;
+	public Fill FILL = Fill.NONE;
 	public boolean DECORATED = true;
 	public float TRANSPARENCY = 1.0f;
 	public boolean BACKGROUND = true;
 	
 	public void update(){
-		controlsurface = new Rectangle(BOX.x, BOX.y + (BOX.height / 2) - (conSize / 2), BOX.width, conSize);
-		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(BOX.width - conSize, BOX.height - conSize, conSize, conSize));
+		conSurf = new Rectangle(0, BOX.height - conSize, BOX.width, conSize);
+		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
 	}
 	
-	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type, Alignment alig, boolean decorated, float trans, boolean background){
+	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type, Alignment alig, Fill fill, boolean decorated, float trans, boolean background){
 		ID = id;
 		TITLE = title;
 		ACTIVE = active;
 		STATE = state;
 		TYPE = type;
 		conSize = controllerSize;
-		if(width < 50){
+		if(width + Fill.getWidth(AAA_C.w, fill) < 50){
 			width = 50;
 		}
-		BOX = new Rectangle(x, y, width, height);
+		BOX = new Rectangle(x, y, width + Fill.getWidth(AAA_C.w, fill), height + Fill.getHeight(AAA_C.h, fill));
 		ALIGNMENT = alig;
+		FILL = fill;
 		DECORATED = decorated;
 		TRANSPARENCY = trans;
 		BACKGROUND = background;
@@ -65,8 +67,12 @@ public class Container {
 	}
 	
 	public boolean collides(Rectangle r){
-		if(r.intersects(BOX)){
-			return true;
+		if(ACTIVE){
+			if(r.intersects(getBox())){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
