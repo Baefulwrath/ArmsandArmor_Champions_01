@@ -15,6 +15,7 @@ public class ConHand {
     public static Container[] cons = new Container[0];
     public static float windowTransparency = 1.0f;
     public static Menuholder[] MHs = new Menuholder[3];
+    public static boolean movingContainer = false;
     
     public static void load(){
     	MHs[0] = new Main_Menuholder();

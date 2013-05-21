@@ -1,6 +1,6 @@
 main
 Editor Paused
 {
-(Continue):unpauseEditor_;[BUTTON]
-(Main Menu):openMenu_exit;[BUTTON]
+[0:-80:500:40](Continue):unpauseEditor_;[BUTTON]
+[0:-120:500:40](Main Menu):openMenu_exit;[BUTTON]
 }

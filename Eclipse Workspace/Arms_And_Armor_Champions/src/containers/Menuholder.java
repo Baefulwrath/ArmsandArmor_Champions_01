@@ -74,11 +74,20 @@ public class Menuholder extends Content{
 		                    reader.nextLine();
 		                    while(!reader.hasNext("}")){
 		                        String line = reader.nextLine();
-		                        Activator act = new Activator();
+		                        String aBox = line.substring(line.indexOf("[") + 1, line.indexOf("]"));
+		                        line = line.substring(line.indexOf("]") + 1);
+		                        int ax = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
+		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
+		                        int ay = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
+		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
+		                        int aw = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
+		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
+		                        int ah = Integer.parseInt(aBox);
 		                        String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 		                        String script = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
 		                        ActivatorType AT = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
-		                        act.set(AT, atitle, script, new Rectangle());
+		                        Activator act = new Activator();
+		                        act.set(AT, atitle, script, new Rectangle(ax, ay, aw, ah));
 		                        acts.add(act);
 		                    }
 		                    m.set(ID, title, acts);

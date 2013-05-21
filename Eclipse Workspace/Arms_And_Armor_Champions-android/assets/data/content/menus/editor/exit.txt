@@ -1,6 +1,6 @@
 exit
 Close Editor?
 {
-(Yes!):setState_MENU;[BUTTON]
-(Nope.):openMenu_main;[BUTTON]
+[0:-80:500:40](Yes!):setState_MENU;[BUTTON]
+[0:-120:500:40](Nope.):openMenu_main;[BUTTON]
 }

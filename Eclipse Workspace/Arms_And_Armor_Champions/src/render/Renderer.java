@@ -195,6 +195,8 @@ public abstract class Renderer {
     }
 
     public void drawMenu(SpriteBatch batch, Menu m, int x, int y) {
+    	x = x + m.X;
+    	y = y + m.Y;
         drawString(batch, m.menuTitle, x - 24, y, com32_BI, Color.WHITE, 1.0f);
         drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f);
         if (m.acts.size() > 0) {
@@ -205,7 +207,8 @@ public abstract class Renderer {
                 if(AAA_C.debug){
                     print += " - " + a.script + " - " + a.AT.toString();
                 }
-                drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f);
+                //drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f);
+                drawActivator(batch, a, x + a.BOX.x, y + a.BOX.y, false, com32, col, Color.WHITE, 1.0f);
                 if(i == m.activeAct){
                     String marker;
                     switch(a.AT){
@@ -217,7 +220,7 @@ public abstract class Renderer {
                             break;
                         default:marker = "";
                     }
-                    drawString(batch, marker, x - 32, y - 50 - (i * 40), com32, Color.WHITE, 1.0f);
+                    drawString(batch, marker, x + a.BOX.x - 32, y + a.BOX.y, com32, Color.WHITE, 1.0f);
                 }
             }
         } else {
@@ -307,12 +310,12 @@ public abstract class Renderer {
     		if(con.DECORATED){
     			drawImage(batch, conCon, x + con.conSurf.x, y + con.conSurf.y, con.conSurf.width, con.conSurf.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
         		drawString(batch, con.TITLE, x + con.conSurf.x, y + con.conSurf.y + con.conSurf.height - 12, com10, Color.RED, con.TRANSPARENCY);
-        		drawActivator(batch, con.EXIT, x + con.EXIT.BOX.x, y + con.EXIT.BOX.y, false, Color.RED, Color.WHITE, con.TRANSPARENCY);
+        		drawActivator(batch, con.EXIT, x + con.EXIT.BOX.x, y + con.EXIT.BOX.y, false, com10, Color.RED, Color.WHITE, con.TRANSPARENCY);
     		}
     	}
     }
     
-    public void drawActivator(SpriteBatch batch, Activator AC, int x, int y, boolean centered, Color col, Color tint, float opacity){
+    public void drawActivator(SpriteBatch batch, Activator AC, int x, int y, boolean centered, BitmapFont font, Color col, Color tint, float opacity){
     	//If not centered: draw from upper left corner.
     	if(!centered){
         	x += AC.BOX.width / 2;
@@ -323,6 +326,6 @@ public abstract class Renderer {
     	}else{
         	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, true);
     	}
-    	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, com10, col, opacity);
+    	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, font, col, opacity);
     }
 }

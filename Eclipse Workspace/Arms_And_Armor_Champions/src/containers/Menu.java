@@ -62,7 +62,8 @@ public class Menu extends Content{
         Rectangle a;
         boolean temp = false;
         for(int i = 0; i < acts.size(); i++){
-            a = new Rectangle(menu.x, menu.y - 50 - (i * 40), 5000, (int) font.getBounds(acts.get(i).title).height);
+            //a = new Rectangle(menu.x, menu.y - 50 - (i * 40), 5000, (int) font.getBounds(acts.get(i).title).height);
+        	a = new Rectangle(acts.get(i).BOX.x + menu.x, acts.get(i).BOX.y + menu.y, acts.get(i).BOX.width, acts.get(i).BOX.height);
             if(mouse.intersects(a)){
                 activeAct = i;
                 temp = true;

@@ -1,7 +1,6 @@
 about
 About
 {
-(NOTHING HERE YET):;[TEXT]
-():;[TEXT]
-(Back):openMenu_main;[BUTTON]
+[0:-80:500:40](NOTHING HERE YET):;[TEXT]
+[0:-120:500:40](Back):openMenu_main;[BUTTON]
 }

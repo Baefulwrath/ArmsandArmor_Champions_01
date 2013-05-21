@@ -1,11 +1,11 @@
 main
 Main Menu
 {
-(New Game):openMenu_newgame;[BUTTON]
-(TEST):openMenu_TEST;[BUTTON]
-(Options):openMenu_options;[BUTTON]
-(Editor):setState_EDITOR;[BUTTON]
-(About):openMenu_about;[BUTTON]
-(DEFAULT STATE):setState_DEFAULT;[BUTTON]
-(Exit):openMenu_exit;[BUTTON]
+[0:-80:500:40](New Game):openMenu_newgame;[BUTTON]
+[0:-120:500:40](TEST):openMenu_TEST;[BUTTON]
+[0:-160:500:40](Options):openMenu_options;[BUTTON]
+[0:-200:500:40](Editor):setState_EDITOR;[BUTTON]
+[0:-240:500:40](About):openMenu_about;[BUTTON]
+[0:-280:500:40](DEFAULT STATE):setState_DEFAULT;[BUTTON]
+[0:-320:500:40](Exit):openMenu_exit;[BUTTON]
 }

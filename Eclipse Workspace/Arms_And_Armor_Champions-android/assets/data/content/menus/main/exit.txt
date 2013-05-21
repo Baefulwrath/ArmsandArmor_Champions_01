@@ -1,6 +1,6 @@
 exit
 Exit?
 {
-(Yes!):exit_;[BUTTON]
-(No...):openMenu_main;[BUTTON]
+[0:-80:500:40](Yes!):exit_;[BUTTON]
+[0:-120:500:40](No...):openMenu_main;[BUTTON]
 }
