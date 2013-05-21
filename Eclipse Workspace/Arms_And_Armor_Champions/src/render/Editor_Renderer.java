@@ -19,9 +19,6 @@ public class Editor_Renderer extends Renderer {
 	public void mobileRender(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f, true);
 		drawString(batch, "Map", 0.0f, 0.0f, com10, Color.RED, 1.0f);
-        if(AAA_C.editorPaused){
-            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
-        }
         drawString(batch, ConHand.getActiveContainer().EXIT.BOX.x + ", " + ConHand.getActiveContainer().EXIT.BOX.y, -100, 100, com10, Color.CYAN, 0.5f);
         drawString(batch, ConHand.getActiveContainer().getBox().x + ", " + ConHand.getActiveContainer().getBox().y, 0, 100, com10, Color.CYAN, 0.5f);
         drawString(batch, AAA_C.inputhandler.staticMouse.x + ", " + AAA_C.inputhandler.staticMouse.y, -100, 50, com10, Color.BLUE, 0.5f);
@@ -31,6 +28,9 @@ public class Editor_Renderer extends Renderer {
 	public void staticRender(SpriteBatch batch) {
 		drawString(batch, "HUD", getScreenX(), getScreenY(), com10, Color.BLUE, 1.0f);
 		drawContainers(batch, ContainerType.EDITOR);
+        if(AAA_C.editorPaused){
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
+        }
 	}
 
 	@Override

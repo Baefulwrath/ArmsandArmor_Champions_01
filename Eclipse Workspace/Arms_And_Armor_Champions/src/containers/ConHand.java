@@ -51,7 +51,7 @@ public class ConHand {
     }
     
     public static Activator getActiveAct(){
-        return getActiveMenuholder().getActiveMenu().getActiveActivator();
+        return getActiveMenu().getActiveActivator();
     }
     
     public static Menu getActiveMenu(){
@@ -180,7 +180,6 @@ public class ConHand {
     	Container con = getActiveContainer();
     	int x = con.getBox().x;
     	int y = con.getBox().y;
-    	System.out.println(x + ", " + y);
     	if(r.intersects(con.getConBox())){
     		clicked = true;
 	    	if(con.EXIT.intersects(r, x, y)){
@@ -206,6 +205,12 @@ public class ConHand {
     public static void clearMoving(){
     	for(int i = 0; i < cons.length; i++){
     		cons[i].MOVING = false;
+    	}
+    }
+    
+    public static void moveCons(int diffX, int diffY){
+    	for(int i = 0; i < cons.length; i++){
+    		cons[i].move(diffX, diffY);
     	}
     }
 }

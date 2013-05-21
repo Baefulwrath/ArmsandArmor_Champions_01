@@ -64,7 +64,7 @@ public class Container {
 	}
 	
 	public void move(int diffX, int diffY){
-		if(ACTIVE){
+		if(ACTIVE && MOVING){
 			BOX.x += diffX;
 			BOX.y += diffY;
 			update();

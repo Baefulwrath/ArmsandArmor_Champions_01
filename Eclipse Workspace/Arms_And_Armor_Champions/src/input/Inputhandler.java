@@ -18,7 +18,9 @@ public class Inputhandler implements InputProcessor {
 
     public Rectangle mouse = new Rectangle(0, 0, 0, 0);
     public Rectangle staticMouse = new Rectangle(0, 0, 0, 0);
-
+    public int lastMouseX = 0;
+    public int lastMouseY = 0;
+    
     @Override
     public boolean keyDown(int keycode) {
         if (AAA_C.state == State.DEFAULT) {
@@ -222,6 +224,9 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+    	updateMouse(screenX, screenY);
+    	ConHand.moveCons(staticMouse.x - lastMouseX, staticMouse.y - lastMouseY);
+    	updateLastMouse(screenX, screenY);
         return true;
     }
 
@@ -229,8 +234,9 @@ public class Inputhandler implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
     	updateMouse(screenX, screenY);
     	if(!ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
-    		ConHand.getActiveMenuholder().getActiveMenu().testMouseHover(mouse, new Rectangle(ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, 0, 0), AAA_C.getActiveRenderer().com32);
+    		ConHand.getActiveMenuholder().getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, 0, 0), AAA_C.getActiveRenderer().com32);
     	}
+    	updateLastMouse(screenX, screenY);
     	return true;
     }
 
@@ -247,5 +253,10 @@ public class Inputhandler implements InputProcessor {
     public void updateMouse(int screenX, int screenY){
         mouse = new Rectangle((int) ((screenX + AAA_C.getActiveRenderer().getScreenX()) * AAA_C.getZoomScale()), (int) ((-screenY - AAA_C.getActiveRenderer().getScreenY()) * AAA_C.getZoomScale()), 1, 1);
         staticMouse = new Rectangle((int) (screenX + AAA_C.getActiveRenderer().getScreenX()), (int) (-screenY - AAA_C.getActiveRenderer().getScreenY()), 1, 1);
+    }
+    
+    public void updateLastMouse(int screenX, int screenY){
+    	lastMouseX = (int) (screenX + AAA_C.getActiveRenderer().getScreenX());
+    	lastMouseY = (int) (-screenY - AAA_C.getActiveRenderer().getScreenY());
     }
 }

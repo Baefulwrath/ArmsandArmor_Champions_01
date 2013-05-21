@@ -196,7 +196,7 @@ public class AAA_C implements ApplicationListener {
         editorPaused = false;
         gamePaused = false;
         ConHand.resetMenuholders();
-        resetZoom();
+        resetActualZoom();
     }
     
     public static Renderer getActiveRenderer(){
