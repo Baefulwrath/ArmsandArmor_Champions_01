@@ -15,7 +15,6 @@ public class ConHand {
     public static Container[] cons = new Container[0];
     public static float windowTransparency = 1.0f;
     public static Menuholder[] MHs = new Menuholder[3];
-    public static boolean movingContainer = false;
     
     public static void load(){
     	MHs[0] = new Main_Menuholder();
@@ -74,6 +73,14 @@ public class ConHand {
     public static void updateContainers(){
     	for(int i = 0; i < cons.length; i++){
     		cons[i].update();
+    	}
+    }
+    
+    public static void dragMouse(){
+    	for(int i = 0; i < cons.length; i++){
+    		if(cons[i].MOVING){
+//FLYTTA CONTAINERN
+    		}
     	}
     }
     
@@ -174,9 +181,13 @@ public class ConHand {
     	int x = con.getBox().x;
     	int y = con.getBox().y;
     	System.out.println(x + ", " + y);
-    	if(con.EXIT.intersects(r, x, y)){
-    		Scripthandler.handleScript(getActiveContainer().EXIT.script);
+    	if(r.intersects(con.getConBox())){
     		clicked = true;
+	    	if(con.EXIT.intersects(r, x, y)){
+	    		Scripthandler.handleScript(getActiveContainer().EXIT.script);
+	    	}else{
+	    		con.MOVING = true;
+	    	}
     	}
     	return clicked;
     }
@@ -190,5 +201,11 @@ public class ConHand {
     		}
     	}
     	return C;
+    }
+    
+    public static void clearMoving(){
+    	for(int i = 0; i < cons.length; i++){
+    		cons[i].MOVING = false;
+    	}
     }
 }

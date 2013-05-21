@@ -21,8 +21,13 @@ public class Container {
 	public boolean DECORATED = true;
 	public float TRANSPARENCY = 1.0f;
 	public boolean BACKGROUND = true;
+	public boolean MOVING = false;
+	
 	
 	public void update(){
+		if(STATE == ContainerState.STATIC){
+			MOVING = false;
+		}
 		conSurf = new Rectangle(0, BOX.height - conSize, BOX.width, conSize);
 		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
 	}
@@ -80,5 +85,10 @@ public class Container {
 	
 	public Rectangle getBox(){
 		return new Rectangle(BOX.x + Alignment.getX(AAA_C.w, ALIGNMENT), BOX.y + Alignment.getY(AAA_C.h, ALIGNMENT), BOX.width, BOX.height);
+	}
+	
+	public Rectangle getConBox(){
+		Rectangle getbox = getBox();
+		return new Rectangle(getbox.x, getbox.y + getbox.height - conSize, getbox.width, conSize);
 	}
 }

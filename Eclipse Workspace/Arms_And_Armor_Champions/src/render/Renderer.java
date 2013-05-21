@@ -303,8 +303,10 @@ public abstract class Renderer {
     	int x = con.getBox().x;
     	int y = con.getBox().y;
     	if(con.ACTIVE){
+			if(con.MOVING){
+				drawImage(batch, conBack, x - 1, y - 1, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY, false);
+			}
     		if(con.BACKGROUND){
-    			drawImage(batch, conBack, x - 1, y - 1, con.getBox().width + 2, con.getBox().height + 2, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
     		if(con.DECORATED){

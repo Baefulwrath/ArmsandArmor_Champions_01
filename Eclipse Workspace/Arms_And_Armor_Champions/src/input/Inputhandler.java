@@ -216,6 +216,7 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    	ConHand.clearMoving();
         return true;
     }
 
