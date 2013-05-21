@@ -6,7 +6,7 @@ yval 0
 widt 0
 heig 100
 conh 20
-stat MOBILE
+stat STATIC
 type EDITOR
 alig BOTTOM_LEFT
 fill WIDTH

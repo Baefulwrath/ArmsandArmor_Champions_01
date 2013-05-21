@@ -185,7 +185,9 @@ public class ConHand {
 	    	if(con.EXIT.intersects(r, x, y)){
 	    		Scripthandler.handleScript(getActiveContainer().EXIT.script);
 	    	}else{
-	    		con.MOVING = true;
+	    		if(con.STATE != ContainerState.STATIC){
+	    			con.MOVING = true;
+	    		}
 	    	}
     	}
     	return clicked;
