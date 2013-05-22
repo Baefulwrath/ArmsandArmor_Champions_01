@@ -11,6 +11,13 @@ type EDITOR
 alig BOTTOM_LEFT
 fill WIDTH
 deco true
-tran 1.0
+tran 0.9
 back true
-# content (list)
+# - CONTENT
+(MENU){
+testmenu
+Test Menu
+{
+[0:0:0:0](Test Button):;[BUTTON]
+}
+}

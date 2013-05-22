@@ -25,9 +25,6 @@ public class Container {
 	
 	
 	public void update(){
-		if(STATE == ContainerState.STATIC){
-			MOVING = false;
-		}
 		conSurf = new Rectangle(0, BOX.height - conSize, BOX.width, conSize);
 		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
 	}
@@ -63,12 +60,23 @@ public class Container {
 		}
 	}
 	
-	public void move(int diffX, int diffY){
-		if(ACTIVE && MOVING){
+	public boolean justMoved = false;
+	
+	public boolean move(int diffX, int diffY){
+		boolean movetofront = false;
+		if(ACTIVE && MOVING && STATE != ContainerState.STATIC){
+			movetofront = true;
+			justMoved = true;
 			BOX.x += diffX;
 			BOX.y += diffY;
 			update();
 		}
+		return movetofront;
+	}
+	
+	public void stop(){
+		MOVING = false;
+		justMoved = false;
 	}
 	
 	public boolean collides(Rectangle r){

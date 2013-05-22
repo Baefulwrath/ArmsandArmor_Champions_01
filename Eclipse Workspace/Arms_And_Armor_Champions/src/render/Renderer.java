@@ -2,6 +2,7 @@ package render;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import world.Map;
 import world.Worldhandler;
@@ -294,7 +295,7 @@ public abstract class Renderer {
     
     public void drawContainers(SpriteBatch batch, ContainerType type){
     	Container[] CA = ConHand.getCons(type);
-    	for(int i = 0; i < CA.length; i++){
+    	for(int i = CA.length - 1; i >= 0; i--){
     		drawContainer(batch, CA[i]);
     	}
     }

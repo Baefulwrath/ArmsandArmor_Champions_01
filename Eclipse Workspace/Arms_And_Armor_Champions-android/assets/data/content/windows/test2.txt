@@ -11,6 +11,6 @@ type EDITOR
 alig BOTTOM_LEFT
 fill HEIGHT
 deco true
-tran 1.0
+tran 0.9
 back true
-# content (list)
+# - CONTENT

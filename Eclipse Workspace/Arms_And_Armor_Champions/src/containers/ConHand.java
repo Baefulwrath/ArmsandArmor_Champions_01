@@ -164,13 +164,26 @@ public class ConHand {
     }
     
     public static void leftClick(Rectangle r){
-    	if(getActiveContainer().ACTIVE){
+    	Container con = getActiveContainer();
+    	if(con.ACTIVE){
     		boolean deco = false;
-    		if(getActiveContainer().DECORATED){
+    		if(con.DECORATED){
     			deco = leftClick_Decoration(r);
     		}
     		if(!deco){
-    			//Testa content buttons
+    			for(int i = 0; i < con.CONTENT.size(); i++){
+    				switch(con.CONTENT.get(i).TYPE){
+					case DEFAULT:
+						break;
+					case MENU:
+						break;
+					case MENUHANDLER:
+						break;
+					default:
+						break;
+    					
+    				}
+    			}
     		}
     	}
     }
@@ -206,13 +219,30 @@ public class ConHand {
     
     public static void clearMoving(){
     	for(int i = 0; i < cons.length; i++){
-    		cons[i].MOVING = false;
+    		cons[i].stop();
+    	}
+    }
+    
+    public static void moveToFront(Container C){
+    	Container[] temp = new Container[cons.length];
+    	int index = 1;
+    	for(int i = 0; i < cons.length; i++){
+    		if(!C.ID.equals(cons[i].ID)){
+    			temp[index] = cons[i];
+        		index++;
+    		}
+    	}
+    	temp[0] = C;
+    	for(int i = 0; i < cons.length; i++){
+    		cons[i] = temp[i];
     	}
     }
     
     public static void moveCons(int diffX, int diffY){
     	for(int i = 0; i < cons.length; i++){
-    		cons[i].move(diffX, diffY);
+    		if(cons[i].move(diffX, diffY)){
+    			moveToFront(cons[i]);
+    		}
     	}
     }
 }
