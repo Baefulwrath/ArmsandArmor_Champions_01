@@ -10,7 +10,7 @@ import com.rapplebob.ArmsAndArmorChampions.State;
 
 public class Menuholder extends Content{
     public Menuholder(String name, int x, int y) {
-		super(x, y, ContentType.MENUHANDLER);
+		super(x, y, ContentType.MENUHOLDER);
 		NAME = name;
 	}
 

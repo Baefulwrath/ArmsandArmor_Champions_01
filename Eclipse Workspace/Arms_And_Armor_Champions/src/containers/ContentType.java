@@ -1,7 +1,7 @@
 package containers;
 
 public enum ContentType {
-	DEFAULT, MENU, MENUHANDLER;
+	DEFAULT, MENU, MENUHOLDER;
 
     @Override
     public String toString() {

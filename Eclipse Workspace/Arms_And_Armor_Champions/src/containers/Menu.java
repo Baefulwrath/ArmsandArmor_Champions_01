@@ -72,4 +72,34 @@ public class Menu extends Content{
         }
         return temp;
     }
+    
+    public static Menu parseMenu(String s){
+    	Menu m = new Menu(0, 0);
+    	try{
+    		String mid = s.substring(0, s.indexOf("#"));
+    		s = s.substring(s.indexOf("#") + 1);
+    		String mtitle = s.substring(0, s.indexOf("#"));
+    		s = s.substring(s.indexOf("{") + 2);
+    		ArrayList<Activator> acs = new ArrayList<Activator>();
+    		while(!s.contains("}")){
+	    		Activator act = new Activator();
+	    		int ax = Integer.parseInt(s.substring(0, s.indexOf(":")));
+	    		s = s.substring(s.indexOf(":") + 1);
+	    		int ay = Integer.parseInt(s.substring(0, s.indexOf(":")));
+	    		s = s.substring(s.indexOf(":") + 1);
+	    		int aw = Integer.parseInt(s.substring(0, s.indexOf(":")));
+	    		s = s.substring(s.indexOf(":") + 1);
+	    		int ah = Integer.parseInt(s.substring(0, s.indexOf("]")));
+	    		s = s.substring(s.indexOf("]") + 1);
+	    		String atitle = s.substring(s.indexOf("(") + 1, s.indexOf(")"));
+	    		String ascript = s.substring(s.indexOf(":") + 1, s.indexOf(";"));
+	    		ActivatorType atype = ActivatorType.parseType(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
+	    		act.set(atype, atitle, ascript, new Rectangle(ax, ay, aw, ah));
+	    		acs.add(act);
+    		}
+    		m.set(mid, mtitle, acs);
+    	}catch(Exception ex){
+    	}
+    	return m;
+    }
 }

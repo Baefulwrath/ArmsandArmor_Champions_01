@@ -117,6 +117,20 @@ public class ConHand {
 	                	boolean decorated = Boolean.parseBoolean(reader.nextLine().substring(5));
 	                	float transparency = Float.parseFloat(reader.nextLine().substring(5));
 	                	boolean back = Boolean.parseBoolean(reader.nextLine().substring(5));
+	                	reader.nextLine();
+	                	ArrayList<Content> content = new ArrayList<Content>();
+	                	String statement = reader.nextLine();
+	                	while(!statement.equals("-<ENDOFFILE>-")){
+	                		String contentData = "";
+	                		String line = statement + reader.nextLine();
+	                		while(!line.equals(">")){
+	                			contentData += line;
+	                			line = reader.nextLine();
+	                		}
+	                		contentData += line;
+	                		content.add(createContentFromString(contentData));
+	                		statement = reader.nextLine();
+	                	}
 	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, fill, decorated, transparency, back);
 	                	cons[i] = CT;
 	                }
@@ -125,6 +139,22 @@ public class ConHand {
     	}catch(Exception ex){
     		ex.printStackTrace(System.out);
     	}
+    }
+    
+    public static Content createContentFromString(String s){
+    	System.out.println(s.substring(1, s.indexOf(")")));
+    	Content C = new nullContent();
+    	ContentType CType = ContentType.parseType(s.substring(1, s.indexOf(")")));
+    	System.out.println(s);
+    	switch(CType){
+		case MENU: Menu.parseMenu(s.substring(s.indexOf("<") + 1, s.indexOf(">")));
+			break;
+		case MENUHOLDER:
+			break;
+		default:
+			break;
+    	}
+    	return C;
     }
     
     public static boolean collides(Rectangle r, ContainerType type){
@@ -177,7 +207,7 @@ public class ConHand {
 						break;
 					case MENU:
 						break;
-					case MENUHANDLER:
+					case MENUHOLDER:
 						break;
 					default:
 						break;
