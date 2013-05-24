@@ -147,7 +147,7 @@ public class ConHand {
     	ContentType CType = ContentType.parseType(s.substring(1, s.indexOf(")")));
     	System.out.println(s);
     	switch(CType){
-		case MENU: Menu.parseMenu(s.substring(s.indexOf("<") + 1, s.indexOf(">")));
+		case MENU: C = Menu.parseMenu(s.substring(s.indexOf("<") + 1, s.indexOf(">")));
 			break;
 		case MENUHOLDER:
 			break;

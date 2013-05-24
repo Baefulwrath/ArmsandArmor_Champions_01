@@ -25,6 +25,8 @@ import containers.Alignment;
 import containers.ConHand;
 import containers.Container;
 import containers.ContainerType;
+import containers.Content;
+import static containers.ContentType.*;
 import containers.Menu;
 
 public abstract class Renderer {
@@ -195,11 +197,11 @@ public abstract class Renderer {
         lab.draw(batch, opacity);
     }
 
-    public void drawMenu(SpriteBatch batch, Menu m, int x, int y) {
+    public void drawMenu(SpriteBatch batch, Menu m, int x, int y, BitmapFont font) {
     	x = x + m.X;
     	y = y + m.Y;
-        drawString(batch, m.menuTitle, x - 24, y, com32_BI, Color.WHITE, 1.0f);
-        drawString(batch, "______________________", x - 24, y - 8, com32, Color.WHITE, 1.0f);
+        drawString(batch, m.menuTitle, x - 24, y, font, Color.WHITE, 1.0f);
+        drawString(batch, "______________________", x - 24, y - 8, font, Color.WHITE, 1.0f);
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {
                 Activator a = m.acts.get(i);
@@ -209,7 +211,7 @@ public abstract class Renderer {
                     print += " - " + a.script + " - " + a.AT.toString();
                 }
                 //drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f);
-                drawActivator(batch, a, x + a.BOX.x, y + a.BOX.y, false, com32, col, Color.WHITE, 1.0f);
+                drawActivator(batch, a, x + a.BOX.x, y + a.BOX.y, false, font, col, Color.WHITE, 1.0f);
                 if(i == m.activeAct){
                     String marker;
                     switch(a.AT){
@@ -221,11 +223,11 @@ public abstract class Renderer {
                             break;
                         default:marker = "";
                     }
-                    drawString(batch, marker, x + a.BOX.x - 32, y + a.BOX.y, com32, Color.WHITE, 1.0f);
+                    drawString(batch, marker, x + a.BOX.x - 32, y + a.BOX.y, font, Color.WHITE, 1.0f);
                 }
             }
         } else {
-            drawString(batch, "EMPTY MENU", x, y - 50, com32_BI, Color.WHITE, 1.0f);
+            drawString(batch, "EMPTY MENU", x, y - 50, font, Color.WHITE, 1.0f);
         }
     }
 
@@ -310,6 +312,9 @@ public abstract class Renderer {
     		if(con.BACKGROUND){
     			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
+    		for(int i = 0; i < con.CONTENT.size(); i++){
+    			drawContent(batch, con.CONTENT.get(i), con);
+    		}
     		if(con.DECORATED){
     			drawImage(batch, conCon, x + con.conSurf.x, y + con.conSurf.y, con.conSurf.width, con.conSurf.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
         		drawString(batch, con.TITLE, x + con.conSurf.x, y + con.conSurf.y + con.conSurf.height - 12, com10, Color.RED, con.TRANSPARENCY);
@@ -330,5 +335,16 @@ public abstract class Renderer {
         	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, true);
     	}
     	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, font, col, opacity);
+    }
+    
+    public void drawContent(SpriteBatch batch, Content content, Container container){
+    	switch(content.TYPE){
+    		case MENU: drawMenu(batch, content, 0, 0, com10);
+    		break;
+		case DEFAULT:
+			break;
+		case MENUHOLDER:
+			break;
+    	}
     }
 }

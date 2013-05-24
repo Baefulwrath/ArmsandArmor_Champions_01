@@ -29,7 +29,7 @@ public class Editor_Renderer extends Renderer {
 		drawString(batch, "HUD", getScreenX(), getScreenY(), com10, Color.BLUE, 1.0f);
 		drawContainers(batch, ContainerType.EDITOR);
         if(AAA_C.editorPaused){
-            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, com32);
         }
 	}
 

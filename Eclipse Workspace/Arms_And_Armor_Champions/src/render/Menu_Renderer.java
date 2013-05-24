@@ -22,7 +22,7 @@ public class Menu_Renderer extends Renderer {
 	@Override
 	public void staticRender(SpriteBatch batch) {
         if(ConHand.getActiveMenuholder().menus.size() > 0){
-            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y);
+            drawMenu(batch, ConHand.getActiveMenu(), ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, com32);
         }else{
             com64.draw(batch, "NO MENUS TO DRAW", getScreenX(), 0);
         }
