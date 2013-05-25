@@ -52,6 +52,10 @@ public class Container {
 	}
 	
 	public void add(Content C){
+		C.Y += getBox().height;
+		if(DECORATED){
+			C.Y -= conSize;
+		}
 		CONTENT.add(C);
 	}
 	
@@ -105,7 +109,7 @@ public class Container {
     
     public void mouseMoved(Rectangle mouse){
     	for(int i = 0; i < CONTENT.size(); i++){
-    		CONTENT.get(i).mouseMoved(mouse);
+    		CONTENT.get(i).mouseMoved(mouse, getBox().x, getBox().y);
     	}
     }
 }

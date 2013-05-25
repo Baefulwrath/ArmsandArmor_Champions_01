@@ -104,6 +104,6 @@ public class Menuholder extends Content{
     }
 
 	@Override
-	public void mouseMoved(Rectangle mouse) {
+	public void mouseMoved(Rectangle mouse, int cx, int cy) {
 	}
 }

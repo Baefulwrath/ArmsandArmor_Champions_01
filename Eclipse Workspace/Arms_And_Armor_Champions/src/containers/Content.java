@@ -19,6 +19,6 @@ public abstract class Content {
 	}
 	
 	public abstract void update();
-	
-	public abstract void mouseMoved(Rectangle mouse);
+
+	public abstract void mouseMoved(Rectangle mouse, int cx, int cy);
 }

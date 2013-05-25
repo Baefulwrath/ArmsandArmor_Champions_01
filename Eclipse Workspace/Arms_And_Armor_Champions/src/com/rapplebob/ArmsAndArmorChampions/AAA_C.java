@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import containers.*;
+import editor.Editorhandler;
 
 public class AAA_C implements ApplicationListener {
 	public static OrthographicCamera camera;
@@ -70,9 +71,12 @@ public class AAA_C implements ApplicationListener {
         updateRenderers();
         Scripthandler.update();
         ConHand.update();
+        Editorhandler.update();
+        Worldhandler.update();
         screenRect = new Rectangle((int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (getActiveRenderer().getScreenY() * getZoomScale()), (int) (w * getZoom()), (int) (h * getZoom()));
         if(newState != state){
             changeState(newState);
+        	setZoomLimit();
         }
         if (readyToRender()) {
             doRender();
@@ -252,8 +256,10 @@ public class AAA_C implements ApplicationListener {
     	}else if(state == State.MENU){
     		zoomLimit = (int) (w * 1.1);
     	}else if(state == State.GAME){
+    		zoom = w * 1.5f;
     		zoomLimit = (int) (w * 2);
     	}else if(state == State.EDITOR){
+    		zoom = w * 1.5f;
     		zoomLimit = (int) (w * 2);
     	}else{
     		zoomLimit = 0;
@@ -267,7 +273,6 @@ public class AAA_C implements ApplicationListener {
     }
     
     public static void zoomOut(){
-    	setZoomLimit();
     	if(zoom + zoomSpeed < zoomLimit){
     		zoom += zoomSpeed;
     	}

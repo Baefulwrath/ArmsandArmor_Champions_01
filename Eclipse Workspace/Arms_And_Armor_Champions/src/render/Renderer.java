@@ -259,17 +259,17 @@ public abstract class Renderer {
     public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
         mx += getCentralMapX(map);
         my += getCentralMapY(map);
-        if(map.loaded && map.cells.length > 0){
-        	for(int x = 0; x < map.cells.length; x++){
-        		for(int y = 0; y < map.cells[x].length; y++){
-        			drawImage(batch, Worldhandler.getClimateImage(map.cells[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
-        			drawImage(batch, Worldhandler.getTerrainImage(map.cells[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+        if(map.LOADED && map.CELLS.length > 0){
+        	for(int x = 0; x < map.CELLS.length; x++){
+        		for(int y = 0; y < map.CELLS[x].length; y++){
+        			drawImage(batch, Worldhandler.getClimateImage(map.CELLS[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+        			drawImage(batch, Worldhandler.getTerrainImage(map.CELLS[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
         			if(AAA_C.showGrid){
         				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
         			}
         			if(AAA_C.debug){
         				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f);
-        				drawString(batch, map.cells[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f);
+        				drawString(batch, map.CELLS[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f);
         			}
         		}
         	}
@@ -319,7 +319,7 @@ public abstract class Renderer {
     			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
     		for(int i = 0; i < con.CONTENT.size(); i++){
-    			drawContent(batch, con.CONTENT.get(i), x, y + con.getBox().height - con.conSize);
+    			drawContent(batch, con.CONTENT.get(i), x, y);
     		}
     		if(con.DECORATED){
     			drawImage(batch, conCon, x + con.conSurf.x, y + con.conSurf.y, con.conSurf.width, con.conSurf.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);

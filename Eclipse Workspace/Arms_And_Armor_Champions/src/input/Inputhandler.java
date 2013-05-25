@@ -11,13 +11,14 @@ import com.rapplebob.ArmsAndArmorChampions.*;
 
 import containers.ConHand;
 import containers.ContainerType;
+import editor.Editorhandler;
 import static com.badlogic.gdx.Input.Keys.*;
 
 
 public class Inputhandler implements InputProcessor {
 
-    public Rectangle mouse = new Rectangle(0, 0, 0, 0);
-    public Rectangle staticMouse = new Rectangle(0, 0, 0, 0);
+    public static Rectangle mouse = new Rectangle(0, 0, 0, 0);
+    public static Rectangle staticMouse = new Rectangle(0, 0, 0, 0);
     public int lastMouseX = 0;
     public int lastMouseY = 0;
     
@@ -107,14 +108,14 @@ public class Inputhandler implements InputProcessor {
 	                }
 	            } else {
 	                switch (keycode) {
-	                	case UP:Worldhandler.getMap().y -= Worldhandler.mapSpeed;
-	                	break;
-	                	case DOWN:Worldhandler.getMap().y += Worldhandler.mapSpeed;
-	                	break;
-	                	case LEFT:Worldhandler.getMap().x += Worldhandler.mapSpeed;
-	                	break;
-	                	case RIGHT:Worldhandler.getMap().x -= Worldhandler.mapSpeed;
-	                	break;
+	            		case UP:Worldhandler.moveDown = true;
+	            		break;
+	            		case DOWN:Worldhandler.moveUp = true;
+	            		break;
+	            		case LEFT:Worldhandler.moveRight = true;
+	            		break;
+	            		case RIGHT:Worldhandler.moveLeft = true;
+	            		break;
 	                	case SPACE:if(AAA_C.showGrid){AAA_C.showGrid = false;}else{AAA_C.showGrid = true;};
 	                	break;
 	                	case TAB:if(AAA_C.debug){AAA_C.debug = false;}else{AAA_C.debug = true;};
@@ -144,7 +145,20 @@ public class Inputhandler implements InputProcessor {
                         break;
                 }
             } else {
-            	
+                switch (keycode) {
+            		case UP:Editorhandler.moveDown = true;
+            		break;
+            		case DOWN:Editorhandler.moveUp = true;
+            		break;
+            		case LEFT:Editorhandler.moveRight = true;
+            		break;
+            		case RIGHT:Editorhandler.moveLeft = true;
+            		break;
+            		case SPACE:if(AAA_C.showGrid){AAA_C.showGrid = false;}else{AAA_C.showGrid = true;};
+            		break;
+            		case TAB:if(AAA_C.debug){AAA_C.debug = false;}else{AAA_C.debug = true;};
+            		break;
+                }
             }
         }
         switch (keycode) {
@@ -156,6 +170,32 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+    	switch(AAA_C.state){
+    		case EDITOR:
+                switch (keycode) {
+            		case UP:Editorhandler.moveDown = false;
+            		break;
+            		case DOWN:Editorhandler.moveUp = false;
+            		break;
+            		case LEFT:Editorhandler.moveRight = false;
+            		break;
+            		case RIGHT:Editorhandler.moveLeft = false;
+            		break;
+                }
+    		break;
+    		case GAME:
+                switch (keycode) {
+            		case UP:Worldhandler.moveDown = false;
+            		break;
+            		case DOWN:Worldhandler.moveUp = false;
+            		break;
+            		case LEFT:Worldhandler.moveRight = false;
+            		break;
+            		case RIGHT:Worldhandler.moveLeft = false;
+            		break;
+                }
+    		break;
+    	}
         return true;
     }
 
@@ -193,9 +233,11 @@ public class Inputhandler implements InputProcessor {
 	        } else if (AAA_C.state == State.EDITOR) {
 	        	if(AAA_C.editorPaused){
 			        switch (button) {
-		                case Buttons.LEFT:
+		                case Buttons.LEFT:activateMenu();
 		                	break;
 			        }
+	        	}else{
+	        		Editorhandler.painting = true;
 	        	}
 	        }
 	        switch(button){
@@ -222,6 +264,7 @@ public class Inputhandler implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     	ConHand.clearMoving();
+    	Editorhandler.painting = false;
         return true;
     }
 
@@ -229,6 +272,10 @@ public class Inputhandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
     	updateMouse(screenX, screenY);
     	ConHand.moveCons(staticMouse.x - lastMouseX, staticMouse.y - lastMouseY);
+    	switch(AAA_C.state){
+    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
+    		break;
+    	}
     	updateLastMouse(screenX, screenY);
         return true;
     }
@@ -240,6 +287,10 @@ public class Inputhandler implements InputProcessor {
     		ConHand.getActiveContainer().mouseMoved(staticMouse);
     	}else{
     		ConHand.getActiveMenu().hover = ConHand.getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenu().X, ConHand.getActiveMenu().Y, 0, 0));
+    	}
+    	switch(AAA_C.state){
+    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
+    		break;
     	}
     	updateLastMouse(screenX, screenY);
     	return true;

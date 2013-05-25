@@ -131,7 +131,7 @@ public class Menu extends Content{
     }
 
 	@Override
-	public void mouseMoved(Rectangle mouse) {
-		hover = testMouseHover(mouse, new Rectangle(X, Y));
+	public void mouseMoved(Rectangle mouse, int cx, int cy) {
+		hover = testMouseHover(mouse, new Rectangle(X + cx, Y + cy, 0, 0));
 	}
 }

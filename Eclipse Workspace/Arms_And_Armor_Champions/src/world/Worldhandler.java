@@ -1,10 +1,7 @@
 package world;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Worldhandler {
     public static int activeMap = 0;
-    public static int mapSpeed = 64;
+    public static int mapSpeed = 32;
     public static ArrayList<Map> maps = new ArrayList<Map>();
 	public static ArrayList<TerrainImage> terrainImages = new ArrayList<TerrainImage>();
 	public static ArrayList<ClimateImage> climateImages = new ArrayList<ClimateImage>();
@@ -22,10 +19,24 @@ public class Worldhandler {
 	public static Texture climatemap;
     public static int hexDiameter = 128;
     public static int hexWidth = 110;
+
+	public static boolean moveUp = false;
+	public static boolean moveDown = false;
+	public static boolean moveLeft = false;
+	public static boolean moveRight = false;
+	private static long lastMovement = 0;
+	private static long movementInterval = 50;
     
+	public static void update(){
+		if(readyToMove()){
+			move();
+		}
+	}
+	
     public static Map getMap(){
         return maps.get(activeMap);
     }
+    
     
     /*public int[] getActiveCells(){
         return getMap().getActiveCells();
@@ -226,4 +237,26 @@ public class Worldhandler {
     	}
     	return res;
     }
+    
+	public static boolean readyToMove(){
+		boolean temp = false;
+		if(lastMovement + movementInterval <= System.currentTimeMillis()){
+			temp = true;
+			lastMovement = System.currentTimeMillis();
+		}
+		return temp;
+	}
+	
+	public static void move(){
+		if(moveUp){
+			getMap().Y += mapSpeed;
+		}else if(moveDown){
+			getMap().Y -= mapSpeed;
+		}
+		if(moveLeft){
+			getMap().X -= mapSpeed;
+		}else if(moveRight){
+			getMap().X += mapSpeed;
+		}
+	}
 }

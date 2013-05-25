@@ -192,15 +192,14 @@ public class ConHand {
     		if(!deco){
     			for(int i = 0; i < con.CONTENT.size(); i++){
     				switch(con.CONTENT.get(i).TYPE){
-					case DEFAULT:
-						break;
-					case MENU: leftClick_Menu(r, con.CONTENT.get(i));
-						break;
-					case MENUHOLDER:
-						break;
-					default:
-						break;
-    					
+						case DEFAULT:
+							break;
+						case MENU: leftClick_Menu(r, con.CONTENT.get(i));
+							break;
+						case MENUHOLDER:
+							break;
+						default:
+							break;
     				}
     			}
     		}

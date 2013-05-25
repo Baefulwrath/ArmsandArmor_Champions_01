@@ -21,14 +21,14 @@ public class Game_Renderer extends Renderer {
     @Override
     public void mobileRender(SpriteBatch batch) {
     	drawImage(batch, background, 0, 0, AAA_C.getZoom(), AAA_C.getZoom(), 0, true, Color.WHITE, 1.0f, true);
-        drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().x, Worldhandler.getMap().y, true);
+        drawMap(batch, Worldhandler.getMap(), Worldhandler.getMap().X, Worldhandler.getMap().Y, true);
     }
 
 	@Override
 	public void staticRender(SpriteBatch batch) {
 		drawContainers(batch, ContainerType.GAME);
         drawString(batch, AAA_C.inputhandler.mouse.x + ", " + AAA_C.inputhandler.mouse.y, 0, -getScreenY() - 16, com16, Color.RED, 1.0f);
-        drawString(batch, "size: " + Worldhandler.getMap().cells.length + ", " + Worldhandler.getMap().cells[0].length, -200, -350, com32, Color.RED, 1.0f);
+        drawString(batch, "size: " + Worldhandler.getMap().CELLS.length + ", " + Worldhandler.getMap().CELLS[0].length, -200, -350, com32, Color.RED, 1.0f);
         if(AAA_C.gamePaused){
             drawMenu(batch, ConHand.getActiveMenu(), 0, 0, com32, true, true);
         }

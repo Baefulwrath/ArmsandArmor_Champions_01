@@ -8,6 +8,7 @@ import com.rapplebob.ArmsAndArmorChampions.State;
 
 import containers.ConHand;
 import containers.ContainerType;
+import editor.Editorhandler;
 
 public class Editor_Renderer extends Renderer {
     public Editor_Renderer(){
@@ -22,6 +23,10 @@ public class Editor_Renderer extends Renderer {
         drawString(batch, ConHand.getActiveContainer().EXIT.BOX.x + ", " + ConHand.getActiveContainer().EXIT.BOX.y, -100, 100, com10, Color.CYAN, 0.5f);
         drawString(batch, ConHand.getActiveContainer().getBox().x + ", " + ConHand.getActiveContainer().getBox().y, 0, 100, com10, Color.CYAN, 0.5f);
         drawString(batch, AAA_C.inputhandler.staticMouse.x + ", " + AAA_C.inputhandler.staticMouse.y, -100, 50, com10, Color.BLUE, 0.5f);
+        drawMap(batch, Editorhandler.map, Editorhandler.map.X, Editorhandler.map.Y, true);
+        if(Editorhandler.brush.loaded){
+        	drawImage(batch, Editorhandler.brush.IMG, Editorhandler.brush.BOX.x, Editorhandler.brush.BOX.y, Editorhandler.brush.BOX.width, Editorhandler.brush.BOX.height, 0, false, Color.WHITE, 0.5f, false);
+        }
 	}
 
 	@Override
