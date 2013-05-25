@@ -27,6 +27,9 @@ public class Container {
 	public void update(){
 		conSurf = new Rectangle(0, BOX.height - conSize, BOX.width, conSize);
 		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
+		for(int i = 0; i < CONTENT.size(); i++){
+			CONTENT.get(i).update();
+		}
 	}
 	
 	public Container(String title, String id, boolean active, int x, int y, int width, int height, int controllerSize, ContainerState state, ContainerType type, Alignment alig, Fill fill, boolean decorated, float trans, boolean background){
@@ -99,4 +102,10 @@ public class Container {
 		Rectangle getbox = getBox();
 		return new Rectangle(getbox.x, getbox.y + getbox.height - conSize, getbox.width, conSize);
 	}
+    
+    public void mouseMoved(Rectangle mouse){
+    	for(int i = 0; i < CONTENT.size(); i++){
+    		CONTENT.get(i).mouseMoved(mouse);
+    	}
+    }
 }

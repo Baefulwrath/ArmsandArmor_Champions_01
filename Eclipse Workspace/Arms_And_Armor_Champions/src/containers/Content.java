@@ -1,5 +1,7 @@
 package containers;
 
+import java.awt.Rectangle;
+
 public abstract class Content {
 	
 	public int X;
@@ -11,4 +13,12 @@ public abstract class Content {
 		Y = y;
 		TYPE = type;
 	}
+	
+	public void print(){
+		System.out.println("Content");
+	}
+	
+	public abstract void update();
+	
+	public abstract void mouseMoved(Rectangle mouse);
 }

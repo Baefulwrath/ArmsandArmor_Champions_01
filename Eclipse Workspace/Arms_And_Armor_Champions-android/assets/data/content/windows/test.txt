@@ -15,10 +15,13 @@ tran 0.9
 back true
 # - CONTENT
 (MENU)<
+50#
+0#
 testmenu#
 Test Menu
 {
-[0:0:0:0](Test Button):;[BUTTON]
+[0:-30:150:10](Test Button):print_testButton1;[BUTTON]
+[0:-50:150:10](Test Button):print_testButton2;[BUTTON]
 }
 >
 -<ENDOFFILE>-

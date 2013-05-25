@@ -10,6 +10,8 @@ public class Menu extends Content{
     public String menuTitle = "";
     public ArrayList<Activator> acts = new ArrayList<Activator>();
     public int activeAct = 0;
+    public boolean hover = false;
+    
     public Menu(int x, int y){
     	super(x, y, ContentType.MENU);
     }
@@ -35,6 +37,7 @@ public class Menu extends Content{
         }
     }
     public void update(){
+    	
         testIndex();
     }
     public Activator getActiveActivator(){
@@ -58,7 +61,7 @@ public class Menu extends Content{
         }
     }
     
-    public boolean testMouseHover(Rectangle mouse, Rectangle menu, BitmapFont font){
+    public boolean testMouseHover(Rectangle mouse, Rectangle menu){
         Rectangle a;
         boolean temp = false;
         for(int i = 0; i < acts.size(); i++){
@@ -75,15 +78,21 @@ public class Menu extends Content{
     
     public static Menu parseMenu(String s){
     	Menu m = new Menu(0, 0);
+    	System.out.println(s);
     	try{
+    		int mx = Integer.parseInt(s.substring(0, s.indexOf("#")));
+    		s = s.substring(s.indexOf("#") + 1);
+    		int my = Integer.parseInt(s.substring(0, s.indexOf("#")));
+    		s = s.substring(s.indexOf("#") + 1);
     		String mid = s.substring(0, s.indexOf("#"));
     		s = s.substring(s.indexOf("#") + 1);
-    		String mtitle = s.substring(0, s.indexOf("#"));
-    		s = s.substring(s.indexOf("{") + 2);
+    		String mtitle = s.substring(0, s.indexOf("{"));
+    		s = s.substring(s.indexOf("{") + 1);
     		ArrayList<Activator> acs = new ArrayList<Activator>();
-    		while(!s.contains("}")){
+        	System.out.println(s);
+    		while(!s.equals("}")){
 	    		Activator act = new Activator();
-	    		int ax = Integer.parseInt(s.substring(0, s.indexOf(":")));
+	    		int ax = Integer.parseInt(s.substring(s.indexOf("[") + 1, s.indexOf(":")));
 	    		s = s.substring(s.indexOf(":") + 1);
 	    		int ay = Integer.parseInt(s.substring(0, s.indexOf(":")));
 	    		s = s.substring(s.indexOf(":") + 1);
@@ -96,10 +105,33 @@ public class Menu extends Content{
 	    		ActivatorType atype = ActivatorType.parseType(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
 	    		act.set(atype, atitle, ascript, new Rectangle(ax, ay, aw, ah));
 	    		acs.add(act);
+	    		s = s.substring(s.indexOf("]") + 1);
     		}
+    		m = new Menu(mx, my);
     		m.set(mid, mtitle, acs);
     	}catch(Exception ex){
+    		ex.printStackTrace(System.out);
     	}
     	return m;
     }
+    
+    @Override
+    public void print(){
+    	System.out.println("Menu");
+    }
+    
+    public void sout(){
+    	//In case of disaster: sout the menu to console.
+    	System.out.println("_______________");
+    	System.out.println(menuTitle + " - " + activeAct);
+        for(int i = 0; i < acts.size(); i++){
+        	System.out.println(acts.get(i).title);
+        }
+    	System.out.println("_______________");
+    }
+
+	@Override
+	public void mouseMoved(Rectangle mouse) {
+		hover = testMouseHover(mouse, new Rectangle(X, Y));
+	}
 }

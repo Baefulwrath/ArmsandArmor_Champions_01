@@ -76,14 +76,6 @@ public class ConHand {
     	}
     }
     
-    public static void dragMouse(){
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].MOVING){
-//FLYTTA CONTAINERN
-    		}
-    	}
-    }
-    
     public static void loadContainers(){
     	try{
     		String path = "data/content/windows/";
@@ -118,7 +110,7 @@ public class ConHand {
 	                	float transparency = Float.parseFloat(reader.nextLine().substring(5));
 	                	boolean back = Boolean.parseBoolean(reader.nextLine().substring(5));
 	                	reader.nextLine();
-	                	ArrayList<Content> content = new ArrayList<Content>();
+	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, fill, decorated, transparency, back);
 	                	String statement = reader.nextLine();
 	                	while(!statement.equals("-<ENDOFFILE>-")){
 	                		String contentData = "";
@@ -128,10 +120,9 @@ public class ConHand {
 	                			line = reader.nextLine();
 	                		}
 	                		contentData += line;
-	                		content.add(createContentFromString(contentData));
+	                		CT.add(createContentFromString(contentData));
 	                		statement = reader.nextLine();
 	                	}
-	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, fill, decorated, transparency, back);
 	                	cons[i] = CT;
 	                }
 	            }
@@ -142,10 +133,8 @@ public class ConHand {
     }
     
     public static Content createContentFromString(String s){
-    	System.out.println(s.substring(1, s.indexOf(")")));
     	Content C = new nullContent();
     	ContentType CType = ContentType.parseType(s.substring(1, s.indexOf(")")));
-    	System.out.println(s);
     	switch(CType){
 		case MENU: C = Menu.parseMenu(s.substring(s.indexOf("<") + 1, s.indexOf(">")));
 			break;
@@ -205,7 +194,7 @@ public class ConHand {
     				switch(con.CONTENT.get(i).TYPE){
 					case DEFAULT:
 						break;
-					case MENU:
+					case MENU: leftClick_Menu(r, con.CONTENT.get(i));
 						break;
 					case MENUHOLDER:
 						break;
@@ -234,6 +223,13 @@ public class ConHand {
 	    	}
     	}
     	return clicked;
+    }
+    
+    public static void leftClick_Menu(Rectangle r, Content c){
+    	Menu m = (Menu) c;
+    	if(m.hover){
+    		Scripthandler.handleScript(m.getActiveActivator().script);
+    	}
     }
     
     public static Container getContainer(String ID){

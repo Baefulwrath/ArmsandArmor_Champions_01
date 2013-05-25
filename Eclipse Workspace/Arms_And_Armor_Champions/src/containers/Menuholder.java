@@ -31,12 +31,7 @@ public class Menuholder extends Content{
     
     public void soutMenu(Menu m){
     	//In case of disaster: sout the menu to console.
-    	System.out.println("_______________");
-    	System.out.println(m.menuTitle + " - " + getActiveMenu().activeAct);
-        for(int i = 0; i < m.acts.size(); i++){
-        	System.out.println(m.acts.get(i).title);
-        }
-    	System.out.println("_______________");
+    	m.sout();
     }
     
     public void update(){
@@ -62,7 +57,7 @@ public class Menuholder extends Content{
 		            for(int i = 0; i < files.size(); i++){
 		                FileHandle file = Gdx.files.internal(path + files.get(i));
 		                if(file.extension().equals("txt")){
-		                    Menu m = new Menu(0, 0);
+		                    Menu m = new Menu(X, Y);
 		                    String ID = "";
 		                    String title = "";
 		                    ArrayList<Activator> acts = new ArrayList<Activator>();
@@ -107,4 +102,8 @@ public class Menuholder extends Content{
     public Menu getActiveMenu(){
         return menus.get(activeMenu);
     }
+
+	@Override
+	public void mouseMoved(Rectangle mouse) {
+	}
 }

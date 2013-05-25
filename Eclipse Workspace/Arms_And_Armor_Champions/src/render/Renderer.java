@@ -191,17 +191,21 @@ public abstract class Renderer {
     }
 
     public void drawString(SpriteBatch batch, String string, float x, float y, BitmapFont font, Color col, float opacity) {
+    	y -= font.getCapHeight();
         LabelStyle style = new LabelStyle(font, col);
         Label lab = new Label(string, style);
         lab.setPosition(x, y);
         lab.draw(batch, opacity);
     }
 
-    public void drawMenu(SpriteBatch batch, Menu m, int x, int y, BitmapFont font) {
+    public void drawMenu(SpriteBatch batch, Content c, int x, int y, BitmapFont font, boolean useMarker, boolean title) {
+    	Menu m = (Menu) c;
     	x = x + m.X;
     	y = y + m.Y;
-        drawString(batch, m.menuTitle, x - 24, y, font, Color.WHITE, 1.0f);
-        drawString(batch, "______________________", x - 24, y - 8, font, Color.WHITE, 1.0f);
+    	if(title){
+	        drawString(batch, m.menuTitle, x, y, font, Color.WHITE, 1.0f);
+	        drawString(batch, "______________________", x, y - 8, font, Color.WHITE, 1.0f);
+    	}
         if (m.acts.size() > 0) {
             for (int i = 0; i < m.acts.size(); i++) {
                 Activator a = m.acts.get(i);
@@ -212,18 +216,20 @@ public abstract class Renderer {
                 }
                 //drawString(batch, print, x, y - 50 - (i * 40), com32, col, 1.0f);
                 drawActivator(batch, a, x + a.BOX.x, y + a.BOX.y, false, font, col, Color.WHITE, 1.0f);
-                if(i == m.activeAct){
-                    String marker;
-                    switch(a.AT){
-                        case BUTTON:marker = "*";
-                            break;
-                        case INPUT:marker = ">";
-                            break;
-                        case TEXT:marker = "-";
-                            break;
-                        default:marker = "";
-                    }
-                    drawString(batch, marker, x + a.BOX.x - 32, y + a.BOX.y, font, Color.WHITE, 1.0f);
+                if(useMarker){
+	                if(i == m.activeAct){
+	                    String marker;
+	                    switch(a.AT){
+	                        case BUTTON:marker = "*";
+	                            break;
+	                        case INPUT:marker = ">";
+	                            break;
+	                        case TEXT:marker = "-";
+	                            break;
+	                        default:marker = "";
+	                    }
+	                    drawString(batch, marker, x + a.BOX.x - 32, y + a.BOX.y + (font.getCapHeight()), font, Color.WHITE, 1.0f);
+	                }
                 }
             }
         } else {
@@ -313,7 +319,7 @@ public abstract class Renderer {
     			drawImage(batch, conFill, x, y, con.getBox().width, con.getBox().height, 0, false, Color.WHITE, con.TRANSPARENCY, false);
     		}
     		for(int i = 0; i < con.CONTENT.size(); i++){
-    			drawContent(batch, con.CONTENT.get(i), con);
+    			drawContent(batch, con.CONTENT.get(i), x, y + con.getBox().height - con.conSize);
     		}
     		if(con.DECORATED){
     			drawImage(batch, conCon, x + con.conSurf.x, y + con.conSurf.y, con.conSurf.width, con.conSurf.height, 0, true, Color.WHITE, con.TRANSPARENCY, false);
@@ -334,12 +340,12 @@ public abstract class Renderer {
     	}else{
         	drawImage(batch, actBack, x, y, AC.BOX.width, AC.BOX.height, 0, false, tint, opacity, true);
     	}
-    	drawString(batch, AC.title, x - AC.BOX.width / 4, y - AC.BOX.height / 4, font, col, opacity);
+    	drawString(batch, AC.title, x - AC.BOX.width / 4, y + (AC.BOX.height / 4), font, col, opacity);
     }
     
-    public void drawContent(SpriteBatch batch, Content content, Container container){
+    public void drawContent(SpriteBatch batch, Content content, int x, int y){
     	switch(content.TYPE){
-    		case MENU: drawMenu(batch, content, 0, 0, com10);
+    		case MENU: drawMenu(batch, content, x, y, com10, false, false);
     		break;
 		case DEFAULT:
 			break;

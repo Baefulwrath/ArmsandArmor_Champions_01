@@ -180,15 +180,13 @@ public class Inputhandler implements InputProcessor {
 	            }
 	        } else if (AAA_C.state == State.MENU) {
 	        	switch (button) {
-		            case Buttons.LEFT:
-		                Scripthandler.handleScript(ConHand.getActiveAct().script);
+		            case Buttons.LEFT:activateMenu();
 		                break;
 		        }
 	        } else if (AAA_C.state == State.GAME) {
 	        	if(AAA_C.gamePaused){
 			        switch (button) {
-		                case Buttons.LEFT:
-		                	Scripthandler.handleScript(ConHand.getActiveAct().script);
+		                case Buttons.LEFT:activateMenu();
 		                	break;
 			        }
 	        	}
@@ -196,7 +194,6 @@ public class Inputhandler implements InputProcessor {
 	        	if(AAA_C.editorPaused){
 			        switch (button) {
 		                case Buttons.LEFT:
-		                	Scripthandler.handleScript(ConHand.getActiveAct().script);
 		                	break;
 			        }
 	        	}
@@ -207,6 +204,12 @@ public class Inputhandler implements InputProcessor {
 	        }
         }
         return true;
+    }
+    
+    public void activateMenu(){
+    	if(ConHand.getActiveMenu().hover){
+    		Scripthandler.handleScript(ConHand.getActiveAct().script);
+    	}
     }
     
     public void touchDown_Container(int button){
@@ -233,8 +236,10 @@ public class Inputhandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
     	updateMouse(screenX, screenY);
-    	if(!ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
-    		ConHand.getActiveMenuholder().getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenuholder().X, ConHand.getActiveMenuholder().Y, 0, 0), AAA_C.getActiveRenderer().com32);
+    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
+    		ConHand.getActiveContainer().mouseMoved(staticMouse);
+    	}else{
+    		ConHand.getActiveMenu().hover = ConHand.getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenu().X, ConHand.getActiveMenu().Y, 0, 0));
     	}
     	updateLastMouse(screenX, screenY);
     	return true;
