@@ -10,7 +10,7 @@ import world.*;
 public class Brush {
 	public Rectangle BOX = new Rectangle(0, 0, 0, 0);
 	public int size = 100;
-	public Cell CELL = new Cell(Worldhandler.hexWidth, 0, 0);
+	public Cell CELL = new Cell(Worldhandler.hexWidth, 1, 1);
 	public Texture IMG;
 	public boolean loaded = false;
 	

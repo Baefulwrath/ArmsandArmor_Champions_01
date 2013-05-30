@@ -32,6 +32,7 @@ public class Editorhandler {
 		if(readyToMove()){
 			move();
 		}
+		map.update();
 	}
 	
 	public static void paintCheck(){

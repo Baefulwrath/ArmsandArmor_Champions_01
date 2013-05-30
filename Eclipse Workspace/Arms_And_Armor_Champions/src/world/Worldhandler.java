@@ -31,6 +31,7 @@ public class Worldhandler {
 		if(readyToMove()){
 			move();
 		}
+		getMap().update();
 	}
 	
     public static Map getMap(){

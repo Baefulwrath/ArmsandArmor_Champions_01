@@ -48,9 +48,16 @@ public class Map {
     	}
     	LOADED = true;
     }
+    
+    public void update(){
+    	for(int x = 0; x < CELLS.length; x++){
+        	for(int y = 0; y < CELLS[x].length; y++){
+        		CELLS[x][y].update((int) getCellX(x, y), (int) getCellY(x, y), X, Y);
+        	}
+    	}
+    }
 
-
-    public float getCellX(int cx, int cy){
+    private float getCellX(int cx, int cy){
     	float temp = 0;
         temp = cx * CELLS[cx][cy].WIDTH;
         if(cy % 2 == 0){
@@ -59,7 +66,7 @@ public class Map {
         return temp;
     }
     
-    public float getCellY(int cx, int cy){
+    private float getCellY(int cx, int cy){
     	float temp = 0;
         temp = - (CELLS[cx][cy].SIDE * 1.5f) * cy;
         return temp;

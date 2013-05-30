@@ -8,11 +8,14 @@ public class Cell {
 	public int CLIMATE = 0;
     public boolean ACTIVE = false;
     private Polygon polygon = new Polygon();
+    private Polygon realPolygon = new Polygon();
     public int WIDTH = 0;
     public int DIAMETER = 0;
     public int RADIUS = 0;
     public int SIDE = 0;
     public int HALFSIDE = 0;
+    public int X = 0;
+    public int Y = 0;
     public int imgWDif = 0;
     
     public Cell(int width, int terrain, int climate){
@@ -20,9 +23,27 @@ public class Cell {
         TERRAIN = terrain;
         CLIMATE = climate;
     }
+    
+    public void update(int x, int y, int mx, int my){
+    	X = x;
+    	Y = y;
+    	setRealPolygon(mx, my);
+    }
+    
+    private void setRealPolygon(int mx, int my){
+        int[] vertX = {0 + X + mx, RADIUS + X + mx, RADIUS + X + mx, 0 + X + mx, -RADIUS + X + mx, -RADIUS + X + mx};
+        int[] vertY = {SIDE + Y + my, HALFSIDE + Y + my, -HALFSIDE + Y + my, -SIDE + Y + my, -HALFSIDE + Y + my, HALFSIDE + Y + my};
+        realPolygon = new Polygon(vertX, vertY, 6);
+    }
+    
     public Polygon getPolygon(){
         return polygon;
     }
+    
+    public Polygon getRealPolygon(){
+    	return realPolygon;
+    }
+    
     public void set(int width){
         WIDTH = width;
         DIAMETER = (int) (WIDTH * 1.1547);
@@ -51,7 +72,7 @@ public class Cell {
     }
     
     public boolean intersects(Rectangle r){
-    	if(polygon.intersects(r)){
+    	if(realPolygon.intersects(r)){
     		return true;
     	}else{
     		return false;

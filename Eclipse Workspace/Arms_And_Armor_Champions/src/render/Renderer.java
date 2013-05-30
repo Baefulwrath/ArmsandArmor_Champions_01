@@ -262,21 +262,25 @@ public abstract class Renderer {
         if(map.LOADED && map.CELLS.length > 0){
         	for(int x = 0; x < map.CELLS.length; x++){
         		for(int y = 0; y < map.CELLS[x].length; y++){
-        			drawImage(batch, Worldhandler.getClimateImage(map.CELLS[x][y].CLIMATE), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
-        			drawImage(batch, Worldhandler.getTerrainImage(map.CELLS[x][y].TERRAIN), map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
-        			if(AAA_C.showGrid){
-        				drawImage(batch, grid, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
-        			}
-        			if(AAA_C.debug){
-        				drawString(batch, x + "," + y, map.getCellX(x, y) + mx, map.getCellY(x, y) + my, com10, Color.RED, 1.0f);
-        				drawString(batch, map.CELLS[x][y].CLIMATE + "", map.getCellX(x, y) + mx, map.getCellY(x, y) + my - 12, com10, Color.RED, 1.0f);
-        			}
+        			drawCell(batch, map, mx, my, x, y);
         		}
         	}
         }else{
             drawString(batch, "Map empty or not yet loaded.", -200, 50, com32, Color.RED, 1.0f);
         }
         drawString(batch, mx + ", " + my, getScreenX(), getScreenY(), com10, Color.RED, 1.0f);
+    }
+    
+    public void drawCell(SpriteBatch batch, Map map, int mx, int my, int x, int y){
+		drawImage(batch, Worldhandler.getClimateImage(map.CELLS[x][y].CLIMATE), map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+		drawImage(batch, Worldhandler.getTerrainImage(map.CELLS[x][y].TERRAIN), map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+		if(AAA_C.showGrid){
+			drawImage(batch, grid, map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my, 1.0f, 0, false, Color.WHITE, 1.0f, false);
+		}
+		if(AAA_C.debug){
+			drawString(batch, x + "," + y, map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my, com10, Color.RED, 1.0f);
+			drawString(batch, map.CELLS[x][y].CLIMATE + "", map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my - 12, com10, Color.RED, 1.0f);
+		}
     }
     /*
     public void drawPolygon(ShapeRenderer triangleBatch, Polygon pol[], int x, int y, Color col){
