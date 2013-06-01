@@ -2,6 +2,7 @@ package world;
 
 import java.util.Scanner;
 import com.badlogic.gdx.Gdx;
+import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 
 
 public class Map {
@@ -31,6 +32,8 @@ public class Map {
 			int cli = Worldhandler.getClimateIdByTerrain(ter);
 			CELLS[cx][cy] = new Cell(width, ter, cli);
     	}
+    	X = AAA_C.getActiveRenderer().getCentralMapX(this);
+    	Y = AAA_C.getActiveRenderer().getCentralMapY(this);
         LOADED = true;
     }
     
@@ -46,13 +49,15 @@ public class Map {
         		CELLS[x][y] = new Cell(cw, 0, 0);
         	}
     	}
+    	X = AAA_C.getActiveRenderer().getCentralMapX(this);
+    	Y = AAA_C.getActiveRenderer().getCentralMapY(this);
     	LOADED = true;
     }
     
     public void update(){
     	for(int x = 0; x < CELLS.length; x++){
         	for(int y = 0; y < CELLS[x].length; y++){
-        		CELLS[x][y].update((int) getCellX(x, y), (int) getCellY(x, y), X, Y);
+        		CELLS[x][y].update((int) (getCellX(x, y)), (int) (getCellY(x, y)), X, Y);
         	}
     	}
     }

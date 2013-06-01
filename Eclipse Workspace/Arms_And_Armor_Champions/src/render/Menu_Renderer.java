@@ -27,6 +27,7 @@ public class Menu_Renderer extends Renderer {
             com64.draw(batch, "NO MENUS TO DRAW", getScreenX(), 0);
         }
 		drawContainers(batch, ContainerType.MAIN);
+		drawString(batch, (int) getScreenX() + ", " + (int) getScreenY() + ", " + (int) AAA_C.w + ", " + (int) AAA_C.h, 0, 0, com10, Color.RED, 1.0f);
 	}
 
     @Override

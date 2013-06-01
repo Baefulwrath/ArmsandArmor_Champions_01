@@ -210,41 +210,43 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    	updateMouse(screenX, screenY);
-    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
-    		touchDown_Container(button);
-        }else{
-	        if (AAA_C.state == State.DEFAULT) {
-	            switch (button) {
-	        		case Buttons.MIDDLE:AAA_C.resetZoom();
-	            }
-	        } else if (AAA_C.state == State.MENU) {
-	        	switch (button) {
-		            case Buttons.LEFT:activateMenu();
-		                break;
+    	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
+	    	updateMouse(screenX, screenY);
+	    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
+	    		touchDown_Container(button);
+	        }else{
+		        if (AAA_C.state == State.DEFAULT) {
+		            switch (button) {
+		        		case Buttons.MIDDLE:AAA_C.resetZoom();
+		            }
+		        } else if (AAA_C.state == State.MENU) {
+		        	switch (button) {
+			            case Buttons.LEFT:activateMenu();
+			                break;
+			        }
+		        } else if (AAA_C.state == State.GAME) {
+		        	if(AAA_C.gamePaused){
+				        switch (button) {
+			                case Buttons.LEFT:activateMenu();
+			                	break;
+				        }
+		        	}
+		        } else if (AAA_C.state == State.EDITOR) {
+		        	if(AAA_C.editorPaused){
+				        switch (button) {
+			                case Buttons.LEFT:activateMenu();
+			                	break;
+				        }
+		        	}else{
+		        		Editorhandler.painting = true;
+		        	}
 		        }
-	        } else if (AAA_C.state == State.GAME) {
-	        	if(AAA_C.gamePaused){
-			        switch (button) {
-		                case Buttons.LEFT:activateMenu();
-		                	break;
-			        }
-	        	}
-	        } else if (AAA_C.state == State.EDITOR) {
-	        	if(AAA_C.editorPaused){
-			        switch (button) {
-		                case Buttons.LEFT:activateMenu();
-		                	break;
-			        }
-	        	}else{
-	        		Editorhandler.painting = true;
-	        	}
+		        switch(button){
+		        	case Buttons.MIDDLE:AAA_C.resetZoom();
+		        	break;
+		        }
 	        }
-	        switch(button){
-	        	case Buttons.MIDDLE:AAA_C.resetZoom();
-	        	break;
-	        }
-        }
+    	}
         return true;
     }
     
@@ -270,27 +272,31 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-    	updateMouse(screenX, screenY);
-    	ConHand.moveCons(staticMouse.x - lastMouseX, staticMouse.y - lastMouseY);
-    	switch(AAA_C.state){
-    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
-    		break;
+    	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
+	    	updateMouse(screenX, screenY);
+	    	ConHand.moveCons(staticMouse.x - lastMouseX, staticMouse.y - lastMouseY);
+	    	switch(AAA_C.state){
+	    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
+	    		break;
+	    	}
+	    	updateLastMouse(screenX, screenY);
     	}
-    	updateLastMouse(screenX, screenY);
         return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-    	updateMouse(screenX, screenY);
-    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
-    		ConHand.getActiveContainer().mouseMoved(staticMouse);
-    	}else{
-    		ConHand.getActiveMenu().hover = ConHand.getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenu().X, ConHand.getActiveMenu().Y, 0, 0));
-    	}
-    	switch(AAA_C.state){
-    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
-    		break;
+    	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
+	    	updateMouse(screenX, screenY);
+	    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
+	    		ConHand.getActiveContainer().mouseMoved(staticMouse);
+	    	}else{
+	    		ConHand.getActiveMenu().hover = ConHand.getActiveMenu().testMouseHover(staticMouse, new Rectangle(ConHand.getActiveMenu().X, ConHand.getActiveMenu().Y, 0, 0));
+	    	}
+	    	switch(AAA_C.state){
+	    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
+	    		break;
+	    	}
     	}
     	updateLastMouse(screenX, screenY);
     	return true;

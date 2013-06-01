@@ -257,8 +257,6 @@ public abstract class Renderer {
     
     
     public void drawMap(SpriteBatch batch, Map map, int mx, int my, boolean central){
-        mx += getCentralMapX(map);
-        my += getCentralMapY(map);
         if(map.LOADED && map.CELLS.length > 0){
         	for(int x = 0; x < map.CELLS.length; x++){
         		for(int y = 0; y < map.CELLS[x].length; y++){
@@ -355,6 +353,14 @@ public abstract class Renderer {
 			break;
 		case MENUHOLDER:
 			break;
+    	}
+    }
+    
+    public boolean getOnScreen(Rectangle r){
+    	if(r.intersects(new Rectangle((int) getScreenX(), (int) getScreenY(), (int) AAA_C.w, (int) AAA_C.h))){
+    		return true;
+    	}else{
+    		return false;
     	}
     }
 }

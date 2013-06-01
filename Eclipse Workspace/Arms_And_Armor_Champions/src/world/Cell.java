@@ -3,6 +3,8 @@ package world;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import com.rapplebob.ArmsAndArmorChampions.AAA_C;
+
 public class Cell {
 	public int TERRAIN = 0;
 	public int CLIMATE = 0;
@@ -71,11 +73,19 @@ public class Cell {
         polygon = new Polygon(vertX, vertY, 6);
     }
     
-    public boolean intersects(Rectangle r){
-    	if(realPolygon.intersects(r)){
-    		return true;
+    public boolean intersects(Rectangle r, boolean real){
+    	if(real){
+	    	if(getRealPolygon().intersects(r)){
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
     	}else{
-    		return false;
+	    	if(getPolygon().intersects(r)){
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
     	}
     }
     

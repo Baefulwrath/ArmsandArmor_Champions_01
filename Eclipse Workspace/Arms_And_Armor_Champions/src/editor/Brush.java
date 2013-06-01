@@ -24,10 +24,6 @@ public class Brush {
 		}
 	}
 	
-	public void mouseMoved(int diffX, int diffY){
-		BOX = new Rectangle(BOX.x + diffX, BOX.y + diffY, size, size);
-	}
-	
 	public void setPosition(int x, int y, boolean centered){
 		if(centered){
 			x -= size / 2;
