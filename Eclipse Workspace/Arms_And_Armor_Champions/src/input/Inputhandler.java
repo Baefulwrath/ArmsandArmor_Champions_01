@@ -210,8 +210,8 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    	updateMouse(screenX, screenY);
     	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
-	    	updateMouse(screenX, screenY);
 	    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
 	    		touchDown_Container(button);
 	        }else{
@@ -272,8 +272,8 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+    	updateMouse(screenX, screenY);
     	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
-	    	updateMouse(screenX, screenY);
 	    	ConHand.moveCons(staticMouse.x - lastMouseX, staticMouse.y - lastMouseY);
 	    	switch(AAA_C.state){
 	    		case EDITOR:Editorhandler.brush.setPosition(mouse.x, mouse.y, true);
@@ -286,8 +286,8 @@ public class Inputhandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+    	updateMouse(screenX, screenY);
     	if(AAA_C.getActiveRenderer().getOnScreen(Inputhandler.staticMouse)){
-	    	updateMouse(screenX, screenY);
 	    	if(ConHand.collides(staticMouse, AAA_C.getCTypeFromState(AAA_C.state))){
 	    		ConHand.getActiveContainer().mouseMoved(staticMouse);
 	    	}else{

@@ -278,6 +278,7 @@ public abstract class Renderer {
 		if(AAA_C.debug){
 			drawString(batch, x + "," + y, map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my, com10, Color.RED, 1.0f);
 			drawString(batch, map.CELLS[x][y].CLIMATE + "", map.CELLS[x][y].X + mx, map.CELLS[x][y].Y + my - 12, com10, Color.RED, 1.0f);
+			drawString(batch, "+", map.CELLS[x][y].getRealPolygon().xpoints[0], map.CELLS[x][y].getRealPolygon().ypoints[0], com10, Color.RED, 1.0f);
 		}
     }
     /*
