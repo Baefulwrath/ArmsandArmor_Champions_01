@@ -1,5 +1,7 @@
 package editor;
 
+import java.awt.Rectangle;
+
 import input.Inputhandler;
 
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
@@ -50,7 +52,7 @@ public class Editorhandler {
 	public static void paint(){
 		for(int x = 0; x < map.CELLS.length; x++){
 			for(int y = 0; y < map.CELLS[x].length; y++){
-				if(map.CELLS[x][y].intersects(brush.BOX, true)){
+				if(map.CELLS[x][y].intersects(new Rectangle(brush.BOX.x - (brush.BOX.width / 2), brush.BOX.y - (brush.BOX.height / 2), brush.BOX.width, brush.BOX.height), true)){
 					map.CELLS[x][y].mirror(brush.CELL);
 				}
 			}
