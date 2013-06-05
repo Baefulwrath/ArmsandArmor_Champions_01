@@ -1,0 +1,27 @@
+titl Editor Container 02
+idid test2
+acti true
+xval 0
+yval 100
+widt 200
+heig -100
+conh 20
+stat STATIC
+type EDITOR
+alig BOTTOM_LEFT
+fill HEIGHT
+deco false
+tran 0.9
+back true
+# - CONTENT
+(MENU)<
+0#
+0#
+brushmenu#
+Test Menu
+{
+[0:-170:150:150](Select Climate):print_Select Climate is not implemented yet;[BUTTON]
+[0:-330:150:150](Select Terrain):print_Select Terrain is not implemented yet;[BUTTON]
+}
+>
+-<ENDOFFILE>-
