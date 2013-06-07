@@ -37,7 +37,9 @@ public class Menu extends Content{
         }
     }
     public void update(){
-    	
+    	for(int i = 0; i < acts.size(); i++){
+    		acts.get(i).update();
+    	}
         testIndex();
     }
     public Activator getActiveActivator(){
@@ -100,10 +102,11 @@ public class Menu extends Content{
 	    		s = s.substring(s.indexOf(":") + 1);
 	    		int ah = Integer.parseInt(s.substring(0, s.indexOf("]")));
 	    		s = s.substring(s.indexOf("]") + 1);
+	    		String uScript = s.substring(s.indexOf('"') + 1, s.indexOf('"'));
 	    		String atitle = s.substring(s.indexOf("(") + 1, s.indexOf(")"));
 	    		String ascript = s.substring(s.indexOf(":") + 1, s.indexOf(";"));
 	    		ActivatorType atype = ActivatorType.parseType(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
-	    		act.set(atype, atitle, ascript, new Rectangle(ax, ay, aw, ah));
+	    		act.set(atype, atitle, uScript, ascript, new Rectangle(ax, ay, aw, ah));
 	    		acs.add(act);
 	    		s = s.substring(s.indexOf("]") + 1);
     		}

@@ -10,7 +10,11 @@ import com.rapplebob.ArmsAndArmorChampions.State;
 import static com.rapplebob.ArmsAndArmorChampions.AAA_C.*;
 import com.rapplebob.ArmsAndArmorChampions.*;
 
+import containers.Activator;
 import containers.ConHand;
+import containers.Container;
+import containers.Content;
+import containers.ContentType;
 import containers.Menu;
 
 public class Scripthandler {
@@ -157,12 +161,18 @@ public class Scripthandler {
             	switchContainer(line.substring(10));
             }
         }
+        if (line.length() > 12) {
+            if (cmd.equals("setActImage_")) {
+            	setActImage(line.substring(12));
+            }
+        }
     }
     
     public static String getActivatorTitleById(String id){
         String title = "";
         String script = "";
         Menu m = ConHand.getActiveMenu();
+        boolean found = false;
         for(int i = 0; i < m.acts.size(); i++){
             if(m.acts.get(i).script.length() > 3){
                 //id:t måste vara det första kommandot som anges av activatorn.
@@ -173,9 +183,21 @@ public class Scripthandler {
                 }
                 if(script.substring(0, 3).equals("id_")){
                     title = m.acts.get(i).title;
+                    found = true;
                     break;
                 }
             }
+        }
+        if(!found){
+        	for(int ci = 0; ci < ConHand.cons.length; ci++){
+        		Container C = ConHand.cons[ci];
+            	for(int i = 0; i < C.CONTENT.size(); i++){
+            		Content CT = C.CONTENT.get(i);
+            		if(CT.TYPE == ContentType.MENU){
+            			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            		}
+            	}
+        	}
         }
         return title;
     }
@@ -197,5 +219,10 @@ public class Scripthandler {
     	}else{
     		ConHand.getContainer(ID).ACTIVE = true;
     	}
+    }
+    
+    public static void setActImage(String cmd){
+    	Activator A = ConHand.getActiveContainer().getActById(cmd);
+    	A.TEX = ;
     }
 }

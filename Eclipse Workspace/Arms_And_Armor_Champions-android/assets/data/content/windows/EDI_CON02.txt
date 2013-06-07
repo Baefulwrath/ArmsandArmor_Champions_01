@@ -20,8 +20,8 @@ back true
 brushmenu#
 Test Menu
 {
-[0:-170:150:150](Select Climate):print_Select Climate is not implemented yet;[BUTTON]
-[0:-330:150:150](Select Terrain):print_Select Terrain is not implemented yet;[BUTTON]
+[0:-170:150:150]"setActImage_"(Select Climate):;[BUTTON]
+[0:-330:150:150]""(Select Terrain):;[BUTTON]
 }
 >
 -<ENDOFFILE>-
