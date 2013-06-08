@@ -20,8 +20,8 @@ back true
 brushmenu#
 Test Menu
 {
-[0:-170:150:150]"setActImage_"(Select Climate):;[BUTTON]
-[0:-330:150:150]""(Select Terrain):;[BUTTON]
+[0:-170:150:150]"setActImage_Climate_[BRUSH]"(Select Climate):;[BUTTON]
+[0:-330:150:150]"setActImage_Terrain_[BRUSH]"(Select Terrain):;[BUTTON]
 }
 >
 -<ENDOFFILE>-

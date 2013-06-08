@@ -194,9 +194,30 @@ public class Scripthandler {
             	for(int i = 0; i < C.CONTENT.size(); i++){
             		Content CT = C.CONTENT.get(i);
             		if(CT.TYPE == ContentType.MENU){
-            			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            			m = (Menu) CT;
+            			for(int mi = 0; mi < m.acts.size(); mi++){
+            	            if(m.acts.get(mi).script.length() > 3){
+            	                //id:t måste vara det första kommandot som anges av activatorn.
+            	                if(m.acts.get(i).script.contains("#")){
+            	                    script = m.acts.get(i).script.substring(0, m.acts.get(i).script.indexOf("#"));
+            	                }else{
+            	                    script = m.acts.get(i).script;
+            	                }
+            	                if(script.substring(0, 3).equals("id_")){
+            	                    title = m.acts.get(i).title;
+            	                    found = true;
+            	                    break;
+            	                }
+            	            }
+            			}
+            			if(found){
+            				break;
+            			}
             		}
             	}
+    			if(found){
+    				break;
+    			}
         	}
         }
         return title;
@@ -222,7 +243,7 @@ public class Scripthandler {
     }
     
     public static void setActImage(String cmd){
-    	Activator A = ConHand.getActiveContainer().getActById(cmd);
-    	A.TEX = ;
+    	Activator A = ConHand.getActiveContainer().getActById(cmd.substring(, ));
+    	A.TEX = ConHand.getSharedTexture(cmd.substring(, ));
     }
 }

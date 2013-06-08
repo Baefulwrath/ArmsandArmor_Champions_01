@@ -8,6 +8,8 @@ import scripting.Scripthandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 
 public class ConHand {
@@ -15,12 +17,14 @@ public class ConHand {
     public static Container[] cons = new Container[0];
     public static float windowTransparency = 1.0f;
     public static Menuholder[] MHs = new Menuholder[3];
+    public static SharedTexture[] sharedTextures = new SharedTexture[0];
     
     public static void load(){
     	MHs[0] = new Main_Menuholder();
     	MHs[1] = new Game_Menuholder();
     	MHs[2] = new Editor_Menuholder();
         loadContainers();
+        loadSharedTextures();
     }
     
     public static void update(){
@@ -269,5 +273,56 @@ public class ConHand {
     			moveToFront(cons[i]);
     		}
     	}
+    }
+    
+    public static void loadSharedTextures(){
+    	try{
+    		String path = "data/images/containerImages/";
+    		String index = Gdx.files.internal(path + "INDEX.txt").readString();
+        	ArrayList<String> texFiles = new ArrayList<String>();
+        	ArrayList<String> regFiles = new ArrayList<String>();
+        	ArrayList<SharedTexture> STs = new ArrayList<SharedTexture>();
+        	while(index.contains(":")){
+        		if(index.substring(4).equals("TEX_")){
+            		texFiles.add(index.substring(1, index.indexOf(";")));
+        		}else if(index.substring(4).equals("REG_")){
+            		regFiles.add(index.substring(1, index.indexOf(";")));
+        		}
+        		index = index.substring(index.indexOf(";") + 1);
+        	}
+            if(texFiles.size() > 0){
+	            for(int i = 0; i < texFiles.size(); i++){
+	            	STs.add(new SharedTexture(new Texture(Gdx.files.internal(path + texFiles.get(i))), texFiles.get(i).substring(5, texFiles.get(i).indexOf("."))));
+	            }
+            }
+            if(regFiles.size() > 0){
+	            for(int i = 0; i < regFiles.size(); i++){
+	            	int width = Integer.parseInt(regFiles.get(i).substring(5, regFiles.get(i).indexOf('_', 5)));
+	            	Texture img = new Texture(Gdx.files.internal(path + regFiles.get(i).substring(regFiles.get(i).indexOf('_', 5) + 1, regFiles.get(i).indexOf('#'))));
+	                String text = Gdx.files.internal(path + regFiles.get(i).substring(regFiles.get(i).indexOf('#') + 1)).readString();
+	                Scanner reader = new Scanner(text);
+	                while(reader.hasNext("*")){
+	                	String id = reader.nextLine();
+	                	int pos = Integer.parseInt(reader.nextLine());
+	                	STs.add(new SharedTexture(new TextureRegion(img, width * pos, 0, width, width), id));
+	                }
+	            }
+            }
+            sharedTextures = new SharedTexture[STs.size()];
+            for(int i = 0; i < STs.size(); i++){
+            	sharedTextures[i] = STs.get(i);
+            }
+    	}catch(Exception ex){}
+    }
+    
+    public static TextureRegion getSharedTexture(String id){
+    	TextureRegion temp = new TextureRegion();
+    	for(int i = 0; i < sharedTextures.length; i++){
+    		if(sharedTextures[i].ID.equals(id)){
+    			temp = sharedTextures[i].getTex();
+    			break;
+    		}
+    	}
+    	return temp;
     }
 }

@@ -112,4 +112,8 @@ public class Container {
     		CONTENT.get(i).mouseMoved(mouse, getBox().x, getBox().y);
     	}
     }
+    
+    public Activator getActById(String id){
+    	
+    }
 }
