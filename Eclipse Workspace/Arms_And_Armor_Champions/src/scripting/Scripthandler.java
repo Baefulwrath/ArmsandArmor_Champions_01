@@ -3,7 +3,11 @@ package scripting;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import world.Worldhandler;
 
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 import com.rapplebob.ArmsAndArmorChampions.State;
 
@@ -241,9 +245,30 @@ public class Scripthandler {
     		ConHand.getContainer(ID).ACTIVE = true;
     	}
     }
-    
+
     public static void setActImage(String cmd){
-    	Activator A = ConHand.getActiveContainer().getActById(cmd.substring(, ));
-    	A.TEX = ConHand.getSharedTexture(cmd.substring(, ));
+    	Activator A = ConHand.getActiveContainer().getActById(cmd.substring(0, cmd.indexOf("_")));
+    	cmd = cmd.substring(cmd.indexOf("_") + 1);
+    	String type = cmd.substring(0, cmd.indexOf("_"));
+    	cmd = cmd.substring(cmd.indexOf("_") + 1);
+    	boolean useTex = false;
+    	Texture tex = AAA_C.getActiveRenderer().actBack;
+    	TextureRegion reg = new TextureRegion();
+    	switch(type){
+    			case "Climate":reg = Worldhandler.getClimateImage(Worldhandler.getClimateIdByString(cmd));
+    			useTex = false;
+    		break;
+    			case "Terrain":reg = Worldhandler.getTerrainImage(Worldhandler.getTerrainIdByString(cmd));
+    			useTex = false;
+    		break;
+    			case "Image":reg = ConHand.getSharedTexture(cmd);
+    			useTex = false;
+    		break;
+    	}
+    	if(useTex){
+    		A.TEX = new TextureRegion(tex, tex.getWidth(), tex.getHeight());
+    	}else{
+    		A.TEX = reg;
+    	}
     }
 }

@@ -20,8 +20,9 @@ back true
 brushmenu#
 Test Menu
 {
-[0:-170:150:150]"setActImage_Climate_[BRUSH]"(Select Climate):;[BUTTON]
-[0:-330:150:150]"setActImage_Terrain_[BRUSH]"(Select Terrain):;[BUTTON]
+[0:-170:150:150]"setActImage_EDICON03_Climate_[BRUSH]"(Select Climate):id_EDICON01;[BUTTON]
+[0:-330:150:150]"setActImage_EDICON03_Terrain_[BRUSH]"(Select Terrain):id_EDICON02;[BUTTON]
+[0:-510:150:150]"setActImage_EDICON03_Image_test"(Select Terrain):id_EDICON03;[BUTTON]
 }
 >
 -<ENDOFFILE>-

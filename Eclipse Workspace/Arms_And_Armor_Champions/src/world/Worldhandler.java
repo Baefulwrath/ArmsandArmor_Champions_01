@@ -181,6 +181,21 @@ public class Worldhandler {
     	return temp;
     }
     
+    public static int getClimateIdByString(String s){
+    	Climate C = climates.get(0);
+    	for(int i = 0; i < climates.size(); i++){
+    		if(climates.get(i).CLIMATE.equals(s)){
+    			C = climates.get(i);
+    			break;
+    		}
+    	}
+    	return C.ID;
+    }
+    
+    public static int getTerrainIdByString(String s){
+    	
+    }
+    
     public static String[] getClimates(){
     	ArrayList<String> strings = new ArrayList<String>();
     	for(int i = 0; i < terrains.size(); i++){
