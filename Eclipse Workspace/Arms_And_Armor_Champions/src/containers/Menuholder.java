@@ -57,35 +57,8 @@ public class Menuholder extends Content{
 		            for(int i = 0; i < files.size(); i++){
 		                FileHandle file = Gdx.files.internal(path + files.get(i));
 		                if(file.extension().equals("txt")){
-		                    Menu m = new Menu(X, Y);
-		                    String ID = "";
-		                    String title = "";
-		                    ArrayList<Activator> acts = new ArrayList<Activator>();
-		                    String text = file.readString();
-		                    
-		                    reader = new Scanner(text);
-		                    ID = reader.nextLine();
-		                    title = reader.nextLine();
-		                    reader.nextLine();
-		                    while(!reader.hasNext("}")){
-		                        String line = reader.nextLine();
-		                        String aBox = line.substring(line.indexOf("[") + 1, line.indexOf("]"));
-		                        line = line.substring(line.indexOf("]") + 1);
-		                        int ax = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
-		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
-		                        int ay = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
-		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
-		                        int aw = Integer.parseInt(aBox.substring(0, aBox.indexOf(":")));
-		                        aBox = aBox.substring(aBox.indexOf(":") + 1);
-		                        int ah = Integer.parseInt(aBox);
-		                        String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
-		                        String script = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
-		                        ActivatorType AT = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
-		                        Activator act = new Activator();
-		                        act.set(AT, atitle, script, new Rectangle(ax, ay, aw, ah));
-		                        acts.add(act);
-		                    }
-		                    m.set(ID, title, acts);
+		                	String s = file.readString();
+		                    Menu m = Menu.parseMenu(s);
 		                    menus.add(m);
 		                }else{
 		                	System.out.println("Non-txt in index of menus");

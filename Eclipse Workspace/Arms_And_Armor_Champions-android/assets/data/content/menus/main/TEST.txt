@@ -1,7 +1,9 @@
+0
+0
 TEST
 TEST
 {
-[0:-80:500:40](Text to get):id_test;[INPUT]
-[0:-120:500:40](Get Text):print_GET_loc_activatorTitle_test_TEG#;[BUTTON]
-[0:-160:500:40](Back):openMenu_main;[BUTTON]
+MENTEST01[0:-80:500:40]""(Text to get):id_test;[INPUT]
+MENTEST02[0:-120:500:40]""(Get Text):print_GET_loc_activatorTitle_test_TEG#;[BUTTON]
+MENTEST03[0:-160:500:40]""(Back):openMenu_main;[BUTTON]
 }

@@ -1,6 +1,8 @@
+0
+0
 exit
 Exit?
 {
-[0:-80:500:40](Yes!):exit_;[BUTTON]
-[0:-120:500:40](No...):openMenu_main;[BUTTON]
+MENEXIT01[0:-80:500:40]""(Yes!):exit_;[BUTTON]
+MENEXIT02[0:-120:500:40]""(No...):openMenu_main;[BUTTON]
 }

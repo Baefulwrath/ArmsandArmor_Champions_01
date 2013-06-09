@@ -2,6 +2,7 @@ package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -80,41 +81,41 @@ public class Menu extends Content{
     
     public static Menu parseMenu(String s){
     	Menu m = new Menu(0, 0);
-    	System.out.println(s);
+    	Scanner reader = new Scanner(s);
     	try{
-    		int mx = Integer.parseInt(s.substring(0, s.indexOf("#")));
-    		s = s.substring(s.indexOf("#") + 1);
-    		int my = Integer.parseInt(s.substring(0, s.indexOf("#")));
-    		s = s.substring(s.indexOf("#") + 1);
-    		String mid = s.substring(0, s.indexOf("#"));
-    		s = s.substring(s.indexOf("#") + 1);
-    		String mtitle = s.substring(0, s.indexOf("{"));
-    		s = s.substring(s.indexOf("{") + 1);
+    		int mx = Integer.parseInt(reader.nextLine());
+    		int my = Integer.parseInt(reader.nextLine());
+    		String mid = reader.nextLine();
+    		String mtitle = reader.nextLine();
+    		reader.nextLine();
     		ArrayList<Activator> acs = new ArrayList<Activator>();
-        	System.out.println(s);
-    		while(!s.equals("}")){
+    		while(!reader.hasNext("}")){
+    			String line = reader.nextLine();
 	    		Activator act = new Activator();
-	    		int ax = Integer.parseInt(s.substring(s.indexOf("[") + 1, s.indexOf(":")));
-	    		s = s.substring(s.indexOf(":") + 1);
-	    		int ay = Integer.parseInt(s.substring(0, s.indexOf(":")));
-	    		s = s.substring(s.indexOf(":") + 1);
-	    		int aw = Integer.parseInt(s.substring(0, s.indexOf(":")));
-	    		s = s.substring(s.indexOf(":") + 1);
-	    		int ah = Integer.parseInt(s.substring(0, s.indexOf("]")));
-	    		s = s.substring(s.indexOf("]") + 1);
-	    		String uScript = s.substring(s.indexOf('"') + 1, s.indexOf('"'));
-	    		String atitle = s.substring(s.indexOf("(") + 1, s.indexOf(")"));
-	    		String ascript = s.substring(s.indexOf(":") + 1, s.indexOf(";"));
-	    		ActivatorType atype = ActivatorType.parseType(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
-	    		act.set(atype, atitle, uScript, ascript, new Rectangle(ax, ay, aw, ah));
+	    		String aid = line.substring(0, line.indexOf("["));
+	    		int ax = Integer.parseInt(line.substring(line.indexOf("[") + 1, line.indexOf(":")));
+	    		line = line.substring(line.indexOf(":") + 1);
+	    		int ay = Integer.parseInt(line.substring(0, line.indexOf(":")));
+	    		line = line.substring(line.indexOf(":") + 1);
+	    		int aw = Integer.parseInt(line.substring(0, line.indexOf(":")));
+	    		line = line.substring(line.indexOf(":") + 1);
+	    		int ah = Integer.parseInt(line.substring(0, line.indexOf("]")));
+	    		line = line.substring(line.indexOf("]") + 1);
+	    		String uScript = line.substring(line.indexOf('"') + 1, line.indexOf('"', line.indexOf('"') + 1));
+	    		String atitle = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+	    		String ascript = line.substring(line.indexOf(":") + 1, line.indexOf(";"));
+	    		ActivatorType atype = ActivatorType.parseType(line.substring(line.indexOf("[") + 1, line.indexOf("]")));
+	    		act.set(atype, aid, atitle, uScript, ascript, new Rectangle(ax, ay, aw, ah));
 	    		acs.add(act);
-	    		s = s.substring(s.indexOf("]") + 1);
     		}
     		m = new Menu(mx, my);
     		m.set(mid, mtitle, acs);
     	}catch(Exception ex){
+        	reader.close();
+    		System.out.println("/*" + s + "*/");
     		ex.printStackTrace(System.out);
     	}
+    	reader.close();
     	return m;
     }
     
@@ -136,5 +137,27 @@ public class Menu extends Content{
 	@Override
 	public void mouseMoved(Rectangle mouse, int cx, int cy) {
 		hover = testMouseHover(mouse, new Rectangle(X + cx, Y + cy, 0, 0));
+	}
+	
+	public boolean actExists(String id){
+		boolean temp = false;
+		for(int i = 0; i < acts.size(); i++){
+			if(acts.get(i).ID.equals(id)){
+				temp = true;
+				break;
+			}
+		}
+		return temp;
+	}
+	
+	public Activator getActById(String id){
+		Activator temp = new Activator();
+		for(int i = 0; i < acts.size(); i++){
+			if(acts.get(i).ID.equals(id)){
+				temp = acts.get(i);
+				break;
+			}
+		}
+		return temp;
 	}
 }

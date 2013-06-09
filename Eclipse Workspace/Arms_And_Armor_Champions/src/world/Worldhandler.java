@@ -193,7 +193,14 @@ public class Worldhandler {
     }
     
     public static int getTerrainIdByString(String s){
-    	
+    	Terrain T = terrains.get(0);
+    	for(int i = 0; i < terrains.size(); i++){
+    		if(terrains.get(i).TERRAIN.equals(s)){
+    			T = terrains.get(i);
+    			break;
+    		}
+    	}
+    	return T.ID;
     }
     
     public static String[] getClimates(){

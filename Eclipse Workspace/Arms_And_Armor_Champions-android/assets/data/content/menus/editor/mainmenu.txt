@@ -1,6 +1,8 @@
+0
+0
 main
 Editor Paused
 {
-[0:-80:500:40](Continue):unpauseEditor_;[BUTTON]
-[0:-120:500:40](Main Menu):openMenu_exit;[BUTTON]
+EDIMAIN01[0:-80:500:40]""(Continue):unpauseEditor_;[BUTTON]
+EDIMAIN02[0:-120:500:40]""(Main Menu):openMenu_exit;[BUTTON]
 }

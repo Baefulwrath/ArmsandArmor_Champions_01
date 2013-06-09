@@ -1,6 +1,8 @@
+0
+0
 main
 Game Paused
 {
-[0:-80:500:40](Continue):continue_;[BUTTON]
-[0:-120:500:40](Main Menu):endgame_;[BUTTON]
+GAMMAIN01[0:-80:500:40]""(Continue):continue_;[BUTTON]
+GAMMAIN02[0:-120:500:40]""(Main Menu):endgame_;[BUTTON]
 }

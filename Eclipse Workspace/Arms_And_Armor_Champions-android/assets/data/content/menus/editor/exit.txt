@@ -1,6 +1,8 @@
+0
+0
 exit
 Close Editor?
 {
-[0:-80:500:40](Yes!):setState_MENU;[BUTTON]
-[0:-120:500:40](Nope.):openMenu_main;[BUTTON]
+EDIEXIT01[0:-80:500:40]""(Yes!):setState_MENU;[BUTTON]
+EDIEXIT02[0:-120:500:40]""(Nope.):openMenu_main;[BUTTON]
 }

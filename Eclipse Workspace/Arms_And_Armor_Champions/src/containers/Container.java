@@ -26,7 +26,7 @@ public class Container {
 	
 	public void update(){
 		conSurf = new Rectangle(0, BOX.height - conSize, BOX.width, conSize);
-		EXIT.set(ActivatorType.BUTTON, "X", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
+		EXIT.set(ActivatorType.BUTTON, "EXITACTFROMCONTAINER", "X", "", "switchCon_" + ID, new Rectangle(conSurf.width - conSize, conSurf.y, conSize, conSize));
 		for(int i = 0; i < CONTENT.size(); i++){
 			CONTENT.get(i).update();
 		}
@@ -114,6 +114,16 @@ public class Container {
     }
     
     public Activator getActById(String id){
-    	
+    	Activator A = new Activator();
+    	for(int i = 0; i < CONTENT.size(); i++){
+    		Menu m = (Menu) CONTENT.get(i);
+    		if(m.TYPE == ContentType.MENU){
+    			if(m.actExists(id)){
+    				A = m.getActById(id);
+    				break;
+    			}
+    		}
+    	}
+    	return A;
     }
 }

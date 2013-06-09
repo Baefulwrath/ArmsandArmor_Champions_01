@@ -1,7 +1,9 @@
+0
+0
 newgame
 New Game
 {
-[0:-80:500:40](TO BE IMPLEMENTED):;[TEXT]
-[0:-120:500:40](Temp Start Game):startgame_;[BUTTON]
-[0:-160:500:40](Back):openMenu_main;[BUTTON]
+MENNEWGAME01[0:-80:500:40]""(TO BE IMPLEMENTED):;[TEXT]
+MENNEWGAME02[0:-120:500:40]""(Temp Start Game):startgame_;[BUTTON]
+MENNEWGAME03[0:-160:500:40]""(Back):openMenu_main;[BUTTON]
 }

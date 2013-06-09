@@ -116,15 +116,17 @@ public class ConHand {
 	                	reader.nextLine();
 	                	Container CT = new Container(title, id, active, x, y, width, height, conSize, state, type, alig, fill, decorated, transparency, back);
 	                	String statement = reader.nextLine();
+	                	String contentArea = text.substring(text.indexOf("#") + 2);
 	                	while(!statement.equals("-<ENDOFFILE>-")){
+	                		System.out.println(":::" + statement + ":::");
 	                		String contentData = "";
-	                		String line = statement + reader.nextLine();
-	                		while(!line.equals(">")){
-	                			contentData += line;
-	                			line = reader.nextLine();
-	                		}
-	                		contentData += line;
-	                		CT.add(createContentFromString(contentData));
+	                		ContentType contentType = ContentType.parseType(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")));
+	                		contentData = contentArea.substring(contentArea.indexOf("<") + 1, contentArea.indexOf(">"));
+	                		CT.add(createContentFromString(contentType, contentData));
+	                		contentArea = contentArea.substring(contentArea.indexOf(">") + 2);
+	                		
+	                		//Flytta fram reader till rätt ställe...
+	                		reader.skip(contentData);
 	                		statement = reader.nextLine();
 	                	}
 	                	cons[i] = CT;
@@ -136,16 +138,17 @@ public class ConHand {
     	}
     }
     
-    public static Content createContentFromString(String s){
+    public static Content createContentFromString(ContentType CType, String s){
     	Content C = new nullContent();
-    	ContentType CType = ContentType.parseType(s.substring(1, s.indexOf(")")));
-    	switch(CType){
-		case MENU: C = Menu.parseMenu(s.substring(s.indexOf("<") + 1, s.indexOf(">")));
-			break;
-		case MENUHOLDER:
-			break;
-		default:
-			break;
+    	if(!s.isEmpty()){
+	    	switch(CType){
+			case MENU: C = Menu.parseMenu(s);
+				break;
+			case MENUHOLDER:
+				break;
+			default:
+				break;
+	    	}
     	}
     	return C;
     }

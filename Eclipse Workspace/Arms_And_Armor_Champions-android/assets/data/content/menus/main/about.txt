@@ -1,6 +1,8 @@
+0
+0
 about
 About
 {
-[0:-80:500:40](NOTHING HERE YET):;[TEXT]
-[0:-120:500:40](Back):openMenu_main;[BUTTON]
+MENABOUT01[0:-80:500:40]""(NOTHING HERE YET):;[TEXT]
+MENABOUT02[0:-120:500:40]""(Back):openMenu_main;[BUTTON]
 }

@@ -5,31 +5,35 @@ import java.awt.Rectangle;
 import scripting.Scripthandler;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Activator {
     public ActivatorType AT = ActivatorType.BUTTON;
     public String title = "";
+    public String ID = "";
     public String script = "";
     public String updateScript = "";
     public boolean highlit = false;
     public Rectangle BOX = new Rectangle(0, 0, 0, 0);
     public boolean textured = false;
-    public Texture TEX;
+    public TextureRegion TEX;
     
     public void update(){
     	Scripthandler.handleScript(updateScript);
     }
     
-    public void set(ActivatorType type, String t, String uScript, String s, Rectangle r){
+    public void set(ActivatorType type, String id, String t, String uScript, String s, Rectangle r){
         AT = type;
+        ID = id;
         title = t;
         updateScript = uScript;
         script = s;
         BOX = r;
     }
     
-    public void set(ActivatorType type, String t, String uScript, String s, Rectangle r, Texture tex){
+    public void set(ActivatorType type, String id, String t, String uScript, String s, Rectangle r, TextureRegion tex){
         AT = type;
+        ID = id;
         title = t;
         updateScript = uScript;
         script = s;

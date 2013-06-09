@@ -1,6 +1,8 @@
+0
+0
 options
 Options
 {
-[0:-80:500:40](NO OPTIONS YET.):;[TEXT]
-[0:-120:500:40](Back):openMenu_main;[BUTTON]
+MENOPTIONS01[0:-80:500:40]""(NO OPTIONS YET.):;[TEXT]
+MENOPTIONS02[0:-120:500:40]""(Back):openMenu_main;[BUTTON]
 }
