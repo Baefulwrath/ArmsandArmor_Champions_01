@@ -2,6 +2,7 @@ package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 
@@ -13,7 +14,7 @@ public class Container {
 	public boolean ACTIVE = false;
 	public ContainerState STATE = ContainerState.STATIC;
 	public ContainerType TYPE = ContainerType.DEFAULT;
-	public ArrayList<Content> CONTENT = new ArrayList<Content>();
+	public HashMap<String, Content> CONTENT = new HashMap<String, Content>();
 	public Activator EXIT = new Activator();
 	private Rectangle BOX = new Rectangle(0, 0, 0, 0);
 	public Alignment ALIGNMENT = Alignment.CENTER;
@@ -56,7 +57,7 @@ public class Container {
 		if(DECORATED){
 			C.Y -= conSize;
 		}
-		CONTENT.add(C);
+		CONTENT.put(C.ID, C);
 	}
 	
 	public void switchState(){
@@ -113,17 +114,17 @@ public class Container {
     	}
     }
     
-    public Activator getActById(String id){
-    	Activator A = new Activator();
+    public boolean getActById(String id, Activator A){
+    	boolean temp = false;
     	for(int i = 0; i < CONTENT.size(); i++){
     		Menu m = (Menu) CONTENT.get(i);
     		if(m.TYPE == ContentType.MENU){
-    			if(m.actExists(id)){
-    				A = m.getActById(id);
+    			if(m.getActById(id, A)){
+    				temp = true;
     				break;
     			}
     		}
     	}
-    	return A;
+    	return temp;
     }
 }

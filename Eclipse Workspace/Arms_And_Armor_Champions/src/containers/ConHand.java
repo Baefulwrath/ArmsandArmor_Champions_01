@@ -2,6 +2,8 @@ package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import scripting.Scripthandler;
@@ -14,7 +16,7 @@ import com.rapplebob.ArmsAndArmorChampions.AAA_C;
 
 public class ConHand {
 
-    public static Container[] cons = new Container[0];
+    public static HashMap<String, Container> cons = new HashMap<String, Container>();
     public static float windowTransparency = 1.0f;
     public static Menuholder[] MHs = new Menuholder[3];
     public static SharedTexture[] sharedTextures = new SharedTexture[0];
@@ -75,8 +77,8 @@ public class ConHand {
     }
     
     public static void updateContainers(){
-    	for(int i = 0; i < cons.length; i++){
-    		cons[i].update();
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		cons.get(entry.getKey()).update();
     	}
     }
     
@@ -89,7 +91,7 @@ public class ConHand {
         		files.add(index.substring(1, index.indexOf(";")));
         		index = index.substring(index.indexOf(";") + 1);
         	}
-        	cons = new Container[files.size()];
+        	cons = new HashMap<String, Container>();
             Scanner reader;
             if(files.size() > 0){
 	            for(int i = 0; i < files.size(); i++){
@@ -118,18 +120,20 @@ public class ConHand {
 	                	String statement = reader.nextLine();
 	                	String contentArea = text.substring(text.indexOf("#") + 2);
 	                	while(!statement.equals("-<ENDOFFILE>-")){
-	                		System.out.println(":::" + statement + ":::");
 	                		String contentData = "";
 	                		ContentType contentType = ContentType.parseType(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")));
-	                		contentData = contentArea.substring(contentArea.indexOf("<") + 1, contentArea.indexOf(">"));
+	                		contentData = contentArea.substring(contentArea.indexOf("<") + 3, contentArea.indexOf(">") - 2);
 	                		CT.add(createContentFromString(contentType, contentData));
 	                		contentArea = contentArea.substring(contentArea.indexOf(">") + 2);
 	                		
 	                		//Flytta fram reader till rätt ställe...
-	                		reader.skip(contentData);
+	                		while(!reader.hasNext(">")){
+	                			reader.nextLine();
+	                		}
+                			reader.nextLine();
 	                		statement = reader.nextLine();
 	                	}
-	                	cons[i] = CT;
+	                	cons.put(id, CT);
 	                }
 	            }
             }
@@ -155,8 +159,8 @@ public class ConHand {
     
     public static boolean collides(Rectangle r, ContainerType type){
     	boolean temp = false;
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].TYPE == type && cons[i].collides(r)){
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(cons.get(entry.getKey()).TYPE == type && cons.get(entry.getKey()).collides(r)){
     			temp = true;
     			break;
     		}
@@ -166,9 +170,9 @@ public class ConHand {
     
     public static Container[] getCons(ContainerType type){
     	ArrayList<Container> C = new ArrayList<Container>();
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].TYPE == type){
-    			C.add(cons[i]);
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(cons.get(entry.getKey()).TYPE == type){
+    			C.add(cons.get(entry.getKey()));
     		}
     	}
     	Container[] CA = new Container[C.size()];
@@ -180,9 +184,9 @@ public class ConHand {
     
     public static Container getActiveContainer(){
     	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, Fill.NONE, true, 1.0f, false);
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].getBox().intersects(AAA_C.inputhandler.staticMouse) && cons[i].ACTIVE){
-    			C = cons[i];
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(cons.get(entry.getKey()).getBox().intersects(AAA_C.inputhandler.staticMouse) && cons.get(entry.getKey()).ACTIVE){
+    			C = cons.get(entry.getKey());
     			break;
     		}
     	}
@@ -238,42 +242,53 @@ public class ConHand {
     	}
     }
     
-    public static Container getContainer(String ID){
+    public static Container getContainer(String Id){
     	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, Fill.NONE, true, 1.0f, false);
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].ID.equals(ID)){
-    			C = cons[i];
-    			break;
+    	if(cons.containsKey(Id)){
+    		C = cons.get(Id);
+    	}
+    	return C;
+    }
+    
+    public static Container getContainerByAct(String actId){
+    	Container C = new Container("", "", false, 0, 0, 0, 0, 0, ContainerState.STATIC, ContainerType.DEFAULT, Alignment.CENTER, Fill.NONE, true, 1.0f, false);
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+        	for(Map.Entry<String, Content> entry2 : cons.get(entry.getKey()).CONTENT.entrySet()){
+    			if(){
+    				
+    			}
     		}
     	}
     	return C;
     }
     
     public static void clearMoving(){
-    	for(int i = 0; i < cons.length; i++){
-    		cons[i].stop();
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		cons.get(entry.getKey()).stop();
     	}
     }
     
     public static void moveToFront(Container C){
-    	Container[] temp = new Container[cons.length];
+    	Container[] temp = new Container[cons.size()];
     	int index = 1;
-    	for(int i = 0; i < cons.length; i++){
-    		if(!C.ID.equals(cons[i].ID)){
-    			temp[index] = cons[i];
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(!C.ID.equals(entry.getKey())){
+    			temp[index] = cons.get(entry.getKey());
         		index++;
     		}
     	}
     	temp[0] = C;
-    	for(int i = 0; i < cons.length; i++){
-    		cons[i] = temp[i];
+    	int i = 0;
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		cons.put(entry.getKey(), temp[i]);
+    		i++;
     	}
     }
     
     public static void moveCons(int diffX, int diffY){
-    	for(int i = 0; i < cons.length; i++){
-    		if(cons[i].move(diffX, diffY)){
-    			moveToFront(cons[i]);
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(cons.get(entry.getKey()).move(diffX, diffY)){
+    			moveToFront(cons.get(entry.getKey()));
     		}
     	}
     }
@@ -327,5 +342,15 @@ public class ConHand {
     		}
     	}
     	return temp;
+    }
+    
+    public static Activator getActById(String id){
+    	Activator A = new Activator();
+    	for(Map.Entry<String, Container> entry : cons.entrySet()){
+    		if(cons.get(entry.getKey()).getActById(id, A)){
+    			break;
+    		}
+    	}
+    	return A;
     }
 }

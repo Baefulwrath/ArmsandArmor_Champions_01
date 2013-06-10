@@ -59,6 +59,7 @@ public class AAA_C implements ApplicationListener {
         ConHand.getActiveMenuholder().openMenuByID("main");
         loadSettings();
         setLoadedSettings();
+        Scripthandler.initialize();
 	}
 
 	@Override

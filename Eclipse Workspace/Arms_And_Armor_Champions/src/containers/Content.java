@@ -6,12 +6,14 @@ public abstract class Content {
 	
 	public int X;
 	public int Y;
+	public String ID;
 	public ContentType TYPE = ContentType.DEFAULT;
 	
-	public Content(int x, int y, ContentType type){
+	public Content(int x, int y, ContentType type, String id){
 		X = x;
 		Y = y;
 		TYPE = type;
+		ID = id;
 	}
 	
 	public void print(){

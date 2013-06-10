@@ -2,7 +2,10 @@ package scripting;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
+import world.Climate;
 import world.Worldhandler;
 
 
@@ -20,6 +23,7 @@ import containers.Container;
 import containers.Content;
 import containers.ContentType;
 import containers.Menu;
+import editor.Editorhandler;
 
 public class Scripthandler {
 
@@ -27,7 +31,14 @@ public class Scripthandler {
     //Låt en metod ställa in dessa variabler ifall variabeln finns i listan och se att värdet blir av korrekt typ.
     private static InputStreamReader inputStreamReader = new InputStreamReader(System.in);
     private static BufferedReader reader = new BufferedReader(inputStreamReader);
-
+    private static boolean initialized = false;
+    private static HashMap<String, Integer> genInts = new HashMap<String, Integer>();
+    
+    public static void initialize(){
+    	loadGenericVariables();
+    	initialized = true;
+    }
+    
     public static void update() {
         try {
             if (reader.ready()) {
@@ -36,6 +47,11 @@ public class Scripthandler {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public static void loadGenericVariables(){
+    	genInts.put("BRUSHCLIMATE", Editorhandler.brush.CELL.CLIMATE);
+    	genInts.put("BRUSHTERRAIN", Editorhandler.brush.CELL.TERRAIN);
     }
 
     public static void handleScript(String script) {
@@ -50,7 +66,7 @@ public class Scripthandler {
         }
         activateScript(script);
 
-        System.out.println(script);
+        //System.out.println(script);
     }
 
     public static void activateScript(String script) {
@@ -93,10 +109,14 @@ public class Scripthandler {
             if(id.substring(0, 15).equals("activatorTitle_")){
                 id = id.substring(15);
                 value = getActivatorTitleById(id);
+            }else if(id.substring(0, 12).equals("activatorId_")){
+                id = id.substring(12);
+                value = getActivatorIdByTitle(id);
             }
         }else{
-            value += "[GEN]";
-            //Hämta en generell variabel som finns i hashtablet.
+    		if(genInts.containsKey(id)){
+    			value = genInts.get(id).toString();
+    		}
         }
         return value;
     }
@@ -170,6 +190,50 @@ public class Scripthandler {
             	setActImage(line.substring(12));
             }
         }
+        if (line.length() > 12) {
+            if (cmd.equals("setActTitle_")) {
+            	setActTitle(line.substring(12));
+            }
+        }
+    }
+    
+    public static String getActivatorIdByTitle(String title){
+        String id = "";
+        String script = "";
+        Menu m = ConHand.getActiveMenu();
+        boolean found = false;
+        for(int i = 0; i < m.acts.size(); i++){
+        	if(m.acts.get(i).title.equals(title)){
+        		id = m.acts.get(i).ID;
+        		found = true;
+        		break;
+        	}
+        }
+        if(!found){
+        	for(Map.Entry<String, Container> entry : ConHand.cons.entrySet()){
+        		Container C = ConHand.cons.get(entry.getKey());
+            	for(int i = 0; i < C.CONTENT.size(); i++){
+            		Content CT = C.CONTENT.get(i);
+            		if(CT.TYPE == ContentType.MENU){
+            			m = (Menu) CT;
+            			for(int mi = 0; mi < m.acts.size(); mi++){
+            	        	if(m.acts.get(i).title.equals(title)){
+            	        		id = m.acts.get(i).ID;
+            	        		found = true;
+            	        		break;
+            	        	}
+            			}
+            			if(found){
+            				break;
+            			}
+            		}
+            	}
+    			if(found){
+    				break;
+    			}
+        	}
+        }
+        return title;
     }
     
     public static String getActivatorTitleById(String id){
@@ -178,41 +242,25 @@ public class Scripthandler {
         Menu m = ConHand.getActiveMenu();
         boolean found = false;
         for(int i = 0; i < m.acts.size(); i++){
-            if(m.acts.get(i).script.length() > 3){
-                //id:t måste vara det första kommandot som anges av activatorn.
-                if(m.acts.get(i).script.contains("#")){
-                    script = m.acts.get(i).script.substring(0, m.acts.get(i).script.indexOf("#"));
-                }else{
-                    script = m.acts.get(i).script;
-                }
-                if(script.substring(0, 3).equals("id_")){
-                    title = m.acts.get(i).title;
-                    found = true;
-                    break;
-                }
-            }
+        	if(m.acts.get(i).ID.equals(id)){
+        		title = m.acts.get(i).title;
+        		found = true;
+        		break;
+        	}
         }
         if(!found){
-        	for(int ci = 0; ci < ConHand.cons.length; ci++){
-        		Container C = ConHand.cons[ci];
+        	for(Map.Entry<String, Container> entry : ConHand.cons.entrySet()){
+        		Container C = ConHand.cons.get(entry.getKey());
             	for(int i = 0; i < C.CONTENT.size(); i++){
             		Content CT = C.CONTENT.get(i);
             		if(CT.TYPE == ContentType.MENU){
             			m = (Menu) CT;
             			for(int mi = 0; mi < m.acts.size(); mi++){
-            	            if(m.acts.get(mi).script.length() > 3){
-            	                //id:t måste vara det första kommandot som anges av activatorn.
-            	                if(m.acts.get(i).script.contains("#")){
-            	                    script = m.acts.get(i).script.substring(0, m.acts.get(i).script.indexOf("#"));
-            	                }else{
-            	                    script = m.acts.get(i).script;
-            	                }
-            	                if(script.substring(0, 3).equals("id_")){
-            	                    title = m.acts.get(i).title;
-            	                    found = true;
-            	                    break;
-            	                }
-            	            }
+            	        	if(m.acts.get(i).ID.equals(id)){
+            	        		title = m.acts.get(i).title;
+            	        		found = true;
+            	        		break;
+            	        	}
             			}
             			if(found){
             				break;
@@ -247,7 +295,7 @@ public class Scripthandler {
     }
 
     public static void setActImage(String cmd){
-    	Activator A = ConHand.getActiveContainer().getActById(cmd.substring(0, cmd.indexOf("_")));
+    	Activator A = ConHand.getActById(cmd.substring(0, cmd.indexOf("_")));
     	cmd = cmd.substring(cmd.indexOf("_") + 1);
     	String type = cmd.substring(0, cmd.indexOf("_"));
     	cmd = cmd.substring(cmd.indexOf("_") + 1);
@@ -271,4 +319,31 @@ public class Scripthandler {
     		A.TEX = reg;
     	}
     }
+    
+    //setActTitle_EDICON01_Climate_GET_BRUSHCLIMATE_TEG
+    public static void setActTitle(String cmd){
+    	String aid = cmd.substring(0, cmd.indexOf("_"));
+    	cmd = cmd.substring(cmd.indexOf("_") + 1);
+    	String type = cmd.substring(0, cmd.indexOf("_"));
+    	cmd = cmd.substring(cmd.indexOf("_") + 1);
+    	String title = cmd;
+    	switch(type){
+	    	case "Climate":
+	    		title = Worldhandler.climates.get(Integer.parseInt(cmd)).CLIMATE;
+	    		break;
+	    	case "Terrain":
+	    		title = Worldhandler.terrains.get(Integer.parseInt(cmd)).TERRAIN;
+	    		break;
+    	}
+    	String cid = ConHand.getContainerByAct(aid).ID;
+    	for(Map.Entry<String, Content> entry : ConHand.cons.get(cid).CONTENT.entrySet()){
+    		Menu m = (Menu) ConHand.cons.get(cid).CONTENT.get(entry.getKey());
+    		if(m.TYPE == ContentType.MENU){
+    			if(m.acts.containsKey(aid)){
+    				ConHand.cons.get(cid).CONTENT.get(entry.getKey()). = cmd;
+    			}
+    		}
+    	}
+    }
+    
 }

@@ -18,11 +18,10 @@ back true
 0
 0
 brushmenu
-Test Menu
+Brush Menu
 {
-EDICON02_01[0:-170:150:150]"setActImage_EDICON01_Climate_[BRUSH]"(Select Climate):;[BUTTON]
-EDICON02_02[0:-330:150:150]"setActImage_EDICON02_Terrain_[BRUSH]"(Select Terrain):;[BUTTON]
-EDICON02_03[0:-510:150:150]"setActImage_EDICON03_Image_test"(Select Terrain):;[BUTTON]
+EDICON02_01[0:-170:150:150]"setActImage_EDICON01_Climate_GET_BRUSHCLIMATE_TEG#setActTitle_EDICON01_Climate_GET_BRUSHCLIMATE_TEG"(Climate):;[BUTTON]
+EDICON02_02[0:-330:150:150]"setActImage_EDICON02_Terrain_GET_BRUSHTERRAIN_TEG#setActTitle_EDICON02_Terrain_GET_BRUSHTERRAIN_TEG"(Terrain):;[BUTTON]
 }
 >
 -<ENDOFFILE>-

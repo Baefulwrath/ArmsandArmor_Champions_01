@@ -2,19 +2,20 @@ package containers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class Menu extends Content{
-    public String ID = "";
     public String menuTitle = "";
-    public ArrayList<Activator> acts = new ArrayList<Activator>();
+    public HashMap<String, Activator> acts = new HashMap<String, Activator>();
     public int activeAct = 0;
     public boolean hover = false;
+    private String tempId = "";
     
     public Menu(int x, int y){
-    	super(x, y, ContentType.MENU);
+    	super(x, y, ContentType.MENU, tempId);
     }
     
     public void set(String id, String t, ArrayList<Activator> a){
@@ -139,22 +140,12 @@ public class Menu extends Content{
 		hover = testMouseHover(mouse, new Rectangle(X + cx, Y + cy, 0, 0));
 	}
 	
-	public boolean actExists(String id){
+	public boolean getActById(String id, Activator A){
 		boolean temp = false;
 		for(int i = 0; i < acts.size(); i++){
 			if(acts.get(i).ID.equals(id)){
+				A = acts.get(i);
 				temp = true;
-				break;
-			}
-		}
-		return temp;
-	}
-	
-	public Activator getActById(String id){
-		Activator temp = new Activator();
-		for(int i = 0; i < acts.size(); i++){
-			if(acts.get(i).ID.equals(id)){
-				temp = acts.get(i);
 				break;
 			}
 		}
